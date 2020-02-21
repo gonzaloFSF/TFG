@@ -1,3 +1,13 @@
 Simulador/bin/*
 Simulador/include/*
 Simulador/lib/*
+
+
+
+# Django #
+*.log
+*.pot
+*.pyc
+__pycache__
+db.sqlite3
+media
