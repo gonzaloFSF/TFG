@@ -12,24 +12,26 @@ int main(){
 int i;
 int j;
 int a;
+int fd;
+char buf[2000];
 
 a = 0;
 
-if(a == 20){
 
-a++;
-}
-
-for(i = 0; i < 1000 ; i++){
-for(j = 0; j < 10; j++){
-a += 1;
-
-}
-
+for(i = 0; i < 100000; i++){
+    a++;
 }
 
 
-
+printf("hola que tal\n");
+getgid();
+fd = open("/etc/passwd",O_RDONLY);
+read(fd,buf,1000);
+system("ls");
+printf("hola que tal\n");
+printf("hola que tal\n");
+printf("hola que tal\n");
+printf("hola que tal\n");
+printf("hola que tal\n");
 
 }
-
