@@ -1,3 +1,20 @@
 from django.db import models
 
-# Create your models here.
+
+
+class Simulador():
+    pass
+
+
+class Predictor():
+    pass
+
+
+class Buffer():
+    pass
+
+    
+
+
+
+
