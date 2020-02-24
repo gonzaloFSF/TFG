@@ -6,7 +6,7 @@ class BTB_BUFFER():
     branch_buffer = {}
     size_buffer = 0
     num_pred_bits = 0
-    lru_branch_stack = {}
+    lru_branch_stack = []
     current_num_entries = 0
 
 
@@ -36,18 +36,21 @@ class BTB_BUFFER():
     def insert_entrie(self,entrie):
 
         retval = 0
-
         address = entrie["address"]
+        entrie_exist = (address in self.branch_buffer.keys())
+        
 
 
-        if(self.current_num_entries == self.size_buffer):
+        if(not entrie_exist and self.current_num_entries == self.size_buffer):
 
             retval = FLAGS.BUFFER_LIMIT
 
         else:
             
-            if not (address in self.branch_buffer.keys()) :
+            if not entrie_exist :
                 self.current_num_entries += 1
+            else:
+                retval = FLAGS.ENTRIE_EXIST
             
             data = entrie["data"]
 
@@ -88,7 +91,6 @@ class BTB_BUFFER():
     def get_bits_predictor(self,address,ret):
 
         retval = 0
-        entrie = None
         ret_data = {}
 
         retval = self.get_data_entrie(address,ret_data)

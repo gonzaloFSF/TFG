@@ -1,7 +1,7 @@
 Simulador/bin/*
 Simulador/include/*
 Simulador/lib/*
-
+Traza/traza.out
 
 
 # Django #
