@@ -1,190 +1,261 @@
 
-from Simulador.Proyecto_Simulador.SimuladorApp.flags import FLAGS
+from SimuladorApp.flags import FLAGS
 
 class BTB_BUFFER():
 
-    branch_buffer = {}
-    size_buffer = 0
-    num_pred_bits = 0
-    lru_branch_stack = []
-    current_num_entries = 0
+	branch_buffer = {}
+	size_buffer = 0
+	num_pred_bits = 0
+	lru_branch_stack = []
+	current_num_entries = 0
+	init_bits_value = 0
 
 
 
-    def __init__(self,args):
+	def __init__(self,args):
 
-        self.size_buffer = args["size_buffer"]
-        self.num_pred_bits = args["num_pred_bits"]
+		self.size_buffer = args["size_buffer"]
+		self.num_pred_bits = args["num_pred_bits"]
+		self.init_bits_value = args["init_bits_value"]
 
-    
+	
 
-    def get_data_entrie(self,address,ret):
+	def get_data_entrie(self,address,ret):
 
-        retval = 0
+		retval = 0
 
-        try :
-            
-            ret['value'] = self.branch_buffer[address]
+		try :
+			
+			ret['value'] = self.branch_buffer[address]
 
-        except KeyError:
+		except KeyError:
 
-            retval = FLAGS.NOT_ADDRESS_REGISTER
+			retval = FLAGS.GET_NOT_ADDRESS_REGISTER()
 
-        return retval
+		return retval
 
 
-    def insert_entrie(self,entrie):
+	def get_address_by_index(self,index,ret):
+	
+		retval = 0
 
-        retval = 0
-        address = entrie["address"]
-        entrie_exist = (address in self.branch_buffer.keys())
-        
+		ret['value'] = list(self.branch_buffer.keys())[index]
 
+		return retval
 
-        if(not entrie_exist and self.current_num_entries == self.size_buffer):
+	def get_size_branch_buffer(self,ret):
+		
+		retval = 0
 
-            retval = FLAGS.BUFFER_LIMIT
+		ret['value'] = len(self.branch_buffer.keys())
 
-        else:
-            
-            if not entrie_exist :
-                self.current_num_entries += 1
-            else:
-                retval = FLAGS.ENTRIE_EXIST
-            
-            data = entrie["data"]
+		return retval
 
-            self.branch_buffer[address] = data
+	def get_num_free_entries(self,ret):
 
-        return retval
+		retval = 0
 
+		ret["value"] = self.size_buffer - self.current_num_entries
 
-    def remove_entrie(self,address,ret):
+		return retval
 
-        retval = 0
+	def insert_jump(self,jump):
 
-        try :
-            
-            ret['value'] = self.branch_buffer.pop(address)
+		retval = 0
+		address_src = jump["address_src"] 
+		address_dts = jump["address_dts"] 
+		entrie_exist = (address_src in list(self.branch_buffer.keys()))
+		
+		print(entrie_exist,address_src,list(self.branch_buffer.keys()))
 
-        except KeyError:
+		if(not entrie_exist and self.current_num_entries == self.size_buffer):
 
-            retval = FLAGS.NOT_ADDRESS_REGISTER
+			retval = FLAGS.GET_BUFFER_LIMIT()
 
-        return retval
+		else:
+			
+			if not entrie_exist :
+				self.current_num_entries += 1
+			else:
+				retval = FLAGS.GET_ENTRIE_EXIST()
+			
+			data = {
+				'address_src':address_src,
+				'address_dts':address_dts,
+				'bits' : self.init_bits_value
+				}
 
+			self.branch_buffer[address_src] = data
 
-    def remplace_entrie(self,address,entrie,ret):
+		return retval
 
-        retval = 0
 
-        retval = self.remove_entrie(address,ret)
+	def remove_entrie(self,address,ret):
 
-        if(retval):
-            return retval
+		retval = 0
 
-        retval = self.insert_entrie(entrie)
+		try :
+			
+			ret['value'] = self.branch_buffer.pop(address)
+			self.current_num_entries -= 1
 
-        return retval
+		except KeyError:
 
-    
-    def get_bits_predictor(self,address,ret):
+			retval = FLAGS.GET_NOT_ADDRESS_REGISTER()
 
-        retval = 0
-        ret_data = {}
+		return retval
 
-        retval = self.get_data_entrie(address,ret_data)
-        
-        if(retval):
-            return retval
 
-        data = ret_data["value"]
 
+	
+	def get_bits_predictor(self,address,ret):
 
-        ret["value"] = data["bits"]
+		retval = 0
+		ret_data = {}
 
+		retval = self.get_data_entrie(address,ret_data)
+		
+		if(retval):
+			return retval
 
-        return retval
-    
+		data = ret_data["value"]
 
-    
-    def increment_bits_predictor(self,address,ret):
 
-        retval = 0
-        data = None
-        ret_data = {}
-        bits = -1
+		ret["value"] = data["bits"]
 
-        retval = self.get_data_entrie(address,ret_data)
-        
-        if(retval):
-            return retval
 
+		return retval
+	
 
-        data = ret_data["value"]
-        bits = data["bits"]
-        ret["value"] = bits
+	
+	def increment_bits_predictor(self,address,ret):
 
-        if(bits < (2 ** (self.num_pred_bits)) - 1):
-            data["bits"] = bits + 1
-            retval = self.insert_entrie({"address":address,"data":data})
-        else:
-            retval = FLAGS.COUNTER_SATURED
+		retval = 0
+		data = None
+		ret_data = {}
+		bits = -1
 
-        return retval
+		retval = self.get_data_entrie(address,ret_data)
+		
+		if(retval):
+			return retval
 
 
-    def decrement_bits_predictor(self,address,ret):
-    
-        retval = 0
-        data = None
-        ret_data = {}
-        bits = -1
+		data = ret_data["value"]
+		bits = data["bits"]
+		ret["value"] = bits
 
-        retval = self.get_data_entrie(address,ret_data)
-        
-        if(retval):
-            return retval
+		if(bits < (2 ** (self.num_pred_bits)) - 1):
+			data["bits"] = bits + 1
+		else:
+			retval = FLAGS.GET_COUNTER_SATURED()
 
+		return retval
 
-        data = ret_data["value"]
-        bits = data["bits"]
-        ret["value"] = bits
 
-        if(bits > 0):
-            data["bits"] = bits - 1
-            retval = self.insert_entrie({"address":address,"data":data})
-        else:
-            retval = FLAGS.COUNTER_SATURED
+	def decrement_bits_predictor(self,address,ret):
+	
+		retval = 0
+		data = None
+		ret_data = {}
+		bits = -1
 
-        return retval
+		retval = self.get_data_entrie(address,ret_data)
+		
+		if(retval):
+			return retval
 
 
+		data = ret_data["value"]
+		bits = data["bits"]
+		ret["value"] = bits
 
+		if(bits > 0):
+			data["bits"] = bits - 1
+		else:
+			retval = FLAGS.GET_COUNTER_SATURED()
 
+		return retval
 
 
-    def get_lru_branch_stack(self,ret):
 
-        retval = 0
 
-        ret["value"] = self.lru_branch_stack
 
-        return retval
 
+	def get_lru_branch_stack(self,ret):
 
-    def set_lru_branch_stack(self,new_lru_branch_stack):
-        
-        retval = 0
+		retval = 0
 
-        self.lru_branch_stack = new_lru_branch_stack
+		ret["value"] = self.lru_branch_stack
 
-        return retval
+		return retval
 
+	
+	def set_lru_branch_stack(self,new_lru_branch_stack):
+		
+		retval = 0
 
+		self.lru_branch_stack = new_lru_branch_stack
 
-    
+		return retval
 
-    
+
+	def remove_entrie_lru_branch_stack(self,address):
+		
+		retval = 0
+
+		try :
+		
+			self.lru_branch_stack.remove(address)
+		
+		except ValueError as e:
+
+			retval |= FLAGS.GET_NOT_ADDRESS_REGISTER_LRU()
+		
+		return retval
+
+
+
+	def insert_jump_lru_branch_stack(self,address):
+		
+		retval = 0
+		
+		if address in self.lru_branch_stack:
+			
+			retval |= FLAGS.GET_ENTRIE_EXIST_LRU()
+
+		self.lru_branch_stack.append(address)
+		
+		return retval
+
+
+	def get_entrie_by_index_lru_branch_stack(self,index,ret):
+
+		retval = 0
+
+		ret["value"] = self.lru_branch_stack[index]
+
+		return retval
+
+
+	def get_size_lru_branch_stack(self,ret):
+	
+		retval = 0
+
+		ret["value"] = len(self.lru_branch_stack)
+
+		return retval
+
+		
+
+
+
+
+
+
+
+	
+
+	
 
 
