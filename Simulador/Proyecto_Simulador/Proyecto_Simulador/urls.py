@@ -7,7 +7,7 @@ from SimuladorApp.views import index
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^home/?$', login_required(index), name="home_page"),
-    url('', login_required(index), name="home_page")
+    url(r'^home/?$', index, name="home_page"),
+    url('', index, name="home_page")
 ]
 
