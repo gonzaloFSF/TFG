@@ -1,0 +1,46 @@
+.yes-no-parent-childs * {
+    border: 0px;
+    font-size: 0px;
+    height: 0px;
+    padding: 0px;
+    -webkit-transition-duration: 1s;
+    transition-duration: 1s;
+}
+
+.yes-no-parent-childs {
+    opacity: 0;
+    -webkit-transition-duration: 0s;
+    transition-duration: 0s;
+    height: 0px;
+}
+
+.yes-no-parent-childs-display * {
+    -webkit-transition-duration: 1s;
+    transition-duration: 1s;
+}
+
+.yes-no-parent-childs-display {
+    opacity: 1;
+    -webkit-transition-duration: 0.2s;
+    transition-duration: 0.2s;
+}
+
+ul {
+    list-style: none;
+}
+
+.card-body * {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.ynp-root>ul {
+    width: 60%;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 10%;
+}
+
+.errorlist>li {
+    color: rgb(230, 11, 11);
+}

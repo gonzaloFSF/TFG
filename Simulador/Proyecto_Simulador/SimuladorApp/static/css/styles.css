@@ -1,0 +1,86 @@
+.margen-superior {
+    margin-top: 150px !important;
+}
+
+.margen-inferior {
+    margin-bottom: 5px !important;
+}
+
+.espaciado {
+    padding: 20px;
+}
+
+.espacio-boton {
+    padding: 1px 0px;
+}
+
+body {
+    font-family: 'Comfortaa', cursive !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: bold !important;
+}
+
+.modal-header{
+    background: #218838;
+    border-top-left-radius: .1rem;
+    border-top-right-radius: .1rem;
+}
+
+.row-prod {
+    position: relative;
+    width: 85%;
+    left: 7.5%;
+}
+
+.col-prod:before {
+    position: absolute;
+    content: 'Acceder';
+    width: 72%;
+    height: 0%;
+    font-size: 0%;
+    -webkit-transition: 1s;
+    transition: 1s;
+    top: 80%;
+    background: -webkit-gradient( linear, left bottom, left top, color-stop(50%, rgb(255, 255, 255)), color-stop(60%, rgb(58, 53, 53)), color-stop(75%, rgb(160, 152, 152)), to(rgb(255, 255, 255)));
+    background: linear-gradient( 0deg, rgb(255, 255, 255) 50%, rgb(58, 53, 53) 60%, rgb(160, 152, 152) 75%, rgb(255, 255, 255));
+}
+
+.col-prod:hover:before {
+    top: 50%;
+    height: 40%;
+    font-size: large;
+    cursor: pointer;
+}
+
+.img-prod {
+    width: 80%;
+    height: 80%;
+    -webkit-box-shadow: 0px 0px 1px 0px;
+    box-shadow: 0px 0px 1px 0px;
+}
+
+.title-prod {
+    position: relative;
+    width: 80%;
+    margin: auto;
+    background-color: rgba(26, 23, 23, 0.432);
+    color: rgb(255, 255, 255);
+}
+
+.listado_row{
+    cursor: pointer;
+}
+
+.listado_row:hover{
+    background: rgba(75, 67, 67, 0.644);
+    color: white;
+}
+
+
