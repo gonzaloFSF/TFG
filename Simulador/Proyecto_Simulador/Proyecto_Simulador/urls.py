@@ -8,6 +8,8 @@ from SimuladorApp.views import index
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^home/?$', index, name="home_page"),
+    url(r'^Simulador/?$', display_simulador, name="Simulador"),
+    url(r'^Traza/?$', display_traza, name="Traza"),
     url('', index, name="home_page")
 ]
 
