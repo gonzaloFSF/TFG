@@ -13,6 +13,13 @@ class BTB_BUFFER():
 
 	def __init__(self,*arguments):
 		
+		self.branch_buffer = {}
+		self.size_buffer = 0
+		self.num_pred_bits = 0
+		self.lru_branch_stack = []
+		self.current_num_entries = 0
+		self.init_bits_value = 0
+
 		if(len(arguments)):
 			args = arguments[0]
 			self.size_buffer = args["size_buffer"]
@@ -67,8 +74,6 @@ class BTB_BUFFER():
 		address_dts = jump["address_dts"] 
 		entrie_exist = (address_src in list(self.branch_buffer.keys()))
 		
-		print(entrie_exist,address_src,list(self.branch_buffer.keys()))
-
 		if(not entrie_exist and self.current_num_entries == self.size_buffer):
 
 			retval |= FLAGS.GET_BUFFER_LIMIT()

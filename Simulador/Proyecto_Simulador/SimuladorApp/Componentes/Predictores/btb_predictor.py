@@ -6,12 +6,12 @@ import random
 
 class BTB_PREDICTOR():
 	
-	pred_buffer = BTB_BUFFER()
+	pred_buffer = None
 	is_lru = 0
 	insert_jump = None
 	remove_entrie = None
-	set_success_prediction = None
-	set_failure_prediction = None
+	set_success_jump = None
+	set_failure_jump = None
 	remplace_entrie = None
 
 	def __init__(self,args):
@@ -25,8 +25,8 @@ class BTB_PREDICTOR():
 		functions = ret_functions["value"]
 		self.insert_jump = functions['insert_jump']
 		self.remove_entrie = functions['remove_entrie']
-		self.set_success_prediction = functions['set_success_prediction']
-		self.set_failure_prediction = functions['set_failure_prediction']
+		self.set_success_jump = functions['set_success_jump']
+		self.set_failure_jump = functions['set_failure_jump']
 		self.remplace_entrie = functions['remplace_entrie']
 
 
@@ -47,7 +47,7 @@ class BTB_PREDICTOR():
 		entrie = ret_entrie['value']
 		address_dts = entrie['address_dts']
 		bits_pred = entrie['bits']
-		prediction = ( (bits_pred+1) > (2**(num_bits-1)) )
+		prediction = ( '1' if (bits_pred+1) > (2**(num_bits-1)) else '0')
 		ret['value'] = {
 			'address_dts' : address_dts,
 			'prediction' : prediction
@@ -90,7 +90,7 @@ class BTB_PREDICTOR():
 
 		return retval
 
-	def set_success_prediction_ale(self,address,ret):
+	def set_success_jump_ale(self,address,ret):
 
 		retval = 0
 
@@ -98,7 +98,7 @@ class BTB_PREDICTOR():
 
 		return retval
 
-	def set_failure_prediction_ale(self,address,ret):
+	def set_failure_jump_ale(self,address,ret):
 	
 		retval = 0
 
@@ -155,11 +155,11 @@ class BTB_PREDICTOR():
 
 		return retval
 
-	def set_success_prediction_lru(self,address,ret):
+	def set_success_jump_lru(self,address,ret):
 
 		retval = 0
 
-		retval |= self.set_success_prediction_ale(address,ret)
+		retval |= self.set_success_jump_ale(address,ret)
 
 		if not FLAGS.IS_NOT_ADDRESS_REGISTER(retval):
 
@@ -169,11 +169,11 @@ class BTB_PREDICTOR():
 		return retval
 
 
-	def set_failure_prediction_lru(self,address,ret):
+	def set_failure_jump_lru(self,address,ret):
 		
 		retval = 0
 
-		retval |= self.set_failure_prediction_ale(address,ret)
+		retval |= self.set_failure_jump_ale(address,ret)
 
 		if not FLAGS.IS_NOT_ADDRESS_REGISTER(retval):
 
@@ -226,16 +226,16 @@ class BTB_PREDICTOR():
 			{
 				'insert_jump' : self.insert_jump_ale,
 				'remove_entrie' : self.remove_entrie_ale,
-				'set_success_prediction' : self.set_success_prediction_ale,
-				'set_failure_prediction' : self.set_failure_prediction_ale,
+				'set_success_jump' : self.set_success_jump_ale,
+				'set_failure_jump' : self.set_failure_jump_ale,
 				'remplace_entrie' : self.remplace_entrie_ale
 
 			},
 			{
 				'insert_jump' : self.insert_jump_lru,
 				'remove_entrie' : self.remove_entrie_lru,
-				'set_success_prediction' : self.set_success_prediction_lru,
-				'set_failure_prediction' : self.set_failure_prediction_lru,
+				'set_success_jump' : self.set_success_jump_lru,
+				'set_failure_jump' : self.set_failure_jump_lru,
 				'remplace_entrie' : self.remplace_entrie_lru
 			}
 		]

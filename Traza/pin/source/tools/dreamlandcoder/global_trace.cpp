@@ -11,6 +11,8 @@ using std::flush;
 using std::dec;
 using std::endl;
 
+//make obj-intel64/global_trace.so TARGET=intel64
+//../../../pin -t obj-intel64/global_trace.so -- ~/Escritorio/C/TFG/Traza/jump_line_detect.o
 
 ofstream outFile;
 bool flag_jump;
@@ -63,6 +65,14 @@ int main(int argc, char *argv[])
     if (PIN_Init(argc, argv))
         return Usage();
     outFile.open(KnobOutputFile.Value().c_str());
+    
+    outFile << hex 
+    << "address_src"
+    << ","
+    << "address_dts"
+    << ","
+    << "was_jump"
+    << endl;
     // Register Instruction to be called to instrument instructions
     INS_AddInstrumentFunction(Instruction, 0);
     // Register Fini to be called when the application exits
