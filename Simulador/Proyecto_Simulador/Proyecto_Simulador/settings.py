@@ -68,6 +68,9 @@ TEMPLATES = [
     },
 ]
 
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 WSGI_APPLICATION = 'Proyecto_Simulador.wsgi.application'
 
 
