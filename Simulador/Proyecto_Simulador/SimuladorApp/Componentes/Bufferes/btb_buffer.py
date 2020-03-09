@@ -11,12 +11,13 @@ class BTB_BUFFER():
 	init_bits_value = 0
 
 
-
-	def __init__(self,args):
-
-		self.size_buffer = args["size_buffer"]
-		self.num_pred_bits = args["num_pred_bits"]
-		self.init_bits_value = args["init_bits_value"]
+	def __init__(self,*arguments):
+		
+		if(len(arguments)):
+			args = arguments[0]
+			self.size_buffer = args["size_buffer"]
+			self.num_pred_bits = args["num_pred_bits"]
+			self.init_bits_value = args["init_bits_value"]
 
 	
 
@@ -70,14 +71,17 @@ class BTB_BUFFER():
 
 		if(not entrie_exist and self.current_num_entries == self.size_buffer):
 
-			retval = FLAGS.GET_BUFFER_LIMIT()
+			retval |= FLAGS.GET_BUFFER_LIMIT()
 
 		else:
 			
 			if not entrie_exist :
+
 				self.current_num_entries += 1
+				
 			else:
-				retval = FLAGS.GET_ENTRIE_EXIST()
+
+				retval |= FLAGS.GET_ENTRIE_EXIST()
 			
 			data = {
 				'address_src':address_src,
@@ -208,7 +212,7 @@ class BTB_BUFFER():
 		
 			self.lru_branch_stack.remove(address)
 		
-		except ValueError as e:
+		except ValueError:
 
 			retval |= FLAGS.GET_NOT_ADDRESS_REGISTER_LRU()
 		

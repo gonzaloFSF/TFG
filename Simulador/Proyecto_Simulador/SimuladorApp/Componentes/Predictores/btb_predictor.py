@@ -6,7 +6,7 @@ import random
 
 class BTB_PREDICTOR():
 	
-	pred_buffer = None
+	pred_buffer = BTB_BUFFER()
 	is_lru = 0
 	insert_jump = None
 	remove_entrie = None
@@ -16,11 +16,10 @@ class BTB_PREDICTOR():
 
 	def __init__(self,args):
 
-		retval = 0
 		ret_functions = {}
 		functions = None
 
-		self.pred_buffer = args["buffer"]
+		self.pred_buffer = BTB_BUFFER(args)
 		is_lru = args["is_lru"]
 		self.get_configurable_functions(is_lru,ret_functions)
 		functions = ret_functions["value"]
@@ -29,6 +28,43 @@ class BTB_PREDICTOR():
 		self.set_success_prediction = functions['set_success_prediction']
 		self.set_failure_prediction = functions['set_failure_prediction']
 		self.remplace_entrie = functions['remplace_entrie']
+
+
+	def get_jump_prediction(self,address_src,ret):
+
+		retval = 0
+		num_bits = self.pred_buffer.num_pred_bits
+		ret_entrie = {}
+		entrie = None
+		prediction = None
+		address_dts = None
+
+		retval = self.get_data_entrie(address_src,ret_entrie)
+
+		if(retval):
+			return retval
+		
+		entrie = ret_entrie['value']
+		address_dts = entrie['address_dts']
+		bits_pred = entrie['bits']
+		prediction = ( (bits_pred+1) > (2**(num_bits-1)) )
+		ret['value'] = {
+			'address_dts' : address_dts,
+			'prediction' : prediction
+		}
+
+		return retval
+		
+
+
+	def get_bits_predictor(self,address_src,ret):
+
+		retval = 0
+
+		retval |= self.pred_buffer.get_bits_predictor(address_src,ret)
+
+		return retval
+
 
 	def get_data_entrie(self,address,ret):
 	
@@ -78,7 +114,6 @@ class BTB_PREDICTOR():
 		ret_len_branch_buffer = {}
 		ret_address_remove = {}
 		address_remove = None
-		address_insert = None
 
 
 		retval |= self.pred_buffer.get_size_branch_buffer(ret_len_branch_buffer)
@@ -86,7 +121,6 @@ class BTB_PREDICTOR():
 		index = random.randint(0,len_branch_buffer - 1)
 		retval |= self.pred_buffer.get_address_by_index(index,ret_address_remove)
 		address_remove = ret_address_remove["value"]
-		address_insert = jump["address_src"]
 		retval |= self.pred_buffer.remove_entrie(address_remove,ret)
 		retval |= self.pred_buffer.insert_jump(jump) 
 
@@ -117,7 +151,7 @@ class BTB_PREDICTOR():
 
 		if not FLAGS.IS_NOT_ADDRESS_REGISTER(retval):
 
-			self.pred_buffer.remove_entrie(address)
+			self.pred_buffer.remove_entrie(address,ret)
 
 		return retval
 

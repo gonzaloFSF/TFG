@@ -47,6 +47,11 @@ class FLAGS(Enum):
 
         return (1 << 6)
 
+    @staticmethod
+    def GET_END_TRACE():
+	    
+        return (1 << 7)
+
 
     # Find flag
 
@@ -84,6 +89,13 @@ class FLAGS(Enum):
     def IS_ERROR_REMPLACE(retval):
 
         return retval & (1 << 6)
+
+    @staticmethod
+    def IS_END_TRACE(retval):
+
+        return retval & (1 << 7)
+
+
 
 
 
