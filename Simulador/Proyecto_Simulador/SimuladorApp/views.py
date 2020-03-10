@@ -1,22 +1,27 @@
 from django.shortcuts import render
+from SimuladorApp.forms import *
+
 
 
 
 
 def index(request):
-    try:
-        print(request.session['test'])
-    except:
-        print('pepe')
-        pass
-    request.session['test'] = 'prueba'
+
     return render(request, 'generic/index.html')
 
-
 def display_simulador(request):
-    pass
+    
+    predictores_forms = {
+        "Predictor BTB":BTBForm()
+    }
+
+    return render(request, 'generic/simulador.html',{
+        'predictores':["Predictor BTB"],
+        'predictores_forms':predictores_forms
+        })
 
 def display_traza(request):
+    
     pass
 
 

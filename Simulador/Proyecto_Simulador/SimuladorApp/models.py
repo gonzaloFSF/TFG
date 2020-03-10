@@ -21,9 +21,10 @@ class Simulador():
 		
 	def __init__(self,config):
 
-		jump_counter = 0
+		
 		ret_predictor = {}
 
+		self.jump_counter = 0
 		self.get_predictor(config,ret_predictor)
 		self.predictor = ret_predictor['value']
 		self.traza_list = list(pd.read_csv(config["filename"]).values)
@@ -44,7 +45,6 @@ class Simulador():
 		ret_prediction_dict = {}
 		prediction_dict = None
 		jump = None
-		was_jump = None
 
 		retval |= self.get_new_jump(ret_jump)
 
@@ -112,7 +112,7 @@ class Simulador():
 			jump_dict['was_jump'] = self.traza_list[self.jump_counter][2]
 			ret['value'] = jump_dict
 
-		except IndexError as e:
+		except IndexError:
 
 			retval |= FLAGS.GET_END_TRACE()
 
