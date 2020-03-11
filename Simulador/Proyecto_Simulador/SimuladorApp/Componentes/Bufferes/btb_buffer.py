@@ -22,9 +22,9 @@ class BTB_BUFFER():
 
 		if(len(arguments)):
 			args = arguments[0]
-			self.size_buffer = args["size_buffer"]
-			self.num_pred_bits = args["num_pred_bits"]
-			self.init_bits_value = args["init_bits_value"]
+			self.size_buffer = int(args["size_buffer"])
+			self.num_pred_bits = int(args["num_pred_bits"])
+			self.init_bits_value = int(args["init_bits_value"])
 
 	
 

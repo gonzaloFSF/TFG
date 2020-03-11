@@ -37,6 +37,14 @@ class Simulador():
 			'remplace_jump' : self.remplace_jump
 		})
 
+	def json_fiels(self):
+
+		return {
+			'fallos' : self.fails_prediction,
+			'aciertos' : self.success_prediction,
+			'remplazos' : self.remplace_jump
+		}
+
 
 	def next_step_jump(self,ret):
 
@@ -124,7 +132,7 @@ class Simulador():
 
 		retval = 0
 		map_predicto = {
-			'0':BTB_PREDICTOR
+			'pred_btb':BTB_PREDICTOR
 		}
 		preditor_id = config['predictor_id']
 

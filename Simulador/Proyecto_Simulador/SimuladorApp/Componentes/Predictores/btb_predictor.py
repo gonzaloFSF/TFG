@@ -20,7 +20,7 @@ class BTB_PREDICTOR():
 		functions = None
 
 		self.pred_buffer = BTB_BUFFER(args)
-		is_lru = args["is_lru"]
+		is_lru = int(args["is_lru"])
 		self.get_configurable_functions(is_lru,ret_functions)
 		functions = ret_functions["value"]
 		self.insert_jump = functions['insert_jump']
@@ -46,7 +46,7 @@ class BTB_PREDICTOR():
 		
 		entrie = ret_entrie['value']
 		address_dts = entrie['address_dts']
-		bits_pred = entrie['bits']
+		bits_pred = int(entrie['bits'])
 		prediction = ( '1' if (bits_pred+1) > (2**(num_bits-1)) else '0')
 		ret['value'] = {
 			'address_dts' : address_dts,
@@ -222,7 +222,7 @@ class BTB_PREDICTOR():
 
 		retval = 0
 
-		functions = [
+		functions =[ 
 			{
 				'insert_jump' : self.insert_jump_ale,
 				'remove_entrie' : self.remove_entrie_ale,

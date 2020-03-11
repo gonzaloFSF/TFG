@@ -1,0 +1,20 @@
+<table class="table">
+<thead>
+  <tr>
+        {% for col,values in elementos.0.items %}
+        <th scope="col">{{col}}</th>
+        {% endfor %}
+        
+  </tr>
+</thead>
+<tbody id="">
+ 
+{% for elemento in elementos %}
+<tr class="listado_row">
+{% for key,element in elemento.items %}
+<td>{{element}}</td>
+{% endfor %}
+</tr>
+{% endfor %}
+</tbody>
+</table>
