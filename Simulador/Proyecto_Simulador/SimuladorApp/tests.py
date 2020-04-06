@@ -13,7 +13,7 @@ def btb_test():
 	counter = 0
 	config = {
 		'filename':'../../Traza/traza.out',
-		'predictor_id':'0',
+		'pred_id':'Predictor BTB',
 		'is_lru':0,
 		'size_buffer':8,
 		'num_pred_bits':2,
@@ -33,7 +33,7 @@ def btb_test():
 		jump = ret_jump['value']
 		
 		
-		if(False and "235" in jump[0]):
+		if(True or "235" in jump[0]):
 			print_all(simulador,jump)
 
 		print(counter)

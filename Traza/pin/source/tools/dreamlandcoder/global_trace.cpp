@@ -14,8 +14,13 @@ using std::endl;
 //make obj-intel64/global_trace.so TARGET=intel64
 //../../../pin -t obj-intel64/global_trace.so -- ~/Escritorio/C/TFG/Traza/jump_line_detect.o
 
+
+
 ofstream outFile;
+KNOB<string> KnobOutputFile(KNOB_MODE_WRITEONCE, "pintool",
+    "o", "traza.out", "specify output file name");
 bool flag_jump;
+
 
 VOID Before(VOID *instr_addrs, VOID * jump_to_address, INT64 taken)
 {
@@ -44,8 +49,7 @@ VOID Instruction(INS ins, VOID *v)
         
     }
 }
-KNOB<string> KnobOutputFile(KNOB_MODE_WRITEONCE, "pintool",
-                            "o", "traza.out", "specify output file name");
+
 // This function is called when the application exits
 VOID Fini(INT32 code, VOID *v)
 {
@@ -61,10 +65,22 @@ INT32 Usage()
 int main(int argc, char *argv[])
 {
     flag_jump = 0;
+    char * file_path;
     // Initialize pin
     if (PIN_Init(argc, argv))
         return Usage();
-    outFile.open(KnobOutputFile.Value().c_str());
+
+    file_path = getenv("FILE_PATH_TRAZA");
+    
+    if(file_path){
+	    outFile.open(file_path);
+    }
+    else{
+	    outFile.open(KnobOutputFile.Value().c_str());
+    }
+    
+
+    
     
     outFile << hex 
     << "address_src"

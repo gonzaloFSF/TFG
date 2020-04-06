@@ -52,6 +52,11 @@ class FLAGS(Enum):
 	    
         return (1 << 7)
 
+    @staticmethod
+    def GET_SESSION_NOT_INIT():
+	    
+        return (1 << 8)
+
 
     # Find flag
 
@@ -94,6 +99,11 @@ class FLAGS(Enum):
     def IS_END_TRACE(retval):
 
         return retval & (1 << 7)
+
+    @staticmethod
+    def IS_SESSION_NOT_INIT(retval):
+
+        return retval & (1 << 8)
 
 
 

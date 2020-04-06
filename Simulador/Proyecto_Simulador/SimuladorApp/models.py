@@ -79,7 +79,7 @@ class Simulador():
 
 			prediction_dict = ret_prediction_dict['value']
 
-			if(str(jump['address_dts']) == prediction_dict['address_dts'] and  str(jump['was_jump']) == prediction_dict['prediction']):
+			if(str(jump['address_dts']) == str(prediction_dict['address_dts']) and  str(jump['was_jump']) == str(prediction_dict['prediction'])):
 			
 				self.success_prediction += 1
 			
@@ -117,7 +117,7 @@ class Simulador():
 
 			jump_dict['address_src'] = self.traza_list[self.jump_counter][0]
 			jump_dict['address_dts'] = self.traza_list[self.jump_counter][1]
-			jump_dict['was_jump'] = self.traza_list[self.jump_counter][2]
+			jump_dict['was_jump'] = int(self.traza_list[self.jump_counter][2])
 			ret['value'] = jump_dict
 
 		except IndexError:
@@ -132,9 +132,9 @@ class Simulador():
 
 		retval = 0
 		map_predicto = {
-			'pred_btb':BTB_PREDICTOR
+			'Predictor BTB':BTB_PREDICTOR
 		}
-		preditor_id = config['predictor_id']
+		preditor_id = config['pred_id']
 
 		ret['value'] = map_predicto[preditor_id](config)
 

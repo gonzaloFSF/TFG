@@ -1,16 +1,26 @@
 <table class="table">
 <thead>
   <tr>
-        {% for col,values in elementos.0.items %}
-        <th scope="col">{{col}}</th>
+  	<th scope="col"> </th>
+        {% for col,values in elementos.items %}
+		{% if forloop.counter == 1 %}
+			{% for col,val in values.items %}
+        			<th scope="col">{{col}}</th>
+			{% endfor %}
+		{% endif %}
         {% endfor %}
         
   </tr>
 </thead>
 <tbody id="">
  
-{% for elemento in elementos %}
+{% for codigo,elemento in elementos.items%}
 <tr class="listado_row">
+<td>
+<div class="form-check">
+	<input type="checkbox" name="code_row" value="{{codigo}}">
+</div>
+</td>
 {% for key,element in elemento.items %}
 <td>{{element}}</td>
 {% endfor %}
