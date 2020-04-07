@@ -9,7 +9,6 @@ import os
 def get_traza_files(home_dir):
 
 	list_trazas = ["{}/{}".format(home_dir,file_traza) for file_traza in os.listdir(home_dir)]
-	list_trazas = list(filter(lambda x: x[-4:] == '.out',list_trazas))
 	res = {}
 
 	for path_name in list_trazas:
@@ -110,7 +109,7 @@ def run_simulator(simulador):
 		if(FLAGS.IS_END_TRACE(retval)):
 			break
 
-		#print(counter)
+		#(counter)
 		counter += 1
 
 	return simulador
@@ -150,19 +149,19 @@ def display_simulador(request):
 	lista_trazas = []
 	listas = {}
 	file_path = None
-	print(request.POST)
+	#print(request.POST)
 	
 	if request.POST:
 
 		file_path = "{}/{}".format(home_dir,request.POST['code_row'])
-		print(file_path)
+		#print(file_path)
 		handler_post_simulador_resultados(request,len(lista_resultados.keys()),file_path,ret_lista_resultados)
 		lista_resultados.update(ret_lista_resultados['value'])
 	
 	request.session['resultados'] = lista_resultados
 	listas["Trazas"] = get_traza_files(home_dir)
 	listas["Resultados"] = lista_resultados
-	print(listas)
+	#print(listas)
 
 	return render(request, 'generic/simulador.html',{
 		'predictores':["Predictor BTB"],
