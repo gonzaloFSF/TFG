@@ -1,0 +1,1239 @@
+Sending build context to Docker daemon  13.31kB
+Step 1/14 : FROM ubuntu
+ ---> 72300a873c2c
+Step 2/14 : RUN apt-get update; apt-get install -y openssh-server; apt-get install -y strace
+ ---> Using cache
+ ---> 31dbdc284de0
+Step 3/14 : RUN mkdir /root/.ssh
+ ---> Using cache
+ ---> 39968795fe5b
+Step 4/14 : RUN apt-get install apache2 -y
+ ---> Using cache
+ ---> d9c8f0624246
+Step 5/14 : RUN apt install git -y
+ ---> Using cache
+ ---> 3a7419e8f6e9
+Step 6/14 : COPY ./start.sh /bin/start.sh
+ ---> Using cache
+ ---> 6f75865aa653
+Step 7/14 : COPY ./authorized_keys /root/.ssh
+ ---> Using cache
+ ---> d9be9da57ff6
+Step 8/14 : COPY ./known_hosts /root/.ssh/
+ ---> Using cache
+ ---> 0488903632e4
+Step 9/14 : COPY ./id_rsa /root/.ssh/
+ ---> Using cache
+ ---> 3ba4d7057a1c
+Step 10/14 : COPY ./id_rsa.pub /root/.ssh/
+ ---> Using cache
+ ---> 7d99856a9289
+Step 11/14 : COPY ./config /root/.ssh/
+ ---> Using cache
+ ---> bf865297f194
+Step 12/14 : RUN cat /root/.ssh/id_rsa; ls -lais /root/.ssh/id_rsa
+ ---> Using cache
+ ---> f2efcb6a3670
+Step 13/14 : RUN strace -f git clone git@github.com:gonzaloFSF/TFG.git /var/www/TFG
+ ---> Running in 8afdfa0674b9
+[91mexecve("/usr/bin/git", ["git", "clone", "git@github.com:gonzaloFSF/TFG.gi"..., "/var/www/TFG"], 0x7ffe6f88c300 /* 4 vars */[0m[91m) = 0
+[0m[91mbrk(NULL)                               = 0x5624ecdaf000
+[0m[91maccess("/etc/ld.so.nohwcap", F_OK[0m[91m)      = -1 ENOENT (No such file or directory)
+[0m[91maccess("/etc/ld.so.preload", R_OK[0m[91m)      = -1 ENOENT (No such file or directory)
+[0m[91mopenat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+[0m[91mfstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=14368, ...}) = 0
+[0m[91mmmap(NULL, 14368, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f355c612000
+[0m[91mclose(3)                                = 0
+[0m[91maccess("/etc/ld.so.nohwcap", F_OK[0m[91m)      = -1 ENOENT (No such file or directory)
+[0m[91mopenat(AT_FDCWD, "/lib/x86_64-linux-gnu/libpcre.so.3", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+read(3, [0m[91m"\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0 \25\0\0\0\0\0\0"..., 832) = 832
+fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=464824, ...}) = 0
+[0m[91mmmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0[0m[91m) = 0x7f355c610000
+[0m[91mmmap(NULL, 2560264, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0[0m[91m) = 0x7f355c17d000
+[0m[91mmprotect(0x7f355c1ed000, 2097152, PROT_NONE[0m[91m) = 0
+[0m[91mmmap(0x7f355c3ed000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x70000[0m[91m) = 0x7f355c3ed000
+[0m[91mclose(3)                                = 0
+[0m[91maccess("/etc/ld.so.nohwcap", F_OK)      = -1 ENOENT (No such file or directory)
+[0m[91mopenat(AT_FDCWD, "/lib/x86_64-linux-gnu/libz.so.1", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+read(3, [0m[91m"\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\220\37\0\0\0\0\0\0"..., 832) = 832
+[0m[91mfstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=116960, ...}) = 0
+mmap(NULL, 2212016, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0[0m[91m) = 0x7f355bf60000
+mprotect(0x7f355bf7c000, 2093056, PROT_NONE[0m[91m) = 0
+mmap(0x7f355c17b000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1b000[0m[91m) = 0x7f355c17b000
+[0m[91mclose(3[0m[91m)                                = 0
+[0m[91maccess("/etc/ld.so.nohwcap", F_OK[0m[91m)      = -1 ENOENT (No such file or directory)
+[0m[91mopenat(AT_FDCWD, "/lib/x86_64-linux-gnu/libpthread.so.0", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+read(3, [0m[91m"\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0000b\0\0\0\0\0\0"..., 832) = 832
+fstat(3, [0m[91m{st_mode=S_IFREG|0755, st_size=144976, ...}) = 0
+[0m[91mmmap(NULL, 2221184, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0[0m[91m) = 0x7f355bd41000
+mprotect(0x7f355bd5b000, 2093056, PROT_NONE[0m[91m) = 0
+[0m[91mmmap(0x7f355bf5a000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x19000[0m[91m) = 0x7f355bf5a000
+[0m[91mmmap(0x7f355bf5c000, 13440, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0[0m[91m) = 0x7f355bf5c000
+[0m[91mclose(3[0m[91m)                                = 0
+[0m[91maccess("/etc/ld.so.nohwcap", F_OK[0m[91m)      = -1 ENOENT (No such file or directory)
+[0m[91mopenat(AT_FDCWD, "/lib/x86_64-linux-gnu/librt.so.1", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+read(3, [0m[91m"\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\0\"\0\0\0\0\0\0"..., 832) = 832
+fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=31680, ...}) = 0
+[0m[91mmmap(NULL, 2128864, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0[0m[91m) = 0x7f355bb39000
+mprotect(0x7f355bb40000, 2093056, PROT_NONE[0m[91m) = 0
+[0m[91mmmap(0x7f355bd3f000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x6000[0m[91m) = 0x7f355bd3f000
+[0m[91mclose(3)                                = 0
+[0m[91maccess("/etc/ld.so.nohwcap", F_OK[0m[91m)      = -1 ENOENT (No such file or directory)
+[0m[91mopenat(AT_FDCWD, "/lib/x86_64-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+read(3, [0m[91m"\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\260\34\2\0\0\0\0\0"..., 832) = 832
+[0m[91mfstat(3, [0m[91m{st_mode=S_IFREG|0755, st_size=2030544, ...}) = 0
+mmap(NULL, 4131552, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0[0m[91m) = 0x7f355b748000
+[0m[91mmprotect(0x7f355b92f000, 2097152, PROT_NONE) = 0
+[0m[91mmmap(0x7f355bb2f000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1e7000[0m[91m) = 0x7f355bb2f000
+[0m[91mmmap(0x7f355bb35000, 15072, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0[0m[91m) = 0x7f355bb35000
+[0m[91mclose(3)                                = 0
+[0m[91mmmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0[0m[91m) = 0x7f355c60e000
+[0m[91march_prctl(ARCH_SET_FS, 0x7f355c60f080) = 0
+[0m[91mmprotect(0x7f355bb2f000, 16384, PROT_READ[0m[91m) = 0
+[0m[91mmprotect(0x7f355bf5a000, 4096, PROT_READ) = 0
+[0m[91mmprotect(0x7f355bd3f000, 4096, PROT_READ[0m[91m) = 0
+[0m[91mmprotect(0x7f355c17b000, 4096, PROT_READ) = 0
+[0m[91mmprotect(0x7f355c3ed000, 4096, PROT_READ[0m[91m) = 0
+[0m[91mmprotect(0x5624ec064000, 12288, PROT_READ[0m[91m) = 0
+[0m[91mmprotect(0x7f355c616000, 4096, PROT_READ[0m[91m) = 0
+munmap(0x7f355c612000, 14368[0m[91m)           = 0
+[0m[91mset_tid_address(0x7f355c60f350[0m[91m)         = 8
+[0m[91mset_robust_list(0x7f355c60f360, 24)     = 0
+[0m[91mrt_sigaction(SIGRTMIN, {sa_handler=0x7f355bd46cb0, sa_mask=[], sa_flags=SA_RESTORER|SA_SIGINFO, sa_restorer=0x7f355bd53890}, NULL, 8) = 0
+[0m[91mrt_sigaction(SIGRT_1, {sa_handler=0x7f355bd46d50, sa_mask=[], sa_flags=SA_RESTORER|SA_RESTART|SA_SIGINFO, sa_restorer=0x7f355bd53890}, [0m[91mNULL, 8) = 0
+[0m[91mrt_sigprocmask(SIG_UNBLOCK, [RTMIN RT_1], [0m[91mNULL, 8) = 0
+[0m[91mprlimit64(0, RLIMIT_STACK, NULL, [0m[91m{rlim_cur=8192*1024, rlim_max=RLIM64_INFINITY}) = 0
+[0m[91mopenat(AT_FDCWD, "/dev/null", O_RDWR[0m[91m)   = 3
+close(3[0m[91m)                                = 0
+[0m[91mbrk(NULL)                               = 0x5624ecdaf000
+[0m[91mbrk(0x5624ecdd0000)                     = 0x5624ecdd0000
+[0m[91mrt_sigprocmask(SIG_UNBLOCK, [PIPE], NULL, 8) = 0
+[0m[91mrt_sigaction(SIGPIPE, {sa_handler=SIG_DFL, sa_mask=[PIPE], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91mstat("git@github.com:gonzaloFSF/TFG.git/.git", [0m[91m0x7ffd32706010) = -1 ENOENT (No such file or directory)
+[0m[91mstat("git@github.com:gonzaloFSF/TFG.git", [0m[91m0x7ffd32706010) = -1 ENOENT (No such file or directory)
+[0m[91mstat("git@github.com:gonzaloFSF/TFG.git.git/.git", [0m[91m0x7ffd32706010) = -1 ENOENT (No such file or directory)
+[0m[91mstat("git@github.com:gonzaloFSF/TFG.git.git", [0m[91m0x7ffd32706010) = -1 ENOENT (No such file or directory)
+[0m[91mstat("git@github.com:gonzaloFSF/TFG.git.bundle", [0m[91m0x7ffd32706010) = -1 ENOENT (No such file or directory)
+[0m[91mstat("git@github.com:gonzaloFSF/TFG.git", [0m[91m0x7ffd32706010) = -1 ENOENT (No such file or directory)
+[0m[91mstat("/var/www/TFG", [0m[91m0x7ffd32706270)    = -1 ENOENT (No such file or directory)
+[0m[91mrt_sigaction(SIGINT, {sa_handler=0x5624ebc63e30, sa_mask=[INT], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91mrt_sigaction(SIGHUP, {sa_handler=0x5624ebc63e30, sa_mask=[HUP], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91mrt_sigaction(SIGTERM, {sa_handler=0x5624ebc63e30, sa_mask=[TERM], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91mrt_sigaction(SIGQUIT, {sa_handler=0x5624ebc63e30, sa_mask=[QUIT], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91mrt_sigaction(SIGPIPE, {sa_handler=0x5624ebc63e30, sa_mask=[PIPE], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[PIPE], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, 8) = 0
+stat("/var", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mstat("/var/www", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mmkdir("/var/www/TFG", 0777[0m[91m)             = 0
+[0m[91mlstat("/var", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mlstat("/var/www", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+lstat("/var/www/TFG", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+stat("/var", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mstat("/var/www", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mstat("/var/www/TFG", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mwrite(2, "Cloning into '/var/www/TFG'...\n", 31[0m[91mCloning into '/var/www/TFG'...
+) = 31
+[0m[91mlstat("/var", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+lstat("/var/www", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mlstat("/var/www/TFG", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+lstat("/var/www/TFG/.git", [0m[91m0x7ffd32705d20) = -1 ENOENT (No such file or directory)
+[0m[91mlstat("/var", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mlstat("/var/www", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mlstat("/var/www/TFG", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mlstat("/var/www/TFG/.git", 0x7ffd32705d60) = -1 ENOENT (No such file or directory)
+[0m[91mstat("/var/www/TFG/.git", [0m[91m0x7ffd32705d10) = -1 ENOENT (No such file or directory)
+[0m[91mlstat("/var/www/TFG/.git/commondir", [0m[91m0x7ffd32705cb0) = -1 ENOENT (No such file or directory)
+[0m[91mmkdir("/var/www/TFG/.git", 0777[0m[91m)        = 0
+[0m[91mlstat("/var/www/TFG/.git/commondir", [0m[91m0x7ffd32705c50) = -1 ENOENT (No such file or directory)
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/config", O_RDONLY[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91maccess("/etc/gitconfig", R_OK[0m[91m)          = -1 ENOENT (No such file or directory)
+[0m[91maccess("/root/.config/git/config", R_OK[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91maccess("/root/.gitconfig", R_OK[0m[91m)        = -1 ENOENT (No such file or directory)
+access("/var/www/TFG/.git/config", R_OK[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91mopenat(AT_FDCWD, "/usr/share/git-core/templates/", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY[0m[91m) = 3
+fstat(3, [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mopenat(AT_FDCWD, "/usr/share/git-core/templates/config", O_RDONLY[0m[91m) = -1 ENOENT (No such file or directory)
+mkdir("/var/www/TFG/.git/", 0777[0m[91m)       = -1 EEXIST (File exists)
+getdents(3[0m[91m, /* 6 entries */, 32768)     = 168
+[0m[91mlstat("/var/www/TFG/.git/hooks", [0m[91m0x7ffd32705ce0) = -1 ENOENT (No such file or directory)
+[0m[91mlstat("/usr/share/git-core/templates/hooks", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mopenat(AT_FDCWD, "/usr/share/git-core/templates/hooks", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY[0m[91m) = 4
+[0m[91mfstat(4, [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mmkdir("/var/www/TFG/.git/hooks/", 0777[0m[91m) = 0
+[0m[91mgetdents(4[0m[91m, /* 13 entries */, 32768)    = 520
+[0m[91mlstat("/var/www/TFG/.git/hooks/prepare-commit-msg.sample", [0m[91m0x7ffd32705b30) = -1 ENOENT (No such file or directory)
+[0m[91mlstat("/usr/share/git-core/templates/hooks/prepare-commit-msg.sample", [0m[91m{st_mode=S_IFREG|0755, st_size=1492, ...}) = 0
+[0m[91mopenat(AT_FDCWD, "/usr/share/git-core/templates/hooks/prepare-commit-msg.sample", O_RDONLY[0m[91m) = 5
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/hooks/prepare-commit-msg.sample", O_WRONLY|O_CREAT|O_EXCL, 0777[0m[91m) = 6
+[0m[91mread(5, [0m[91m"#!/bin/sh\n#\n# An example hook sc"..., 8192) = 1492
+[0m[91mwrite(6, "#!/bin/sh\n#\n# An example hook sc"..., 1492[0m[91m) = 1492
+read(5, [0m[91m"", 8192)                       = 0
+close(5[0m[91m)                                = 0
+close(6[0m[91m)                                = 0
+[0m[91mlstat("/var/www/TFG/.git/hooks/applypatch-msg.sample", [0m[91m0x7ffd32705b30) = -1 ENOENT (No such file or directory)
+[0m[91mlstat("/usr/share/git-core/templates/hooks/applypatch-msg.sample", [0m[91m{st_mode=S_IFREG|0755, st_size=478, ...}) = 0
+[0m[91mopenat(AT_FDCWD, "/usr/share/git-core/templates/hooks/applypatch-msg.sample", O_RDONLY[0m[91m) = 5
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/hooks/applypatch-msg.sample", O_WRONLY|O_CREAT|O_EXCL, 0777[0m[91m) = 6
+[0m[91mread(5, [0m[91m"#!/bin/sh\n#\n# An example hook sc"..., 8192) = 478
+[0m[91mwrite(6, "#!/bin/sh\n#\n# An example hook sc"..., 478[0m[91m) = 478
+[0m[91mread(5, [0m[91m"", 8192)                       = 0
+[0m[91mclose(5[0m[91m)                                = 0
+close(6[0m[91m)                                = 0
+[0m[91mlstat("/var/www/TFG/.git/hooks/commit-msg.sample", [0m[91m0x7ffd32705b30) = -1 ENOENT (No such file or directory)
+[0m[91mlstat("/usr/share/git-core/templates/hooks/commit-msg.sample", [0m[91m{st_mode=S_IFREG|0755, st_size=896, ...}) = 0
+[0m[91mopenat(AT_FDCWD, "/usr/share/git-core/templates/hooks/commit-msg.sample", O_RDONLY) = 5
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/hooks/commit-msg.sample", O_WRONLY|O_CREAT|O_EXCL, 0777[0m[91m) = 6
+[0m[91mread(5, [0m[91m"#!/bin/sh\n#\n# An example hook sc"..., 8192) = 896
+[0m[91mwrite(6, "#!/bin/sh\n#\n# An example hook sc"..., 896[0m[91m) = 896
+read(5, [0m[91m"", 8192)                       = 0
+close(5[0m[91m)                                = 0
+close(6[0m[91m)                                = 0
+[0m[91mlstat("/var/www/TFG/.git/hooks/pre-rebase.sample", [0m[91m0x7ffd32705b30) = -1 ENOENT (No such file or directory)
+lstat("/usr/share/git-core/templates/hooks/pre-rebase.sample", [0m[91m{st_mode=S_IFREG|0755, st_size=4898, ...}) = 0
+[0m[91mopenat(AT_FDCWD, "/usr/share/git-core/templates/hooks/pre-rebase.sample", O_RDONLY) = 5
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/hooks/pre-rebase.sample", O_WRONLY|O_CREAT|O_EXCL, 0777[0m[91m) = 6
+read(5, [0m[91m"#!/bin/sh\n#\n# Copyright (c) 2006"..., 8192) = 4898
+[0m[91mwrite(6, "#!/bin/sh\n#\n# Copyright (c) 2006"..., 4898[0m[91m) = 4898
+read(5, [0m[91m"", 8192)                       = 0
+close(5[0m[91m)                                = 0
+[0m[91mclose(6)                                = 0
+[0m[91mlstat("/var/www/TFG/.git/hooks/update.sample", [0m[91m0x7ffd32705b30) = -1 ENOENT (No such file or directory)
+[0m[91mlstat("/usr/share/git-core/templates/hooks/update.sample", [0m[91m{st_mode=S_IFREG|0755, st_size=3610, ...}) = 0
+[0m[91mopenat(AT_FDCWD, "/usr/share/git-core/templates/hooks/update.sample", O_RDONLY[0m[91m) = 5
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/hooks/update.sample", O_WRONLY|O_CREAT|O_EXCL, 0777[0m[91m) = 6
+[0m[91mread(5, [0m[91m"#!/bin/sh\n#\n# An example hook sc"..., 8192) = 3610
+[0m[91mwrite(6, "#!/bin/sh\n#\n# An example hook sc"..., 3610[0m[91m) = 3610
+read(5, [0m[91m"", 8192)                       = 0
+close(5)                                = 0
+close(6)                                = 0
+lstat("/var/www/TFG/.git/hooks/pre-commit.sample", [0m[91m0x7ffd32705b30) = -1 ENOENT (No such file or directory)
+[0m[91mlstat("/usr/share/git-core/templates/hooks/pre-commit.sample", [0m[91m{st_mode=S_IFREG|0755, st_size=1642, ...}) = 0
+[0m[91mopenat(AT_FDCWD, "/usr/share/git-core/templates/hooks/pre-commit.sample", O_RDONLY[0m[91m) = 5
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/hooks/pre-commit.sample", O_WRONLY|O_CREAT|O_EXCL, 0777[0m[91m) = 6
+read(5, [0m[91m"#!/bin/sh\n#\n# An example hook sc"..., 8192) = 1642
+[0m[91mwrite(6, "#!/bin/sh\n#\n# An example hook sc"..., 1642[0m[91m) = 1642
+[0m[91mread(5, [0m[91m"", 8192)                       = 0
+[0m[91mclose(5)                                = 0
+[0m[91mclose(6[0m[91m)                                = 0
+[0m[91mlstat("/var/www/TFG/.git/hooks/pre-receive.sample", [0m[91m0x7ffd32705b30) = -1 ENOENT (No such file or directory)
+[0m[91mlstat("/usr/share/git-core/templates/hooks/pre-receive.sample", [0m[91m{st_mode=S_IFREG|0755, st_size=544, ...}) = 0
+[0m[91mopenat(AT_FDCWD, "/usr/share/git-core/templates/hooks/pre-receive.sample", O_RDONLY[0m[91m) = 5
+openat(AT_FDCWD, "/var/www/TFG/.git/hooks/pre-receive.sample", O_WRONLY|O_CREAT|O_EXCL, 0777) = 6
+[0m[91mread(5, [0m[91m"#!/bin/sh\n#\n# An example hook sc"..., 8192) = 544
+[0m[91mwrite(6, "#!/bin/sh\n#\n# An example hook sc"..., 544[0m[91m) = 544
+[0m[91mread(5, [0m[91m"", 8192)                       = 0
+[0m[91mclose(5[0m[91m)                                = 0
+[0m[91mclose(6[0m[91m)                                = 0
+[0m[91mlstat("/var/www/TFG/.git/hooks/pre-applypatch.sample", [0m[91m0x7ffd32705b30) = -1 ENOENT (No such file or directory)
+[0m[91mlstat("/usr/share/git-core/templates/hooks/pre-applypatch.sample", [0m[91m{st_mode=S_IFREG|0755, st_size=424, ...}) = 0
+[0m[91mopenat(AT_FDCWD, "/usr/share/git-core/templates/hooks/pre-applypatch.sample", O_RDONLY[0m[91m) = 5
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/hooks/pre-applypatch.sample", O_WRONLY|O_CREAT|O_EXCL, 0777[0m[91m) = 6
+[0m[91mread(5, [0m[91m"#!/bin/sh\n#\n# An example hook sc"..., 8192) = 424
+[0m[91mwrite(6, "#!/bin/sh\n#\n# An example hook sc"..., 424) = 424
+[0m[91mread(5, [0m[91m"", 8192)                       = 0
+[0m[91mclose(5[0m[91m)                                = 0
+[0m[91mclose(6[0m[91m)                                = 0
+[0m[91mlstat("/var/www/TFG/.git/hooks/fsmonitor-watchman.sample", [0m[91m0x7ffd32705b30) = -1 ENOENT (No such file or directory)
+[0m[91mlstat("/usr/share/git-core/templates/hooks/fsmonitor-watchman.sample", [0m[91m{st_mode=S_IFREG|0755, st_size=3327, ...}) = 0
+[0m[91mopenat(AT_FDCWD, "/usr/share/git-core/templates/hooks/fsmonitor-watchman.sample", O_RDONLY[0m[91m) = 5
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/hooks/fsmonitor-watchman.sample", O_WRONLY|O_CREAT|O_EXCL, 0777[0m[91m) = 6
+read(5, [0m[91m"#!/usr/bin/perl\n\nuse strict;\nuse"..., 8192) = 3327
+[0m[91mwrite(6, "#!/usr/bin/perl\n\nuse strict;\nuse"..., 3327[0m[91m) = 3327
+read(5, [0m[91m"", 8192)                       = 0
+[0m[91mclose(5)                                = 0
+[0m[91mclose(6)                                = 0
+[0m[91mlstat("/var/www/TFG/.git/hooks/post-update.sample", [0m[91m0x7ffd32705b30) = -1 ENOENT (No such file or directory)
+[0m[91mlstat("/usr/share/git-core/templates/hooks/post-update.sample", [0m[91m{st_mode=S_IFREG|0755, st_size=189, ...}) = 0
+[0m[91mopenat(AT_FDCWD, "/usr/share/git-core/templates/hooks/post-update.sample", O_RDONLY[0m[91m) = 5
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/hooks/post-update.sample", O_WRONLY|O_CREAT|O_EXCL, 0777[0m[91m) = 6
+[0m[91mread(5, [0m[91m"#!/bin/sh\n#\n# An example hook sc"..., 8192) = 189
+[0m[91mwrite(6, "#!/bin/sh\n#\n# An example hook sc"..., 189[0m[91m) = 189
+[0m[91mread(5, [0m[91m"", 8192)                       = 0
+[0m[91mclose(5[0m[91m)                                = 0
+[0m[91mclose(6[0m[91m)                                = 0
+[0m[91mlstat("/var/www/TFG/.git/hooks/pre-push.sample", [0m[91m0x7ffd32705b30) = -1 ENOENT (No such file or directory)
+[0m[91mlstat("/usr/share/git-core/templates/hooks/pre-push.sample", [0m[91m{st_mode=S_IFREG|0755, st_size=1348, ...}) = 0
+[0m[91mopenat(AT_FDCWD, "/usr/share/git-core/templates/hooks/pre-push.sample", O_RDONLY[0m[91m) = 5
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/hooks/pre-push.sample", O_WRONLY|O_CREAT|O_EXCL, 0777[0m[91m) = 6
+read(5, [0m[91m"#!/bin/sh\n\n# An example hook scr"..., 8192) = 1348
+[0m[91mwrite(6, "#!/bin/sh\n\n# An example hook scr"..., 1348[0m[91m) = 1348
+read(5, [0m[91m"", 8192)                       = 0
+close(5[0m[91m)                                = 0
+close(6[0m[91m)                                = 0
+[0m[91mgetdents(4[0m[91m, /* 0 entries */, 32768)     = 0
+close(4[0m[91m)                                = 0
+[0m[91mlstat("/var/www/TFG/.git/description", [0m[91m0x7ffd32705ce0) = -1 ENOENT (No such file or directory)
+[0m[91mlstat("/usr/share/git-core/templates/description", [0m[91m{st_mode=S_IFREG|0644, st_size=73, ...}) = 0
+[0m[91mopenat(AT_FDCWD, "/usr/share/git-core/templates/description", O_RDONLY[0m[91m) = 4
+openat(AT_FDCWD, "/var/www/TFG/.git/description", O_WRONLY|O_CREAT|O_EXCL, 0666[0m[91m) = 5
+[0m[91mread(4, [0m[91m"Unnamed repository; edit this fi"..., 8192) = 73
+[0m[91mwrite(5, "Unnamed repository; edit this fi"..., 73[0m[91m) = 73
+[0m[91mread(4, [0m[91m"", 8192)                       = 0
+close(4[0m[91m)                                = 0
+[0m[91mclose(5[0m[91m)                                = 0
+[0m[91mlstat("/var/www/TFG/.git/branches", [0m[91m0x7ffd32705ce0) = -1 ENOENT (No such file or directory)
+[0m[91mlstat("/usr/share/git-core/templates/branches", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mopenat(AT_FDCWD, "/usr/share/git-core/templates/branches", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY[0m[91m) = 4
+fstat(4, [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mmkdir("/var/www/TFG/.git/branches/", 0777[0m[91m) = 0
+getdents(4[0m[91m, /* 2 entries */, 32768)     = 48
+getdents(4[0m[91m, /* 0 entries */, 32768)     = 0
+[0m[91mclose(4[0m[91m)                                = 0
+[0m[91mlstat("/var/www/TFG/.git/info", [0m[91m0x7ffd32705ce0) = -1 ENOENT (No such file or directory)
+[0m[91mlstat("/usr/share/git-core/templates/info", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mopenat(AT_FDCWD, "/usr/share/git-core/templates/info", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY[0m[91m) = 4
+[0m[91mfstat(4, [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mmkdir("/var/www/TFG/.git/info/", 0777[0m[91m)  = 0
+getdents(4[0m[91m, /* 3 entries */, 32768)     = 80
+[0m[91mlstat("/var/www/TFG/.git/info/exclude", [0m[91m0x7ffd32705b30) = -1 ENOENT (No such file or directory)
+[0m[91mlstat("/usr/share/git-core/templates/info/exclude", [0m[91m{st_mode=S_IFREG|0644, st_size=240, ...}) = 0
+[0m[91mopenat(AT_FDCWD, "/usr/share/git-core/templates/info/exclude", O_RDONLY[0m[91m) = 5
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/info/exclude", O_WRONLY|O_CREAT|O_EXCL, 0666[0m[91m) = 6
+read(5, [0m[91m"# git ls-files --others --exclud"..., 8192) = 240
+[0m[91mwrite(6, "# git ls-files --others --exclud"..., 240[0m[91m) = 240
+read(5, [0m[91m"", 8192)                       = 0
+[0m[91mclose(5[0m[91m)                                = 0
+[0m[91mclose(6[0m[91m)                                = 0
+getdents(4[0m[91m, /* 0 entries */, 32768)     = 0
+close(4[0m[91m)                                = 0
+[0m[91mgetdents(3[0m[91m, /* 0 entries */, 32768)     = 0
+[0m[91mclose(3[0m[91m)                                = 0
+[0m[91maccess("/etc/gitconfig", R_OK[0m[91m)          = -1 ENOENT (No such file or directory)
+[0m[91maccess("/root/.config/git/config", R_OK[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91maccess("/root/.gitconfig", R_OK[0m[91m)        = -1 ENOENT (No such file or directory)
+[0m[91maccess("/var/www/TFG/.git/config", R_OK[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91mmkdir("/var/www/TFG/.git/refs", 0777[0m[91m)   = 0
+[0m[91mlstat("/var/www/TFG/.git/commondir", [0m[91m0x7ffd32705ca0) = -1 ENOENT (No such file or directory)
+[0m[91mmkdir("/var/www/TFG/.git/refs/heads", 0777[0m[91m) = 0
+[0m[91mmkdir("/var/www/TFG/.git/refs/tags", 0777[0m[91m) = 0
+[0m[91maccess("/var/www/TFG/.git/HEAD", R_OK[0m[91m)  = -1 ENOENT (No such file or directory)
+[0m[91mreadlink("/var/www/TFG/.git/HEAD", 0x7ffd3270609c, 1) = -1 ENOENT (No such file or directory)
+[0m[91mlstat("/var/www/TFG/.git/HEAD", [0m[91m0x7ffd32705be0) = -1 ENOENT (No such file or directory)
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/packed-refs", O_RDONLY[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91mstat("/var/www/TFG/.git/packed-refs", 0x7ffd32705a10) = -1 ENOENT (No such file or directory)
+[0m[91mgetpid()                                = 8
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/HEAD.lock", O_RDWR|O_CREAT|O_EXCL|O_CLOEXEC, 0666[0m[91m) = 3
+[0m[91mrt_sigaction(SIGINT, {sa_handler=0x5624ebdb2b60, sa_mask=[INT], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=0x5624ebc63e30, sa_mask=[INT], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, 8) = 0
+[0m[91mrt_sigaction(SIGHUP, {sa_handler=0x5624ebdb2b60, sa_mask=[HUP], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=0x5624ebc63e30, sa_mask=[HUP], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, 8) = 0
+[0m[91mrt_sigaction(SIGTERM, {sa_handler=0x5624ebdb2b60, sa_mask=[TERM], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=0x5624ebc63e30, sa_mask=[TERM], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, 8) = 0
+rt_sigaction(SIGQUIT, {sa_handler=0x5624ebdb2b60, sa_mask=[QUIT], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=0x5624ebc63e30, sa_mask=[QUIT], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, 8) = 0
+[0m[91mrt_sigaction(SIGPIPE, {sa_handler=0x5624ebdb2b60, sa_mask=[PIPE], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=0x5624ebc63e30, sa_mask=[PIPE], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, 8) = 0
+getpid([0m[91m)                                = 8
+[0m[91mlstat("/var/www/TFG/.git/HEAD", [0m[91m0x7ffd32705bd0) = -1 ENOENT (No such file or directory)
+stat("/var/www/TFG/.git/packed-refs", [0m[91m0x7ffd32705910) = -1 ENOENT (No such file or directory)
+fcntl(3, F_GETFL[0m[91m)                       = 0x8002 (flags O_RDWR|O_LARGEFILE)
+[0m[91mfstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=0, ...}) = 0
+[0m[91mlstat("/var/www/TFG/.git/HEAD", [0m[91m0x7ffd32705d20) = -1 ENOENT (No such file or directory)
+[0m[91mwrite(3, "ref: refs/heads/master\n", 23[0m[91m) = 23
+[0m[91mclose(3[0m[91m)                                = 0
+[0m[91mrename("/var/www/TFG/.git/HEAD.lock", "/var/www/TFG/.git/HEAD"[0m[91m) = 0
+[0m[91mreadlink("/var/www/TFG/.git/config", [0m[91m0x5624ecdb0510, 32) = -1 ENOENT (No such file or directory)
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/config.lock", O_RDWR|O_CREAT|O_EXCL|O_CLOEXEC, 0666[0m[91m) = 3
+[0m[91mgetpid()                                = 8
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/config", O_RDONLY[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91mwrite(3, "[core]\n", 7[0m[91m)                 = 7
+[0m[91mwrite(3, "\trepositoryformatversion = 0\n", 29[0m[91m) = 29
+close(3[0m[91m)                                = 0
+[0m[91mrename("/var/www/TFG/.git/config.lock", "/var/www/TFG/.git/config"[0m[91m) = 0
+[0m[91mlstat("/var/www/TFG/.git/config", [0m[91m{st_mode=S_IFREG|0644, st_size=36, ...}) = 0
+[0m[91mchmod("/var/www/TFG/.git/config", 0100744[0m[91m) = 0
+[0m[91mlstat("/var/www/TFG/.git/config", [0m[91m{st_mode=S_IFREG|0744, st_size=36, ...}) = 0
+chmod("/var/www/TFG/.git/config", 0100644[0m[91m) = 0
+[0m[91mreadlink("/var/www/TFG/.git/config", [0m[91m0x5624ecdb0510, 32) = -1 EINVAL (Invalid argument)
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/config.lock", O_RDWR|O_CREAT|O_EXCL|O_CLOEXEC, 0666[0m[91m) = 3
+getpid([0m[91m)                                = 8
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/config", O_RDONLY[0m[91m) = 4
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/config", O_RDONLY[0m[91m) = 5
+[0m[91mfstat(5, [0m[91m{st_mode=S_IFREG|0644, st_size=36, ...}) = 0
+fstat(5, [0m[91m{st_mode=S_IFREG|0644, st_size=36, ...}) = 0
+[0m[91mread(5, [0m[91m"[core]\n\trepositoryformatversion "..., 4096) = 36
+[0m[91mlseek(5, 0, SEEK_CUR)                   = 36
+[0m[91mread(5, [0m[91m"", 4096)                       = 0
+[0m[91mclose(5[0m[91m)                                = 0
+fstat(4, [0m[91m{st_mode=S_IFREG|0644, st_size=36, ...}) = 0
+mmap(NULL, 36, PROT_READ, MAP_PRIVATE, 4, 0[0m[91m) = 0x7f355c615000
+close(4[0m[91m)                                = 0
+[0m[91mchmod("/var/www/TFG/.git/config.lock", 0644[0m[91m) = 0
+[0m[91mwrite(3, "[core]\n\trepositoryformatversion "..., 36[0m[91m) = 36
+[0m[91mwrite(3, "\tfilemode = true\n", 17[0m[91m)     = 17
+munmap(0x7f355c615000, 36[0m[91m)              = 0
+close(3[0m[91m)                                = 0
+[0m[91mrename("/var/www/TFG/.git/config.lock", "/var/www/TFG/.git/config"[0m[91m) = 0
+readlink("/var/www/TFG/.git/config", [0m[91m0x5624ecdb0480, 32) = -1 EINVAL (Invalid argument)
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/config.lock", O_RDWR|O_CREAT|O_EXCL|O_CLOEXEC, 0666[0m[91m) = 3
+getpid([0m[91m)                                = 8
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/config", O_RDONLY[0m[91m) = 4
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/config", O_RDONLY[0m[91m) = 5
+[0m[91mfstat(5, [0m[91m{st_mode=S_IFREG|0644, st_size=53, ...}) = 0
+fstat(5, [0m[91m{st_mode=S_IFREG|0644, st_size=53, ...}) = 0
+read(5, [0m[91m"[core]\n\trepositoryformatversion "..., 4096) = 53
+lseek(5, 0, SEEK_CUR[0m[91m)                   = 53
+[0m[91mlseek(5, 0, SEEK_CUR[0m[91m)                   = 53
+lseek(5, 0, SEEK_CUR[0m[91m)                   = 53
+[0m[91mread(5, [0m[91m"", 4096)                       = 0
+close(5[0m[91m)                                = 0
+[0m[91mfstat(4, [0m[91m{st_mode=S_IFREG|0644, st_size=53, ...}) = 0
+mmap(NULL, 53, PROT_READ, MAP_PRIVATE, 4, 0[0m[91m) = 0x7f355c615000
+[0m[91mclose(4)                                = 0
+[0m[91mchmod("/var/www/TFG/.git/config.lock", 0644[0m[91m) = 0
+[0m[91mwrite(3, "[core]\n\trepositoryformatversion "..., 53[0m[91m) = 53
+write(3, "\tbare = false\n", 14[0m[91m)        = 14
+[0m[91mmunmap(0x7f355c615000, 53[0m[91m)              = 0
+[0m[91mclose(3[0m[91m)                                = 0
+[0m[91mrename("/var/www/TFG/.git/config.lock", "/var/www/TFG/.git/config"[0m[91m) = 0
+[0m[91mreadlink("/var/www/TFG/.git/config", [0m[91m0x5624ecdb0510, 32) = -1 EINVAL (Invalid argument)
+openat(AT_FDCWD, "/var/www/TFG/.git/config.lock", O_RDWR|O_CREAT|O_EXCL|O_CLOEXEC, 0666[0m[91m) = 3
+getpid([0m[91m)                                = 8
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/config", O_RDONLY[0m[91m) = 4
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/config", O_RDONLY[0m[91m) = 5
+[0m[91mfstat(5, [0m[91m{st_mode=S_IFREG|0644, st_size=67, ...}) = 0
+fstat(5, [0m[91m{st_mode=S_IFREG|0644, st_size=67, ...}) = 0
+[0m[91mread(5, [0m[91m"[core]\n\trepositoryformatversion "..., 4096) = 67
+lseek(5, 0, SEEK_CUR[0m[91m)                   = 67
+lseek(5, 0, SEEK_CUR[0m[91m)                   = 67
+[0m[91mlseek(5, 0, SEEK_CUR[0m[91m)                   = 67
+[0m[91mlseek(5, 0, SEEK_CUR[0m[91m)                   = 67
+[0m[91mlseek(5, 0, SEEK_CUR[0m[91m)                   = 67
+[0m[91mread(5, [0m[91m"", 4096)                       = 0
+close(5[0m[91m)                                = 0
+[0m[91mfstat(4, [0m[91m{st_mode=S_IFREG|0644, st_size=67, ...}) = 0
+mmap(NULL, 67, PROT_READ, MAP_PRIVATE, 4, 0[0m[91m) = 0x7f355c615000
+[0m[91mclose(4)                                = 0
+[0m[91mchmod("/var/www/TFG/.git/config.lock", 0644[0m[91m) = 0
+[0m[91mwrite(3, "[core]\n\trepositoryformatversion "..., 67[0m[91m) = 67
+[0m[91mwrite(3, "\tlogallrefupdates = true\n", 25[0m[91m) = 25
+[0m[91mmunmap(0x7f355c615000, 67)              = 0
+[0m[91mclose(3)                                = 0
+[0m[91mrename("/var/www/TFG/.git/config.lock", "/var/www/TFG/.git/config"[0m[91m) = 0
+[0m[91mgetpid()                                = 8
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/tXBQdgt", O_RDWR|O_CREAT|O_EXCL, 0600[0m[91m) = 3
+close(3[0m[91m)                                = 0
+[0m[91munlink("/var/www/TFG/.git/tXBQdgt"[0m[91m)     = 0
+[0m[91msymlink("testing", "/var/www/TFG/.git/tXBQdgt"[0m[91m) = 0
+[0m[91mlstat("/var/www/TFG/.git/tXBQdgt", [0m[91m{st_mode=S_IFLNK|0777, st_size=7, ...}) = 0
+[0m[91munlink("/var/www/TFG/.git/tXBQdgt"[0m[91m)     = 0
+[0m[91maccess("/var/www/TFG/.git/CoNfIg", F_OK) = -1 ENOENT (No such file or directory)
+[0m[91mmkdir("/var/www/TFG/.git/objects", 0777[0m[91m) = 0
+[0m[91mmkdir("/var/www/TFG/.git/objects/pack", 0777[0m[91m) = 0
+[0m[91mmkdir("/var/www/TFG/.git/objects/info", 0777[0m[91m) = 0
+[0m[91maccess("/etc/gitconfig", R_OK[0m[91m)          = -1 ENOENT (No such file or directory)
+[0m[91maccess("/root/.config/git/config", R_OK[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91maccess("/root/.gitconfig", R_OK[0m[91m)        = -1 ENOENT (No such file or directory)
+[0m[91maccess("/var/www/TFG/.git/config", R_OK[0m[91m) = 0
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/config", O_RDONLY[0m[91m) = 3
+fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=92, ...}) = 0
+fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=92, ...}) = 0
+read(3, [0m[91m"[core]\n\trepositoryformatversion "..., 4096) = 92
+[0m[91mread(3, [0m[91m"", 4096)                       = 0
+[0m[91mclose(3[0m[91m)                                = 0
+[0m[91mreadlink("/var/www/TFG/.git/config", [0m[91m0x5624ecdb14f0, 32) = -1 EINVAL (Invalid argument)
+openat(AT_FDCWD, "/var/www/TFG/.git/config.lock", O_RDWR|O_CREAT|O_EXCL|O_CLOEXEC, 0666[0m[91m) = 3
+[0m[91mgetpid()                                = 8
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/config", O_RDONLY[0m[91m) = 4
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/config", O_RDONLY[0m[91m) = 5
+[0m[91mfstat(5, [0m[91m{st_mode=S_IFREG|0644, st_size=92, ...}) = 0
+[0m[91mfstat(5, [0m[91m{st_mode=S_IFREG|0644, st_size=92, ...}) = 0
+[0m[91mread(5, [0m[91m"[core]\n\trepositoryformatversion "..., 4096) = 92
+[0m[91mread(5, [0m[91m"", 4096)                       = 0
+[0m[91mclose(5[0m[91m)                                = 0
+[0m[91mfstat(4, [0m[91m{st_mode=S_IFREG|0644, st_size=92, ...}) = 0
+mmap(NULL, 92, PROT_READ, MAP_PRIVATE, 4, 0[0m[91m) = 0x7f355c615000
+close(4[0m[91m)                                = 0
+[0m[91mchmod("/var/www/TFG/.git/config.lock", 0644[0m[91m) = 0
+[0m[91mwrite(3, "[core]\n\trepositoryformatversion "..., 92[0m[91m) = 92
+[0m[91mwrite(3, "[remote \"origin\"]\n", 18[0m[91m)   = 18
+write(3, "\turl = git@github.com:gonzaloFSF"..., 41[0m[91m) = 41
+[0m[91mmunmap(0x7f355c615000, 92[0m[91m)              = 0
+close(3[0m[91m)                                = 0
+[0m[91mrename("/var/www/TFG/.git/config.lock", "/var/www/TFG/.git/config"[0m[91m) = 0
+lstat("/var/www/TFG/.git/HEAD", [0m[91m{st_mode=S_IFREG|0644, st_size=23, ...}) = 0
+openat(AT_FDCWD, "/var/www/TFG/.git/HEAD", O_RDONLY[0m[91m) = 3
+[0m[91mread(3, [0m[91m"ref: refs/heads/master\n", 256) = 23
+read(3, [0m[91m"", 233)                        = 0
+close(3[0m[91m)                                = 0
+[0m[91mlstat("/var/www/TFG/.git/refs/heads/master", [0m[91m0x7ffd32705eb0) = -1 ENOENT (No such file or directory)
+[0m[91mstat("/var/www/TFG/.git/packed-refs", [0m[91m0x7ffd32705bf0) = -1 ENOENT (No such file or directory)
+[0m[91maccess("/etc/gitconfig", R_OK[0m[91m)          = -1 ENOENT (No such file or directory)
+[0m[91maccess("/root/.config/git/config", R_OK[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91maccess("/root/.gitconfig", R_OK)        = -1 ENOENT (No such file or directory)
+[0m[91maccess("/var/www/TFG/.git/config", R_OK[0m[91m) = 0
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/config", O_RDONLY[0m[91m) = 3
+[0m[91mfstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=151, ...}) = 0
+[0m[91mfstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=151, ...}) = 0
+[0m[91mread(3, [0m[91m"[core]\n\trepositoryformatversion "..., 4096) = 151
+[0m[91mread(3, [0m[91m"", 4096)                       = 0
+close(3[0m[91m)                                = 0
+[0m[91mioctl(2, TCGETS, 0x7ffd32705f80)        = -1 ENOTTY (Inappropriate ioctl for device)
+[0m[91mioctl(2, TCGETS, 0x7ffd32706040)        = -1 ENOTTY (Inappropriate ioctl for device)
+[0m[91mstat("git@github.com:gonzaloFSF/TFG.git/.git", [0m[91m0x7ffd32706010) = -1 ENOENT (No such file or directory)
+[0m[91mstat("git@github.com:gonzaloFSF/TFG.git", 0x7ffd32706010) = -1 ENOENT (No such file or directory)
+[0m[91mstat("git@github.com:gonzaloFSF/TFG.git.git/.git", 0x7ffd32706010) = -1 ENOENT (No such file or directory)
+[0m[91mstat("git@github.com:gonzaloFSF/TFG.git.git", 0x7ffd32706010) = -1 ENOENT (No such file or directory)
+[0m[91mstat("git@github.com:gonzaloFSF/TFG.git.bundle", 0x7ffd32706010) = -1 ENOENT (No such file or directory)
+[0m[91mstat("git@github.com:gonzaloFSF/TFG.git", [0m[91m0x7ffd32706010) = -1 ENOENT (No such file or directory)
+[0m[91mrt_sigaction(SIGCHLD, {sa_handler=SIG_DFL, sa_mask=[CHLD], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91mpipe([0m[91m[3, 4])                            = 0
+pipe([0m[91m[5, 6])                            = 0
+[0m[91mstat("/usr/lib/git-core/ssh", [0m[91m0x7ffd32705c50) = -1 ENOENT (No such file or directory)
+stat("/usr/local/sbin/ssh", [0m[91m0x7ffd32705c50) = -1 ENOENT (No such file or directory)
+[0m[91mstat("/usr/local/bin/ssh", [0m[91m0x7ffd32705c50) = -1 ENOENT (No such file or directory)
+[0m[91mstat("/usr/sbin/ssh", [0m[91m0x7ffd32705c50)   = -1 ENOENT (No such file or directory)
+[0m[91mstat("/usr/bin/ssh", [0m[91m{st_mode=S_IFREG|0755, st_size=727848, ...}) = 0
+pipe([0m[91m[7, 8])                            = 0
+rt_sigprocmask(SIG_SETMASK, ~[RTMIN RT_1], [0m[91m[], 8) = 0
+[0m[91mclone([0m[91mchild_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x7f355c60f350) = 9
+strace: Process 9 attached
+[0m[91m[pid     8] rt_sigprocmask(SIG_SETMASK, [],  <unfinished ...>
+[0m[91m[pid     9] set_robust_list(0x7f355c60f360, 24 <unfinished ...>
+[pid     8] <... rt_sigprocmask resumed> NULL, 8) = 0
+[pid     9] <... set_robust_list resumed> ) = 0
+[0m[91m[pid     8] close(8)                    = 0
+[0m[91m[pid     9] close(7 <unfinished ...>
+[pid     8] read(7, [0m[91m <unfinished ...>
+[pid     9] <... close resumed> )       = 0
+[pid     9] fcntl(8, F_GETFD[0m[91m)           = 0
+[0m[91m[pid     9] fcntl(8, F_SETFD, FD_CLOEXEC[0m[91m) = 0
+[0m[91m[pid     9] dup2(3, 0)                  = 0
+[0m[91m[pid     9] close(3)                    = 0
+[0m[91m[pid     9] close(4)                    = 0
+[0m[91m[pid     9] dup2(6, 1)                  = 1
+[0m[91m[pid     9] close(5[0m[91m)                    = 0
+[pid     9] close(6[0m[91m)                    = 0
+[0m[91m[pid     9] rt_sigaction(SIGHUP, {sa_handler=SIG_DFL, sa_mask=[HUP], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=0x5624ebdb2b60, sa_mask=[HUP], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGINT, {sa_handler=SIG_DFL, sa_mask=[INT], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=0x5624ebdb2b60, sa_mask=[INT], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGQUIT, {sa_handler=SIG_DFL, sa_mask=[QUIT], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=0x5624ebdb2b60, sa_mask=[QUIT], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGILL, {sa_handler=SIG_DFL, sa_mask=[ILL], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGTRAP, {sa_handler=SIG_DFL, sa_mask=[TRAP], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGABRT, {sa_handler=SIG_DFL, sa_mask=[ABRT], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGBUS, {sa_handler=SIG_DFL, sa_mask=[BUS], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGFPE, {sa_handler=SIG_DFL, sa_mask=[FPE], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGKILL, {sa_handler=SIG_DFL, sa_mask=[KILL], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m0x7ffd32705b60, 8) = -1 EINVAL (Invalid argument)
+[pid     9] rt_sigaction(SIGUSR1, {sa_handler=SIG_DFL, sa_mask=[USR1], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGSEGV, {sa_handler=SIG_DFL, sa_mask=[SEGV], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGUSR2, {sa_handler=SIG_DFL, sa_mask=[USR2], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGPIPE, {sa_handler=SIG_DFL, sa_mask=[PIPE], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=0x5624ebdb2b60, sa_mask=[PIPE], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGALRM, {sa_handler=SIG_DFL, sa_mask=[ALRM], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGTERM, {sa_handler=SIG_DFL, sa_mask=[TERM], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=0x5624ebdb2b60, sa_mask=[TERM], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGSTKFLT, {sa_handler=SIG_DFL, sa_mask=[STKFLT], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGCHLD, {sa_handler=SIG_DFL, sa_mask=[CHLD], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[CHLD], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGCONT, {sa_handler=SIG_DFL, sa_mask=[CONT], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGSTOP, {sa_handler=SIG_DFL, sa_mask=[STOP], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m0x7ffd32705b60, 8) = -1 EINVAL (Invalid argument)
+[0m[91m[pid     9] rt_sigaction(SIGTSTP, {sa_handler=SIG_DFL, sa_mask=[TSTP], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGTTIN, {sa_handler=SIG_DFL, sa_mask=[TTIN], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGTTOU, {sa_handler=SIG_DFL, sa_mask=[TTOU], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGURG, {sa_handler=SIG_DFL, sa_mask=[URG], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGXCPU, {sa_handler=SIG_DFL, sa_mask=[XCPU], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGXFSZ, {sa_handler=SIG_DFL, sa_mask=[XFSZ], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, {sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGVTALRM, {sa_handler=SIG_DFL, sa_mask=[VTALRM], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGPROF, {sa_handler=SIG_DFL, sa_mask=[PROF], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGWINCH, {sa_handler=SIG_DFL, sa_mask=[WINCH], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[pid     9] rt_sigaction(SIGIO, {sa_handler=SIG_DFL, sa_mask=[IO], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGPWR, {sa_handler=SIG_DFL, sa_mask=[PWR], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGSYS, {sa_handler=SIG_DFL, sa_mask=[SYS], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_2, {sa_handler=SIG_DFL, sa_mask=[RT_2], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_3, {sa_handler=SIG_DFL, sa_mask=[RT_3], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_4, {sa_handler=SIG_DFL, sa_mask=[RT_4], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_5, {sa_handler=SIG_DFL, sa_mask=[RT_5], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_6, {sa_handler=SIG_DFL, sa_mask=[RT_6], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_7, {sa_handler=SIG_DFL, sa_mask=[RT_7], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_8, {sa_handler=SIG_DFL, sa_mask=[RT_8], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_9, {sa_handler=SIG_DFL, sa_mask=[RT_9], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_10, {sa_handler=SIG_DFL, sa_mask=[RT_10], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_11, {sa_handler=SIG_DFL, sa_mask=[RT_11], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_12, {sa_handler=SIG_DFL, sa_mask=[RT_12], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_13, {sa_handler=SIG_DFL, sa_mask=[RT_13], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_14, {sa_handler=SIG_DFL, sa_mask=[RT_14], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_15, {sa_handler=SIG_DFL, sa_mask=[RT_15], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_16, {sa_handler=SIG_DFL, sa_mask=[RT_16], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_17, {sa_handler=SIG_DFL, sa_mask=[RT_17], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_18, {sa_handler=SIG_DFL, sa_mask=[RT_18], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_19, {sa_handler=SIG_DFL, sa_mask=[RT_19], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_20, {sa_handler=SIG_DFL, sa_mask=[RT_20], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_21, {sa_handler=SIG_DFL, sa_mask=[RT_21], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_22, {sa_handler=SIG_DFL, sa_mask=[RT_22], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_23, {sa_handler=SIG_DFL, sa_mask=[RT_23], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_24, {sa_handler=SIG_DFL, sa_mask=[RT_24], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_25, {sa_handler=SIG_DFL, sa_mask=[RT_25], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_26, {sa_handler=SIG_DFL, sa_mask=[RT_26], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_27, {sa_handler=SIG_DFL, sa_mask=[RT_27], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_28, {sa_handler=SIG_DFL, sa_mask=[RT_28], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_29, {sa_handler=SIG_DFL, sa_mask=[RT_29], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_30, {sa_handler=SIG_DFL, sa_mask=[RT_30], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_31, {sa_handler=SIG_DFL, sa_mask=[RT_31], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_32, {sa_handler=SIG_DFL, sa_mask=[RT_32], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7f355b786f20}, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigprocmask(SIG_SETMASK, [], NULL, 8) = 0
+[0m[91m[pid     9] execve("/usr/bin/ssh", ["/usr/bin/ssh", "git@github.com", "git-upload-pack 'gonzaloFSF/TFG."...], 0x5624ecdb37a0 /* 4 vars */[0m[91m <unfinished ...>
+[pid     8] <... read resumed> "", 8)   = 0
+[pid     8] close(7[0m[91m <unfinished ...>
+[pid     9] <... execve resumed> )      = 0
+[0m[91m[pid     8] <... close resumed> )       = 0
+[0m[91m[pid     8] close(3 <unfinished ...>
+[pid     9] brk(NULL[0m[91m <unfinished ...>
+[pid     8] <... close resumed> )       = 0
+[0m[91m[pid     9] <... brk resumed> )         = 0x565510372000
+[0m[91m[pid     8] close(6[0m[91m)                    = 0
+[pid     9] access("/etc/ld.so.nohwcap", F_OK <unfinished ...>
+[pid     8] read(5, [0m[91m <unfinished ...>
+[pid     9] <... access resumed> )      = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] access("/etc/ld.so.preload", R_OK[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=14368, ...}) = 0
+[0m[91m[pid     9] mmap(NULL, 14368, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7efcd18bc000
+[0m[91m[pid     9] close(3[0m[91m)                    = 0
+[0m[91m[pid     9] access("/etc/ld.so.nohwcap", F_OK[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libselinux.so.1", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+[0m[91m[pid     9] read(3, [0m[91m"\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\20b\0\0\0\0\0\0"..., 832) = 832
+[0m[91m[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=154832, ...}) = 0
+[0m[91m[pid     9] mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0[0m[91m) = 0x7efcd18ba000
+[0m[91m[pid     9] mmap(NULL, 2259152, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0[0m[91m) = 0x7efcd1471000
+[pid     9] mprotect(0x7efcd1496000, 2093056, PROT_NONE[0m[91m) = 0
+[pid     9] mmap(0x7efcd1695000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x24000[0m[91m) = 0x7efcd1695000
+[0m[91m[pid     9] mmap(0x7efcd1697000, 6352, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0[0m[91m) = 0x7efcd1697000
+[0m[91m[pid     9] close(3[0m[91m)                    = 0
+[0m[91m[pid     9] access("/etc/ld.so.nohwcap", F_OK[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/usr/lib/x86_64-linux-gnu/libcrypto.so.1.0.0", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+[0m[91m[pid     9] read(3, [0m[91m"\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\0\36\6\0\0\0\0\0"..., 832) = 832
+[0m[91m[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=2357760, ...}) = 0
+[pid     9] mmap(NULL, 4467040, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0[0m[91m) = 0x7efcd102e000
+[0m[91m[pid     9] mprotect(0x7efcd1247000, 2093056, PROT_NONE[0m[91m) = 0
+[0m[91m[pid     9] mmap(0x7efcd1446000, 163840, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x218000[0m[91m) = 0x7efcd1446000
+[0m[91m[pid     9] mmap(0x7efcd146e000, 10592, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0[0m[91m) = 0x7efcd146e000
+[0m[91m[pid     9] close(3)                    = 0
+[0m[91m[pid     9] access("/etc/ld.so.nohwcap", F_OK[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libdl.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+[pid     9] read(3, [0m[91m"\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0P\16\0\0\0\0\0\0"..., 832) = 832
+[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=14560, ...}) = 0
+[0m[91m[pid     9] mmap(NULL, 2109712, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0[0m[91m) = 0x7efcd0e2a000
+[pid     9] mprotect(0x7efcd0e2d000, 2093056, PROT_NONE[0m[91m) = 0
+[pid     9] mmap(0x7efcd102c000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x2000[0m[91m) = 0x7efcd102c000
+[0m[91m[pid     9] close(3[0m[91m)                    = 0
+[0m[91m[pid     9] access("/etc/ld.so.nohwcap", F_OK) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libz.so.1", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+[pid     9] read(3, [0m[91m"\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\220\37\0\0\0\0\0\0"..., 832) = 832
+[0m[91m[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=116960, ...}) = 0
+[0m[91m[pid     9] mmap(NULL, 2212016, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0[0m[91m) = 0x7efcd0c0d000
+[pid     9] mprotect(0x7efcd0c29000, 2093056, PROT_NONE[0m[91m) = 0
+[pid     9] mmap(0x7efcd0e28000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1b000[0m[91m) = 0x7efcd0e28000
+[pid     9] close(3[0m[91m)                    = 0
+[0m[91m[pid     9] access("/etc/ld.so.nohwcap", F_OK[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libresolv.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+[pid     9] read(3, [0m[91m"\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\00008\0\0\0\0\0\0"..., 832) = 832
+[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=101168, ...}) = 0
+[0m[91m[pid     9] mmap(NULL, 2206336, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0[0m[91m) = 0x7efcd09f2000
+[0m[91m[pid     9] mprotect(0x7efcd0a09000, 2097152, PROT_NONE[0m[91m) = 0
+[0m[91m[pid     9] mmap(0x7efcd0c09000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x17000[0m[91m) = 0x7efcd0c09000
+[0m[91m[pid     9] mmap(0x7efcd0c0b000, 6784, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7efcd0c0b000
+[0m[91m[pid     9] close(3)                    = 0
+[0m[91m[pid     9] access("/etc/ld.so.nohwcap", F_OK[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/usr/lib/x86_64-linux-gnu/libgssapi_krb5.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+[0m[91m[pid     9] read(3, [0m[91m"\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\340\266\0\0\0\0\0\0"..., 832) = 832
+[0m[91m[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=305456, ...}) = 0
+[pid     9] mmap(NULL, 2401088, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7efcd07a7000
+[pid     9] mprotect(0x7efcd07ef000, 2093056, PROT_NONE) = 0
+[pid     9] mmap(0x7efcd09ee000, 16384, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x47000) = 0x7efcd09ee000
+[pid     9] close(3)                    = 0
+[pid     9] access("/etc/ld.so.nohwcap", F_OK) = -1 ENOENT (No such file or directory)
+[pid     9] openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+[pid     9] read(3, "\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\260\34\2\0\0\0\0\0"..., 832) = 832
+[pid     9] fstat(3, {st_mode=S_IFREG|0755, st_size=2030544, ...}) = 0
+[pid     9] mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7efcd18b8000
+[pid     9] mmap(NULL, 4131552, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7efcd03b6000
+[pid     9] mprotect(0x7efcd059d000, 2097152, PROT_NONE) = 0
+[pid     9] mmap(0x7efcd079d000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1e7000) = 0x7efcd079d000
+[pid     9] mmap(0x7efcd07a3000, 15072, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7efcd07a3000
+[pid     9] close(3)                    = 0
+[pid     9] access("/etc/ld.so.nohwcap", F_OK) = -1 ENOENT (No such file or directory)
+[pid     9] openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libpcre.so.3", O_RDONLY|O_CLOEXEC) = 3
+[pid     9] read(3, "\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0 \25\0\0\0\0\0\0"..., 832) = 832
+[pid     9] fstat(3, {st_mode=S_IFREG|0644, st_size=464824, ...}) = 0
+[pid     9] mmap(NULL, 2560264, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7efcd0144000
+[pid     9] mprotect(0x7efcd01b4000, 2097152, PROT_NONE) = 0
+[pid     9] mmap(0x7efcd03b4000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x70000) = 0x7efcd03b4000
+[pid     9] close(3)                    = 0
+[pid     9] access("/etc/ld.so.nohwcap", F_OK) = -1 ENOENT (No such file or directory)
+[pid     9] openat(AT_FDCWD, "/usr/lib/x86_64-linux-gnu/libkrb5.so.3", O_RDONLY|O_CLOEXEC) = 3
+[pid     9] read(3, "\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\320\27\2\0\0\0\0\0"..., 832) = 832
+[pid     9] fstat(3, {st_mode=S_IFREG|0644, st_size=877056, ...}) = 0
+[pid     9] mmap(NULL, 2972896, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7efccfe6e000
+[pid     9] mprotect(0x7efccff34000, 2097152, PROT_NONE) = 0
+[pid     9] mmap(0x7efcd0134000, 65536, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0xc6000) = 0x7efcd0134000
+[pid     9] close(3)                    = 0
+[pid     9] access("/etc/ld.so.nohwcap", F_OK) = -1 ENOENT (No such file or directory)
+[pid     9] openat(AT_FDCWD, "/usr/lib/x86_64-linux-gnu/libk5crypto.so.3", O_RDONLY|O_CLOEXEC) = 3
+[pid     9] read(3, "\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0PC\0\0\0\0\0\0"..., 832) = 832
+[pid     9] fstat(3, {st_mode=S_IFREG|0644, st_size=199104, ...}) = 0
+[pid     9] mmap(NULL, 2297976, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7efccfc3c000
+[pid     9] mprotect(0x7efccfc6a000, 2097152, PROT_NONE) = 0
+[pid     9] mmap(0x7efccfe6a000, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x2e000) = 0x7efccfe6a000
+[pid     9] mmap(0x7efccfe6d000, 120, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0[0m[91m) = 0x7efccfe6d000
+[pid     9] close(3)                    = 0
+[0m[91m[pid     9] access("/etc/ld.so.nohwcap", F_OK) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libcom_err.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+[pid     9] read(3, [0m[91m"\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\200\23\0\0\0\0\0\0"..., 832) = 832
+[0m[91m[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=14248, ...}) = 0
+[0m[91m[pid     9] mmap(NULL, 2109608, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0[0m[91m) = 0x7efccfa38000
+[0m[91m[pid     9] mprotect(0x7efccfa3b000, 2093056, PROT_NONE[0m[91m) = 0
+[0m[91m[pid     9] mmap(0x7efccfc3a000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x2000[0m[91m) = 0x7efccfc3a000
+[0m[91m[pid     9] close(3)                    = 0
+[0m[91m[pid     9] access("/etc/ld.so.nohwcap", F_OK) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/usr/lib/x86_64-linux-gnu/libkrb5support.so.0", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+[pid     9] read(3, [0m[91m"\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0@'\0\0\0\0\0\0"..., 832) = 832
+[0m[91m[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=43616, ...}) = 0
+[0m[91m[pid     9] mmap(NULL, 2139080, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0[0m[91m) = 0x7efccf82d000
+[0m[91m[pid     9] mprotect(0x7efccf837000, 2093056, PROT_NONE[0m[91m) = 0
+[pid     9] mmap(0x7efccfa36000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x9000[0m[91m) = 0x7efccfa36000
+[0m[91m[pid     9] close(3[0m[91m)                    = 0
+[0m[91m[pid     9] access("/etc/ld.so.nohwcap", F_OK) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libpthread.so.0", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+[0m[91m[pid     9] read(3, [0m[91m"\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0000b\0\0\0\0\0\0"..., 832) = 832
+[0m[91m[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0755, st_size=144976, ...}) = 0
+[0m[91m[pid     9] mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7efcd18b6000
+[0m[91m[pid     9] mmap(NULL, 2221184, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0[0m[91m) = 0x7efccf60e000
+[0m[91m[pid     9] mprotect(0x7efccf628000, 2093056, PROT_NONE[0m[91m) = 0
+[0m[91m[pid     9] mmap(0x7efccf827000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x19000[0m[91m) = 0x7efccf827000
+[0m[91m[pid     9] mmap(0x7efccf829000, 13440, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0[0m[91m) = 0x7efccf829000
+[0m[91m[pid     9] close(3[0m[91m)                    = 0
+[0m[91m[pid     9] access("/etc/ld.so.nohwcap", F_OK[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libkeyutils.so.1", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+[0m[91m[pid     9] read(3, [0m[91m"\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\320\22\0\0\0\0\0\0"..., 832) = 832
+[0m[91m[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=14256, ...}) = 0
+[0m[91m[pid     9] mmap(NULL, 2109456, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0[0m[91m) = 0x7efccf40a000
+[0m[91m[pid     9] mprotect(0x7efccf40d000, 2093056, PROT_NONE[0m[91m) = 0
+[0m[91m[pid     9] mmap(0x7efccf60c000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x2000[0m[91m) = 0x7efccf60c000
+[0m[91m[pid     9] close(3)                    = 0
+[0m[91m[pid     9] mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7efcd18b4000
+[0m[91m[pid     9] arch_prctl(ARCH_SET_FS, 0x7efcd18b4f80) = 0
+[0m[91m[pid     9] mprotect(0x7efcd079d000, 16384, PROT_READ) = 0
+[0m[91m[pid     9] mprotect(0x7efccf60c000, 4096, PROT_READ[0m[91m) = 0
+[0m[91m[pid     9] mprotect(0x7efccf827000, 4096, PROT_READ[0m[91m) = 0
+[0m[91m[pid     9] mprotect(0x7efcd102c000, 4096, PROT_READ[0m[91m) = 0
+[0m[91m[pid     9] mprotect(0x7efccfa36000, 4096, PROT_READ[0m[91m) = 0
+[0m[91m[pid     9] mprotect(0x7efccfc3a000, 4096, PROT_READ[0m[91m) = 0
+[0m[91m[pid     9] mprotect(0x7efccfe6a000, 8192, PROT_READ[0m[91m) = 0
+[0m[91m[pid     9] mprotect(0x7efcd0c09000, 4096, PROT_READ) = 0
+[0m[91m[pid     9] mprotect(0x7efcd0134000, 57344, PROT_READ[0m[91m) = 0
+[0m[91m[pid     9] mprotect(0x7efcd03b4000, 4096, PROT_READ[0m[91m) = 0
+[0m[91m[pid     9] mprotect(0x7efcd09ee000, 8192, PROT_READ) = 0
+[0m[91m[pid     9] mprotect(0x7efcd0e28000, 4096, PROT_READ) = 0
+[0m[91m[pid     9] mprotect(0x7efcd1446000, 114688, PROT_READ) = 0
+[0m[91m[pid     9] mprotect(0x7efcd1695000, 4096, PROT_READ) = 0
+[0m[91m[pid     9] mprotect(0x56550fb67000, 12288, PROT_READ) = 0
+[0m[91m[pid     9] mprotect(0x7efcd18c0000, 4096, PROT_READ[0m[91m) = 0
+[0m[91m[pid     9] munmap(0x7efcd18bc000, 14368[0m[91m) = 0
+[0m[91m[pid     9] set_tid_address(0x7efcd18b5250) = 9
+[0m[91m[pid     9] set_robust_list(0x7efcd18b5260, 24) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRTMIN, {sa_handler=0x7efccf613cb0, sa_mask=[], sa_flags=SA_RESTORER|SA_SIGINFO, sa_restorer=0x7efccf620890}, [0m[91mNULL, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGRT_1, {sa_handler=0x7efccf613d50, sa_mask=[], sa_flags=SA_RESTORER|SA_RESTART|SA_SIGINFO, sa_restorer=0x7efccf620890}, NULL, 8) = 0
+[0m[91m[pid     9] rt_sigprocmask(SIG_UNBLOCK, [RTMIN RT_1], [0m[91mNULL, 8) = 0
+[0m[91m[pid     9] prlimit64(0, RLIMIT_STACK, NULL, [0m[91m{rlim_cur=8192*1024, rlim_max=RLIM64_INFINITY}) = 0
+[0m[91m[pid     9] statfs("/sys/fs/selinux", [0m[91m0x7ffcfceb0080) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] statfs("/selinux", [0m[91m0x7ffcfceb0080) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] brk(NULL)                   = 0x565510372000
+[0m[91m[pid     9] brk(0x565510393000)         = 0x565510393000
+[0m[91m[pid     9] openat(AT_FDCWD, "/proc/filesystems", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+[0m[91m[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0444, st_size=0, ...}) = 0
+[pid     9] read(3, [0m[91m"nodev\tsysfs\nnodev\ttmpfs\nnodev\tbd"..., 1024) = 409
+[0m[91m[pid     9] read(3, [0m[91m"", 1024)           = 0
+[0m[91m[pid     9] close(3[0m[91m)                    = 0
+[0m[91m[pid     9] access("/etc/selinux/config", F_OK[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/dev/null", O_RDWR[0m[91m) = 3
+[0m[91m[pid     9] close(3)                    = 0
+[0m[91m[pid     9] getpid()                    = 9
+[0m[91m[pid     9] openat(AT_FDCWD, "/proc/9/fd", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY[0m[91m) = 3
+[0m[91m[pid     9] fstat(3, [0m[91m{st_mode=S_IFDIR|0500, st_size=0, ...}) = 0
+[0m[91m[pid     9] getdents(3[0m[91m, /* 6 entries */, 32768) = 144
+[0m[91m[pid     9] getdents(3, /* 0 entries */, 32768) = 0
+[0m[91m[pid     9] close(3)                    = 0
+[0m[91m[pid     9] getuid()                    = 0
+[0m[91m[pid     9] geteuid()                   = 0
+[0m[91m[pid     9] setresuid(-1, 0, -1)        = 0
+[0m[91m[pid     9] socket(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC|SOCK_NONBLOCK, 0[0m[91m) = 3
+[0m[91m[pid     9] connect(3, {sa_family=AF_UNIX, sun_path="/var/run/nscd/socket"}, 110[0m[91m) = -1 ENOENT (No such file or directory)
+[pid     9] close(3)                    = 0
+[0m[91m[pid     9] socket(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC|SOCK_NONBLOCK, 0[0m[91m) = 3
+[0m[91m[pid     9] connect(3, {sa_family=AF_UNIX, sun_path="/var/run/nscd/socket"}, 110[0m[91m) = -1 ENOENT (No such file or directory)
+[pid     9] close(3[0m[91m)                    = 0
+[0m[91m[pid     9] openat(AT_FDCWD, "/etc/nsswitch.conf", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+[0m[91m[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=513, ...}) = 0
+[0m[91m[pid     9] read(3, [0m[91m"# /etc/nsswitch.conf\n#\n# Example"..., 4096) = 513
+[0m[91m[pid     9] read(3, "", 4096)           = 0
+[0m[91m[pid     9] close(3[0m[91m)                    = 0
+[0m[91m[pid     9] openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+[0m[91m[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=14368, ...}) = 0
+[0m[91m[pid     9] mmap(NULL, 14368, PROT_READ, MAP_PRIVATE, 3, 0[0m[91m) = 0x7efcd18bc000
+[0m[91m[pid     9] close(3)                    = 0
+[0m[91m[pid     9] access("/etc/ld.so.nohwcap", F_OK[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libnss_compat.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+[0m[91m[pid     9] read(3, [0m[91m"\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\240\22\0\0\0\0\0\0"..., 832) = 832
+[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=39744, ...}) = 0
+[0m[91m[pid     9] mmap(NULL, 2136256, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0[0m[91m) = 0x7efccf200000
+[0m[91m[pid     9] mprotect(0x7efccf208000, 2097152, PROT_NONE[0m[91m) = 0
+[0m[91m[pid     9] mmap(0x7efccf408000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x8000[0m[91m) = 0x7efccf408000
+[0m[91m[pid     9] close(3)                    = 0
+[0m[91m[pid     9] mprotect(0x7efccf408000, 4096, PROT_READ) = 0
+[0m[91m[pid     9] munmap(0x7efcd18bc000, 14368[0m[91m) = 0
+[0m[91m[pid     9] openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+[0m[91m[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=14368, ...}) = 0
+[pid     9] mmap(NULL, 14368, PROT_READ, MAP_PRIVATE, 3, 0[0m[91m) = 0x7efcd18bc000
+[0m[91m[pid     9] close(3)                    = 0
+[0m[91m[pid     9] access("/etc/ld.so.nohwcap", F_OK[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libnss_nis.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+[pid     9] read(3, [0m[91m"\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0p \0\0\0\0\0\0"..., 832) = 832
+[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=47576, ...}) = 0
+[0m[91m[pid     9] mmap(NULL, 2143624, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0[0m[91m) = 0x7efcceff4000
+[pid     9] mprotect(0x7efccefff000, 2093056, PROT_NONE[0m[91m) = 0
+[0m[91m[pid     9] mmap(0x7efccf1fe000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0xa000[0m[91m) = 0x7efccf1fe000
+[0m[91m[pid     9] close(3[0m[91m)                    = 0
+[0m[91m[pid     9] access("/etc/ld.so.nohwcap", F_OK[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libnsl.so.1", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+[pid     9] read(3, [0m[91m"\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\220@\0\0\0\0\0\0"..., 832) = 832
+[0m[91m[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=97176, ...}) = 0
+[pid     9] mmap(NULL, 2202200, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0[0m[91m) = 0x7efccedda000
+[0m[91m[pid     9] mprotect(0x7efccedf1000, 2093056, PROT_NONE[0m[91m) = 0
+[0m[91m[pid     9] mmap(0x7efcceff0000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x16000[0m[91m) = 0x7efcceff0000
+[pid     9] mmap(0x7efcceff2000, 6744, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0[0m[91m) = 0x7efcceff2000
+[0m[91m[pid     9] close(3[0m[91m)                    = 0
+[0m[91m[pid     9] access("/etc/ld.so.nohwcap", F_OK) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libnss_files.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+[pid     9] read(3, [0m[91m"\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0P#\0\0\0\0\0\0"..., 832) = 832
+[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=47568, ...}) = 0
+[0m[91m[pid     9] mmap(NULL, 2168632, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0[0m[91m) = 0x7efccebc8000
+[pid     9] mprotect(0x7efccebd3000, 2093056, PROT_NONE[0m[91m) = 0
+[pid     9] mmap(0x7efccedd2000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0xa000[0m[91m) = 0x7efccedd2000
+[0m[91m[pid     9] mmap(0x7efccedd4000, 22328, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0[0m[91m) = 0x7efccedd4000
+[0m[91m[pid     9] close(3)                    = 0
+[0m[91m[pid     9] mprotect(0x7efccedd2000, 4096, PROT_READ) = 0
+[0m[91m[pid     9] mprotect(0x7efcceff0000, 4096, PROT_READ[0m[91m) = 0
+[0m[91m[pid     9] mprotect(0x7efccf1fe000, 4096, PROT_READ[0m[91m) = 0
+[pid     9] munmap(0x7efcd18bc000, 14368[0m[91m) = 0
+[0m[91m[pid     9] openat(AT_FDCWD, "/etc/passwd", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+[0m[91m[pid     9] lseek(3, 0, SEEK_CUR[0m[91m)       = 0
+[0m[91m[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=1203, ...}) = 0
+[0m[91m[pid     9] mmap(NULL, 1203, PROT_READ, MAP_SHARED, 3, 0[0m[91m) = 0x7efcd18bf000
+[0m[91m[pid     9] lseek(3, 1203, SEEK_SET)    = 1203
+[0m[91m[pid     9] munmap(0x7efcd18bf000, 1203[0m[91m) = 0
+[0m[91m[pid     9] close(3)                    = 0
+[0m[91m[pid     9] umask(022[0m[91m)                  = 022
+[0m[91m[pid     9] openat(AT_FDCWD, "/usr/lib/ssl/openssl.cnf", O_RDONLY[0m[91m) = 3
+[0m[91m[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=10998, ...}) = 0
+[0m[91m[pid     9] read(3, [0m[91m"#\n# OpenSSL example configuratio"..., 4096) = 4096
+[0m[91m[pid     9] read(3, [0m[91m"tableString, T61String (no BMPSt"..., 4096) = 4096
+[0m[91m[pid     9] read(3, [0m[91m"eting an end user certificate as"..., 4096) = 2806
+[0m[91m[pid     9] read(3, "", 4096)           = 0
+[0m[91m[pid     9] close(3[0m[91m)                    = 0
+[0m[91m[pid     9] brk(0x5655103b4000)         = 0x5655103b4000
+[0m[91m[pid     9] openat(AT_FDCWD, "/root/.ssh/config", O_RDONLY[0m[91m) = 3
+[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=80, ...}) = 0
+[0m[91m[pid     9] getuid([0m[91m)                    = 0
+[0m[91m[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=80, ...}) = 0
+[0m[91m[pid     9] read(3, [0m[91m"Host github.com\n\tHostName github"..., 4096) = 80
+[0m[91m[pid     9] read(3, "", 4096)           = 0
+[0m[91m[pid     9] close(3[0m[91m)                    = 0
+[0m[91m[pid     9] openat(AT_FDCWD, "/etc/ssh/ssh_config", O_RDONLY[0m[91m) = 3
+[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=1580, ...}) = 0
+[pid     9] read(3, [0m[91m"\n# This is the ssh client system"..., 4096) = 1580
+[pid     9] read(3, "", 4096)           = 0
+[pid     9] close(3)                    = 0
+[pid     9] socket(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC|SOCK_NONBLOCK, 0) = 3
+[pid     9] connect(3, {sa_family=AF_UNIX, sun_path="/var/run/nscd/socket"}, 110) = -1 ENOENT (No such file or directory)
+[pid     9] close(3)                    = 0
+[pid     9] socket(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC|SOCK_NONBLOCK, 0) = 3
+[pid     9] connect(3, {sa_family=AF_UNIX, sun_path="/var/run/nscd/socket"}, 110) = -1 ENOENT (No such file or directory)
+[pid     9] close(3)                    = 0
+[pid     9] openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+[pid     9] fstat(3, {st_mode=S_IFREG|0644, st_size=14368, ...}) = 0
+[pid     9] mmap(NULL, 14368, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7efcd18bc000
+[pid     9] close(3)                    = 0
+[pid     9] access("/etc/ld.so.nohwcap", F_OK) = -1 ENOENT (No such file or directory)
+[pid     9] openat(AT_FDCWD, "/lib/x86_64-linux-gnu/tls/haswell/x86_64/libnss_db.so.2", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] stat("/lib/x86_64-linux-gnu/tls/haswell/x86_64", [0m[91m0x7ffcfceac660) = -1 ENOENT (No such file or directory)
+[pid     9] openat(AT_FDCWD, "/lib/x86_64-linux-gnu/tls/haswell/libnss_db.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] stat("/lib/x86_64-linux-gnu/tls/haswell", [0m[91m0x7ffcfceac660) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/lib/x86_64-linux-gnu/tls/x86_64/libnss_db.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] stat("/lib/x86_64-linux-gnu/tls/x86_64", 0x7ffcfceac660) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/lib/x86_64-linux-gnu/tls/libnss_db.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] stat("/lib/x86_64-linux-gnu/tls", [0m[91m0x7ffcfceac660) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/lib/x86_64-linux-gnu/haswell/x86_64/libnss_db.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] stat("/lib/x86_64-linux-gnu/haswell/x86_64", 0x7ffcfceac660) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/lib/x86_64-linux-gnu/haswell/libnss_db.so.2", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] stat("/lib/x86_64-linux-gnu/haswell", 0x7ffcfceac660) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/lib/x86_64-linux-gnu/x86_64/libnss_db.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] stat("/lib/x86_64-linux-gnu/x86_64", [0m[91m0x7ffcfceac660) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libnss_db.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] stat("/lib/x86_64-linux-gnu", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91m[pid     9] openat(AT_FDCWD, "/usr/lib/x86_64-linux-gnu/tls/haswell/x86_64/libnss_db.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] stat("/usr/lib/x86_64-linux-gnu/tls/haswell/x86_64", [0m[91m0x7ffcfceac660) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/usr/lib/x86_64-linux-gnu/tls/haswell/libnss_db.so.2", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] stat("/usr/lib/x86_64-linux-gnu/tls/haswell", 0x7ffcfceac660) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/usr/lib/x86_64-linux-gnu/tls/x86_64/libnss_db.so.2", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] stat("/usr/lib/x86_64-linux-gnu/tls/x86_64", [0m[91m0x7ffcfceac660) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/usr/lib/x86_64-linux-gnu/tls/libnss_db.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] stat("/usr/lib/x86_64-linux-gnu/tls", [0m[91m0x7ffcfceac660) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/usr/lib/x86_64-linux-gnu/haswell/x86_64/libnss_db.so.2", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] stat("/usr/lib/x86_64-linux-gnu/haswell/x86_64", [0m[91m0x7ffcfceac660) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/usr/lib/x86_64-linux-gnu/haswell/libnss_db.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] stat("/usr/lib/x86_64-linux-gnu/haswell", [0m[91m0x7ffcfceac660) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/usr/lib/x86_64-linux-gnu/x86_64/libnss_db.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] stat("/usr/lib/x86_64-linux-gnu/x86_64", [0m[91m0x7ffcfceac660) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/usr/lib/x86_64-linux-gnu/libnss_db.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] stat("/usr/lib/x86_64-linux-gnu", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91m[pid     9] openat(AT_FDCWD, "/lib/tls/haswell/x86_64/libnss_db.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] stat("/lib/tls/haswell/x86_64", 0x7ffcfceac660) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/lib/tls/haswell/libnss_db.so.2", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] stat("/lib/tls/haswell", [0m[91m0x7ffcfceac660) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/lib/tls/x86_64/libnss_db.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = -1 ENOENT (No such file or directory)
+[pid     9] stat("/lib/tls/x86_64", [0m[91m0x7ffcfceac660) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/lib/tls/libnss_db.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] stat("/lib/tls", [0m[91m0x7ffcfceac660) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/lib/haswell/x86_64/libnss_db.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] stat("/lib/haswell/x86_64", [0m[91m0x7ffcfceac660) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/lib/haswell/libnss_db.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] stat("/lib/haswell", [0m[91m0x7ffcfceac660) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/lib/x86_64/libnss_db.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] stat("/lib/x86_64", 0x7ffcfceac660) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/lib/libnss_db.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = -1 ENOENT (No such file or directory)
+[pid     9] stat("/lib", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91m[pid     9] openat(AT_FDCWD, "/usr/lib/tls/haswell/x86_64/libnss_db.so.2", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] stat("/usr/lib/tls/haswell/x86_64", 0x7ffcfceac660) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/usr/lib/tls/haswell/libnss_db.so.2", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] stat("/usr/lib/tls/haswell", [0m[91m0x7ffcfceac660) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/usr/lib/tls/x86_64/libnss_db.so.2", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] stat("/usr/lib/tls/x86_64", [0m[91m0x7ffcfceac660) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/usr/lib/tls/libnss_db.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = -1 ENOENT (No such file or directory)
+[pid     9] stat("/usr/lib/tls", [0m[91m0x7ffcfceac660) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/usr/lib/haswell/x86_64/libnss_db.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = -1 ENOENT (No such file or directory)
+[pid     9] stat("/usr/lib/haswell/x86_64", [0m[91m0x7ffcfceac660) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/usr/lib/haswell/libnss_db.so.2", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] stat("/usr/lib/haswell", 0x7ffcfceac660) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/usr/lib/x86_64/libnss_db.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] stat("/usr/lib/x86_64", [0m[91m0x7ffcfceac660) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/usr/lib/libnss_db.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = -1 ENOENT (No such file or directory)
+[pid     9] stat("/usr/lib", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91m[pid     9] munmap(0x7efcd18bc000, 14368[0m[91m) = 0
+[0m[91m[pid     9] openat(AT_FDCWD, "/etc/services", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+[0m[91m[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=19183, ...}) = 0
+[0m[91m[pid     9] read(3, [0m[91m"# Network services, Internet sty"..., 4096) = 4096
+[0m[91m[pid     9] close(3)                    = 0
+[0m[91m[pid     9] ioctl(0, TCGETS[0m[91m, 0x7ffcfcead160) = -1 ENOTTY (Inappropriate ioctl for device)
+[0m[91m[pid     9] getpid([0m[91m)                    = 9
+[0m[91m[pid     9] openat(AT_FDCWD, "/dev/urandom", O_RDONLY|O_NOCTTY|O_NONBLOCK[0m[91m) = 3
+[0m[91m[pid     9] fstat(3, [0m[91m{st_mode=S_IFCHR|0666, st_rdev=makedev(1, 9), ...}) = 0
+[0m[91m[pid     9] poll([{fd=3, events=POLLIN}], 1, 10[0m[91m) = 1 ([{fd=3, revents=POLLIN}])
+[0m[91m[pid     9] read(3, [0m[91m"\36\21\327\320,\366\35\30\2663[)\220\231\221\16\33A\302w\263@\270k0\325\4/\246kL\312", 32) = 32
+[0m[91m[pid     9] close(3[0m[91m)                    = 0
+[0m[91m[pid     9] getuid()                    = 0
+[0m[91m[pid     9] uname([0m[91m{sysname="Linux", nodename="8afdfa0674b9", ...}) = 0
+[0m[91m[pid     9] socket(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC|SOCK_NONBLOCK, 0[0m[91m) = 3
+[0m[91m[pid     9] connect(3, {sa_family=AF_UNIX, sun_path="/var/run/nscd/socket"}, 110) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] close(3)                    = 0
+[0m[91m[pid     9] socket(AF_UNIX, SOCK_STREAM|SOCK_CLOEXEC|SOCK_NONBLOCK, 0[0m[91m) = 3
+[0m[91m[pid     9] connect(3, {sa_family=AF_UNIX, sun_path="/var/run/nscd/socket"}, 110[0m[91m) = -1 ENOENT (No such file or directory)
+[pid     9] close(3)                    = 0
+[pid     9] stat("/etc/resolv.conf", [0m[91m{st_mode=S_IFREG|0644, st_size=625, ...}) = 0
+[pid     9] openat(AT_FDCWD, "/etc/host.conf", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+[0m[91m[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=92, ...}) = 0
+[0m[91m[pid     9] read(3, "# The \"order\" line is only used "..., 4096) = 92
+[0m[91m[pid     9] read(3, "", 4096)           = 0
+[0m[91m[pid     9] close(3[0m[91m)                    = 0
+[0m[91m[pid     9] futex(0x7efcd07a5ba4, FUTEX_WAKE_PRIVATE, 2147483647[0m[91m) = 0
+[0m[91m[pid     9] openat(AT_FDCWD, "/etc/resolv.conf", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=625, ...}) = 0
+[pid     9] read(3, [0m[91m"# This file is managed by man:sy"..., 4096) = 625
+[pid     9] read(3, [0m[91m"", 4096)           = 0
+[0m[91m[pid     9] close(3[0m[91m)                    = 0
+[0m[91m[pid     9] openat(AT_FDCWD, "/etc/hosts", O_RDONLY|O_CLOEXEC) = 3
+[0m[91m[pid     9] fstat(3, {st_mode=S_IFREG|0644, st_size=174, ...}) = 0
+[0m[91m[pid     9] read(3, [0m[91m"127.0.0.1\tlocalhost\n::1\tlocalhos"..., 4096) = 174
+[0m[91m[pid     9] read(3, "", 4096)           = 0
+[0m[91m[pid     9] close(3)                    = 0
+[0m[91m[pid     9] openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+[0m[91m[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=14368, ...}) = 0
+[pid     9] mmap(NULL, 14368, PROT_READ, MAP_PRIVATE, 3, 0[0m[91m) = 0x7efcd18bc000
+[pid     9] close(3[0m[91m)                    = 0
+[0m[91m[pid     9] access("/etc/ld.so.nohwcap", F_OK[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libnss_dns.so.2", O_RDONLY|O_CLOEXEC[0m[91m) = 3
+[pid     9] read(3, [0m[91m"\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\200\17\0\0\0\0\0\0"..., 832) = 832
+[pid     9] fstat(3, [0m[91m{st_mode=S_IFREG|0644, st_size=26936, ...}) = 0
+[0m[91m[pid     9] mmap(NULL, 2121952, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7efcce9c1000
+[0m[91m[pid     9] mprotect(0x7efcce9c6000, 2097152, PROT_NONE[0m[91m) = 0
+[pid     9] mmap(0x7efccebc6000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x5000[0m[91m) = 0x7efccebc6000
+[0m[91m[pid     9] close(3[0m[91m)                    = 0
+[0m[91m[pid     9] mprotect(0x7efccebc6000, 4096, PROT_READ[0m[91m) = 0
+[pid     9] munmap(0x7efcd18bc000, 14368[0m[91m) = 0
+[0m[91m[pid     9] socket(AF_INET, SOCK_DGRAM|SOCK_CLOEXEC|SOCK_NONBLOCK, IPPROTO_IP[0m[91m) = 3
+[0m[91m[pid     9] connect(3, {sa_family=AF_INET, sin_port=htons(53), sin_addr=inet_addr("192.168.1.11")}, 16[0m[91m) = 0
+[0m[91m[pid     9] poll([{fd=3, events=POLLOUT}], 1, 0[0m[91m) = 1 ([{fd=3, revents=POLLOUT}])
+[0m[91m[pid     9] sendmmsg(3, [0m[91m[{msg_hdr={msg_name=NULL, msg_namelen=0, msg_iov=[{iov_base="\\F\1\0\0\1\0\0\0\0\0\0\6github\3com\0\0\1\0\1", iov_len=28}], msg_iovlen=1, msg_controllen=0, msg_flags=MSG_OOB}, msg_len=28}, {msg_hdr={msg_name=NULL, msg_namelen=0, msg_iov=[{iov_base="\16R\1\0\0\1\0\0\0\0\0\0\6github\3com\0\0\34\0\1", iov_len=28}], msg_iovlen=1, msg_controllen=0, msg_flags=MSG_OOB}, msg_len=28}], 2, MSG_NOSIGNAL) = 2
+[pid     9] poll([{fd=3, events=POLLIN}], 1, 5000[0m[91m) = 1 ([{fd=3, revents=POLLIN}])
+[pid     9] ioctl(3, FIONREAD[0m[91m, [112])   = 0
+[pid     9] recvfrom(3, [0m[91m"\16R\201\200\0\1\0\0\0\1\0\0\6github\3com\0\0\34\0\1\300\f\0\6"..., 2048, 0, {sa_family=AF_INET, sin_port=htons(53), sin_addr=inet_addr("192.168.1.11")}, [28->16]) = 112
+[0m[91m[pid     9] poll([{fd=3, events=POLLIN}], 1, 4994[0m[91m) = 1 ([{fd=3, revents=POLLIN}])
+[pid     9] ioctl(3, FIONREAD[0m[91m, [44])    = 0
+[0m[91m[pid     9] recvfrom(3, [0m[91m"\\F\201\200\0\1\0\1\0\0\0\0\6github\3com\0\0\1\0\1\300\f\0\1"..., 65536, 0, {sa_family=AF_INET, sin_port=htons(53), sin_addr=inet_addr("192.168.1.11")}, [28->16]) = 44
+[pid     9] close(3[0m[91m)                    = 0
+[0m[91m[pid     9] socket(AF_INET, SOCK_STREAM, IPPROTO_TCP[0m[91m) = 3
+[pid     9] fcntl(3, F_SETFD, FD_CLOEXEC) = 0
+[0m[91m[pid     9] connect(3, {sa_family=AF_INET, sin_port=htons(22), sin_addr=inet_addr("140.82.118.4")}, 16[0m[91m) = 0
+[0m[91m[pid     9] setsockopt(3, SOL_SOCKET, SO_KEEPALIVE, [1], 4[0m[91m) = 0
+[0m[91m[pid     9] getpeername(3, [0m[91m{sa_family=AF_INET, sin_port=htons(22), sin_addr=inet_addr("140.82.118.4")}, [128->16]) = 0
+[0m[91m[pid     9] getpeername(3, [0m[91m{sa_family=AF_INET, sin_port=htons(22), sin_addr=inet_addr("140.82.118.4")}, [128->16]) = 0
+[0m[91m[pid     9] getsockname(3, {sa_family=AF_INET, sin_port=htons(57282), sin_addr=inet_addr("172.17.0.2")}, [128->16]) = 0
+[0m[91m[pid     9] getsockname(3, [0m[91m{sa_family=AF_INET, sin_port=htons(57282), sin_addr=inet_addr("172.17.0.2")}, [128->16]) = 0
+[0m[91m[pid     9] setresuid(-1, 0, -1[0m[91m)        = 0
+[0m[91m[pid     9] getuid([0m[91m)                    = 0
+[0m[91m[pid     9] getgid([0m[91m)                    = 0
+[0m[91m[pid     9] setresgid(0, 0, 0[0m[91m)          = 0
+[0m[91m[pid     9] setresuid(0, 0, 0)          = 0
+[0m[91m[pid     9] getgid([0m[91m)                    = 0
+[0m[91m[pid     9] getegid([0m[91m)                   = 0
+[0m[91m[pid     9] getuid()                    = 0
+[0m[91m[pid     9] geteuid()                   = 0
+[0m[91m[pid     9] stat("/root/.ssh", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91m[pid     9] openat(AT_FDCWD, "/etc/passwd", O_RDONLY|O_CLOEXEC[0m[91m) = 4
+[pid     9] lseek(4, 0, SEEK_CUR[0m[91m)       = 0
+[0m[91m[pid     9] fstat(4, [0m[91m{st_mode=S_IFREG|0644, st_size=1203, ...}) = 0
+[pid     9] mmap(NULL, 1203, PROT_READ, MAP_SHARED, 4, 0[0m[91m) = 0x7efcd18bf000
+[0m[91m[pid     9] lseek(4, 1203, SEEK_SET)    = 1203
+[0m[91m[pid     9] munmap(0x7efcd18bf000, 1203[0m[91m) = 0
+[pid     9] close(4[0m[91m)                    = 0
+[0m[91m[pid     9] uname([0m[91m{sysname="Linux", nodename="8afdfa0674b9", ...}) = 0
+[0m[91m[pid     9] openat(AT_FDCWD, "/root/.ssh/id_rsa", O_RDONLY[0m[91m) = 4
+[0m[91m[pid     9] fstat(4, [0m[91m{st_mode=S_IFREG|0600, st_size=1675, ...}) = 0
+[pid     9] read(4, [0m[91m"-----BEGIN RSA PRIVATE KEY-----\n"..., 4096) = 1675
+[pid     9] close(4[0m[91m)                    = 0
+[0m[91m[pid     9] openat(AT_FDCWD, "/root/.ssh/id_rsa.pub", O_RDONLY[0m[91m) = 4
+[0m[91m[pid     9] fstat(4, [0m[91m{st_mode=S_IFREG|0644, st_size=575, ...}) = 0
+[pid     9] read(4, [0m[91m"ssh-rsa AAAAB3NzaC1yc2EAAAADAQAB"..., 4096) = 575
+[0m[91m[pid     9] close(4)                    = 0
+[0m[91m[pid     9] openat(AT_FDCWD, "/root/.ssh/id_rsa-cert", O_RDONLY[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/root/.ssh/id_rsa-cert.pub", O_RDONLY[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/etc/passwd", O_RDONLY|O_CLOEXEC) = 4
+[0m[91m[pid     9] lseek(4, 0, SEEK_CUR)       = 0
+[0m[91m[pid     9] fstat(4, [0m[91m{st_mode=S_IFREG|0644, st_size=1203, ...}) = 0
+[pid     9] mmap(NULL, 1203, PROT_READ, MAP_SHARED, 4, 0[0m[91m) = 0x7efcd18bf000
+[0m[91m[pid     9] lseek(4, 1203, SEEK_SET)    = 1203
+[0m[91m[pid     9] munmap(0x7efcd18bf000, 1203[0m[91m) = 0
+[pid     9] close(4[0m[91m)                    = 0
+[0m[91m[pid     9] openat(AT_FDCWD, "/etc/passwd", O_RDONLY|O_CLOEXEC[0m[91m) = 4
+[pid     9] lseek(4, 0, SEEK_CUR[0m[91m)       = 0
+[0m[91m[pid     9] fstat(4, [0m[91m{st_mode=S_IFREG|0644, st_size=1203, ...}) = 0
+[pid     9] mmap(NULL, 1203, PROT_READ, MAP_SHARED, 4, 0[0m[91m) = 0x7efcd18bf000
+[0m[91m[pid     9] lseek(4, 1203, SEEK_SET[0m[91m)    = 1203
+[0m[91m[pid     9] munmap(0x7efcd18bf000, 1203[0m[91m) = 0
+[0m[91m[pid     9] close(4[0m[91m)                    = 0
+[pid     9] rt_sigaction(SIGPIPE, NULL, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGPIPE, {sa_handler=SIG_IGN, sa_mask=[], sa_flags=SA_RESTORER, sa_restorer=0x7efcd03f4f20}, NULL, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGCHLD, NULL, [0m[91m{sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+[0m[91m[pid     9] rt_sigaction(SIGCHLD, {sa_handler=0x56550f8c7590, sa_mask=[], sa_flags=SA_RESTORER, sa_restorer=0x7efcd03f4f20}, NULL, 8) = 0
+[pid     9] write(3, "SSH-2.0-OpenSSH_7.6p1 Ubuntu-4ub"..., 41[0m[91m) = 41
+[pid     9] read(3, [0m[91m"S", 1)             = 1
+[pid     9] read(3, [0m[91m"S", 1)             = 1
+[pid     9] read(3, [0m[91m"H", 1)             = 1
+[0m[91m[pid     9] read(3, [0m[91m"-", 1)             = 1
+[0m[91m[pid     9] read(3, "2", 1)             = 1
+[0m[91m[pid     9] read(3, ".", 1)             = 1
+[pid     9] read(3, [0m[91m"0", 1)             = 1
+[0m[91m[pid     9] read(3, "-", 1)             = 1
+[0m[91m[pid     9] read(3, [0m[91m"b", 1)             = 1
+[0m[91m[pid     9] read(3, [0m[91m"a", 1)             = 1
+[0m[91m[pid     9] read(3, [0m[91m"b", 1)             = 1
+[pid     9] read(3, [0m[91m"e", 1)             = 1
+[pid     9] read(3, [0m[91m"l", 1)             = 1
+[pid     9] read(3, [0m[91m"d", 1)             = 1
+[pid     9] read(3, [0m[91m"-", 1)             = 1
+[0m[91m[pid     9] read(3, [0m[91m"7", 1)             = 1
+[0m[91m[pid     9] read(3, "9", 1)             = 1
+[0m[91m[pid     9] read(3, [0m[91m"8", 1)             = 1
+[0m[91m[pid     9] read(3, [0m[91m"3", 1)             = 1
+[0m[91m[pid     9] read(3, [0m[91m"2", 1)             = 1
+[pid     9] read(3, "5", 1)             = 1
+[0m[91m[pid     9] read(3, [0m[91m"4", 1)             = 1
+[0m[91m[pid     9] read(3, [0m[91m"4", 1)             = 1
+[0m[91m[pid     9] read(3, [0m[91m"\r", 1)            = 1
+[pid     9] read(3, [0m[91m"\n", 1)            = 1
+[0m[91m[pid     9] fcntl(3, F_GETFL)           = 0x2 (flags O_RDWR)
+[0m[91m[pid     9] fcntl(3, F_SETFL, O_RDWR|O_NONBLOCK[0m[91m) = 0
+[0m[91m[pid     9] openat(AT_FDCWD, "/root/.ssh/known_hosts", O_RDONLY[0m[91m) = 4
+[0m[91m[pid     9] fstat(4, [0m[91m{st_mode=S_IFREG|0644, st_size=1771, ...}) = 0
+[0m[91m[pid     9] read(4, [0m[91m"\n|1|yTC9MVOovhhwrrBO5NcC5EIfY2M="..., 4096) = 1771
+[0m[91m[pid     9] read(4, "", 4096)           = 0
+[0m[91m[pid     9] close(4[0m[91m)                    = 0
+[0m[91m[pid     9] openat(AT_FDCWD, "/root/.ssh/known_hosts2", O_RDONLY[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/etc/ssh/ssh_known_hosts", O_RDONLY[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/etc/ssh/ssh_known_hosts2", O_RDONLY[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] getpid([0m[91m)                    = 9
+[0m[91m[pid     9] getpid([0m[91m)                    = 9
+[0m[91m[pid     9] write(3, "\0\0\5L\5\24v\242x\27\6ba\312Mq\367t\260B\203\361\0\0\0010curve2"..., 1360[0m[91m) = 1360
+[0m[91m[pid     9] select(4, [3], NULL, NULL, NULL[0m[91m) = 1 (in [3])
+[pid     9] read(3, [0m[91m"\0\0\3<\4\24\333\304\317\241wh7A\10B\265k\310\306\372\371\0\0\0\214curve2"..., 8192) = 832
+[0m[91m[pid     9] getpid()                    = 9
+[0m[91m[pid     9] write(3, "\0\0\0,\6\36\0\0\0 Z\316MM\303rd9\313\205C\203\4\224\345\f\267/\347od\247"..., 48) = 48
+[0m[91m[pid     9] select(4, [3], NULL, NULL, NULL[0m[91m) = 1 (in [3])
+[pid     9] read(3, "\0\0\2\\\5\37\0\0\1\25\0\0\0\7ssh-rsa\0\0\0\1#\0\0\1\1\0\253"..., 8192) = 624
+[0m[91m[pid     9] openat(AT_FDCWD, "/root/.ssh/known_hosts", O_RDONLY[0m[91m) = 4
+[0m[91m[pid     9] fstat(4, [0m[91m{st_mode=S_IFREG|0644, st_size=1771, ...}) = 0
+[pid     9] read(4, [0m[91m"\n|1|yTC9MVOovhhwrrBO5NcC5EIfY2M="..., 4096) = 1771
+[0m[91m[pid     9] read(4, "", 4096)           = 0
+[0m[91m[pid     9] close(4[0m[91m)                    = 0
+[0m[91m[pid     9] openat(AT_FDCWD, "/root/.ssh/known_hosts2", O_RDONLY[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/etc/ssh/ssh_known_hosts", O_RDONLY) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/etc/ssh/ssh_known_hosts2", O_RDONLY[0m[91m) = -1 ENOENT (No such file or directory)
+[pid     9] openat(AT_FDCWD, "/root/.ssh/known_hosts", O_RDONLY[0m[91m) = 4
+[0m[91m[pid     9] fstat(4, [0m[91m{st_mode=S_IFREG|0644, st_size=1771, ...}) = 0
+[pid     9] read(4, [0m[91m"\n|1|yTC9MVOovhhwrrBO5NcC5EIfY2M="..., 4096) = 1771
+[0m[91m[pid     9] read(4, "", 4096)           = 0
+[0m[91m[pid     9] close(4)                    = 0
+[0m[91m[pid     9] openat(AT_FDCWD, "/root/.ssh/known_hosts2", O_RDONLY[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/etc/ssh/ssh_known_hosts", O_RDONLY[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] openat(AT_FDCWD, "/etc/ssh/ssh_known_hosts2", O_RDONLY[0m[91m) = -1 ENOENT (No such file or directory)
+[0m[91m[pid     9] write(3, "\0\0\0\f\n\25\0\0\0\0\0\0\0\0\0\0", 16[0m[91m) = 16
+[0m[91m[pid     9] getpid([0m[91m)                    = 9
+[0m[91m[pid     9] write(3, "_\337S\35\33\t\377\36\0\375\204@\211\3\354K\201|\300\10\257\257\351\236n\204u\333\227\v*_"..., 44[0m[91m) = 44
+[0m[91m[pid     9] select(4, [3], NULL, NULL, NULL[0m[91m) = 1 (in [3])
+[pid     9] read(3, [0m[91m"\324`\r7PQ\336\3\356Y\\\267p\2Q\263/,\211\243yx\234\251\212z?\236\306O1A"..., 8192) = 172
+[0m[91m[pid     9] select(4, [3], NULL, NULL, NULL[0m[91m) = 1 (in [3])
+[pid     9] read(3, "\20p;\370\213\v\36\335F\307\16J>\304Oq\n[\"i[[\224,m\222%\373\272\207\225\2"..., 8192) = 44
+[0m[91m[pid     9] getpid([0m[91m)                    = 9
+[0m[91m[pid     9] write(3, "\31\203\f\3;U(\314\361\202b3\233\350p\251~]\273\257\350y\5\263\245H\205O2G\24\255"..., 60[0m[91m) = 60
+[0m[91m[pid     9] select(4, [3], NULL, NULL, NULL[0m[91m) = 1 (in [3])
+[pid     9] read(3, [0m[91m"\353R\332\263\0F\246\247\3228>\363\343l+\321u\26\223:{f\360\3070\231[/\373\214Z\345"..., 8192) = 44
+[0m[91m[pid     9] getpid([0m[91m)                    = 9
+[0m[91m[pid     9] write(3, ";n60\300\347\34\350\37Y\302\344;\251\25\36\346\341\27D\216 \37w\211\f\6ubZ\333\\"..., 492[0m[91m) = 492
+[pid     9] select(4, [3], NULL, NULL, NULL[0m[91m) = 1 (in [3])
+[pid     9] read(3, [0m[91m"d\361\252\200\33e\216\21N3\1\243Pt\244i\t_p\377\351\253%v\3674\230I\220\315\326]"..., 8192) = 452
+[0m[91m[pid     9] stat("/root/.ssh/id_rsa", [0m[91m{st_mode=S_IFREG|0600, st_size=1675, ...}) = 0
+[0m[91m[pid     9] openat(AT_FDCWD, "/root/.ssh/id_rsa", O_RDONLY[0m[91m) = 4
+[0m[91m[pid     9] fstat(4, [0m[91m{st_mode=S_IFREG|0600, st_size=1675, ...}) = 0
+[pid     9] getuid([0m[91m)                    = 0
+[0m[91m[pid     9] fstat(4, [0m[91m{st_mode=S_IFREG|0600, st_size=1675, ...}) = 0
+[0m[91m[pid     9] read(4, [0m[91m"-----BEGIN RSA PRIVATE KEY-----\n"..., 1024) = 1024
+[0m[91m[pid     9] read(4, [0m[91m"SONOwhJ3O5RI9g9V6Mzkz5W3oNxEBvJV"..., 1024) = 651
+[0m[91m[pid     9] read(4, [0m[91m"", 373)            = 0
+[0m[91m[pid     9] read(4, [0m[91m"", 1024)           = 0
+[0m[91m[pid     9] getpid()                    = 9
+[0m[91m[pid     9] getpid()                    = 9
+[0m[91m[pid     9] close(4)                    = 0
+[0m[91m[pid     9] write(2, "identity_sign: private key /root"..., 75identity_sign: private key /root/.ssh/id_rsa contents do not match public
+) = 75
+[0m[91m[pid     9] write(2, "git@github.com: Permission denie"..., 48[0m[91mgit@github.com: Permission denied (publickey).
+[0m[91m) = 48
+[0m[91m[pid     9] exit_group(255[0m[91m)             = ?
+[0m[91m[pid     8] <... read resumed> "", 4)   = 0
+[pid     9] +++ exited with 255 +++
+[0m[91m--- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=9, si_uid=0, si_status=255, si_utime=1, si_stime=0} ---
+[0m[91mwrite(2, "fatal: Could not read from remot"..., 126fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+) = 126
+[0m[91mgetpid()                                = 8
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY[0m[91m) = 3
+[0m[91mfstat(3, [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mgetdents(3[0m[91m, /* 10 entries */, 32768)    = 280
+[0m[91mlstat("/var/www/TFG/.git/hooks", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/hooks", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY[0m[91m) = 6
+[0m[91mfstat(6, [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mgetdents(6[0m[91m, /* 13 entries */, 32768)    = 520
+[0m[91mlstat("/var/www/TFG/.git/hooks/prepare-commit-msg.sample", [0m[91m{st_mode=S_IFREG|0755, st_size=1492, ...}) = 0
+[0m[91munlink("/var/www/TFG/.git/hooks/prepare-commit-msg.sample"[0m[91m) = 0
+[0m[91mlstat("/var/www/TFG/.git/hooks/applypatch-msg.sample", [0m[91m{st_mode=S_IFREG|0755, st_size=478, ...}) = 0
+[0m[91munlink("/var/www/TFG/.git/hooks/applypatch-msg.sample"[0m[91m) = 0
+[0m[91mlstat("/var/www/TFG/.git/hooks/commit-msg.sample", [0m[91m{st_mode=S_IFREG|0755, st_size=896, ...}) = 0
+[0m[91munlink("/var/www/TFG/.git/hooks/commit-msg.sample"[0m[91m) = 0
+[0m[91mlstat("/var/www/TFG/.git/hooks/pre-rebase.sample", [0m[91m{st_mode=S_IFREG|0755, st_size=4898, ...}) = 0
+[0m[91munlink("/var/www/TFG/.git/hooks/pre-rebase.sample"[0m[91m) = 0
+[0m[91mlstat("/var/www/TFG/.git/hooks/update.sample", [0m[91m{st_mode=S_IFREG|0755, st_size=3610, ...}) = 0
+[0m[91munlink("/var/www/TFG/.git/hooks/update.sample"[0m[91m) = 0
+[0m[91mlstat("/var/www/TFG/.git/hooks/pre-commit.sample", [0m[91m{st_mode=S_IFREG|0755, st_size=1642, ...}) = 0
+[0m[91munlink("/var/www/TFG/.git/hooks/pre-commit.sample"[0m[91m) = 0
+lstat("/var/www/TFG/.git/hooks/pre-receive.sample", [0m[91m{st_mode=S_IFREG|0755, st_size=544, ...}) = 0
+[0m[91munlink("/var/www/TFG/.git/hooks/pre-receive.sample"[0m[91m) = 0
+[0m[91mlstat("/var/www/TFG/.git/hooks/pre-applypatch.sample", [0m[91m{st_mode=S_IFREG|0755, st_size=424, ...}) = 0
+[0m[91munlink("/var/www/TFG/.git/hooks/pre-applypatch.sample"[0m[91m) = 0
+[0m[91mlstat("/var/www/TFG/.git/hooks/fsmonitor-watchman.sample", [0m[91m{st_mode=S_IFREG|0755, st_size=3327, ...}) = 0
+[0m[91munlink("/var/www/TFG/.git/hooks/fsmonitor-watchman.sample"[0m[91m) = 0
+[0m[91mlstat("/var/www/TFG/.git/hooks/post-update.sample", [0m[91m{st_mode=S_IFREG|0755, st_size=189, ...}) = 0
+[0m[91munlink("/var/www/TFG/.git/hooks/post-update.sample"[0m[91m) = 0
+[0m[91mlstat("/var/www/TFG/.git/hooks/pre-push.sample", [0m[91m{st_mode=S_IFREG|0755, st_size=1348, ...}) = 0
+[0m[91munlink("/var/www/TFG/.git/hooks/pre-push.sample"[0m[91m) = 0
+getdents(6[0m[91m, /* 0 entries */, 32768)     = 0
+close(6[0m[91m)                                = 0
+[0m[91mrmdir("/var/www/TFG/.git/hooks"[0m[91m)        = 0
+[0m[91mlstat("/var/www/TFG/.git/description", [0m[91m{st_mode=S_IFREG|0644, st_size=73, ...}) = 0
+unlink("/var/www/TFG/.git/description"[0m[91m) = 0
+lstat("/var/www/TFG/.git/branches", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/branches", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY[0m[91m) = 6
+fstat(6, [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mgetdents(6[0m[91m, /* 2 entries */, 32768)     = 48
+getdents(6[0m[91m, /* 0 entries */, 32768)     = 0
+close(6[0m[91m)                                = 0
+[0m[91mrmdir("/var/www/TFG/.git/branches"[0m[91m)     = 0
+[0m[91mlstat("/var/www/TFG/.git/config", [0m[91m{st_mode=S_IFREG|0644, st_size=151, ...}) = 0
+[0m[91munlink("/var/www/TFG/.git/config"[0m[91m)      = 0
+[0m[91mlstat("/var/www/TFG/.git/objects", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/objects", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY[0m[91m) = 6
+fstat(6, [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+getdents(6[0m[91m, /* 4 entries */, 32768)     = 96
+lstat("/var/www/TFG/.git/objects/pack", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+openat(AT_FDCWD, "/var/www/TFG/.git/objects/pack", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY[0m[91m) = 7
+[0m[91mfstat(7, [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+brk(0x5624ecdf1000[0m[91m)                     = 0x5624ecdf1000
+getdents(7[0m[91m, /* 2 entries */, 32768)     = 48
+getdents(7[0m[91m, /* 0 entries */, 32768)     = 0
+brk(0x5624ecde9000[0m[91m)                     = 0x5624ecde9000
+close(7[0m[91m)                                = 0
+rmdir("/var/www/TFG/.git/objects/pack"[0m[91m) = 0
+[0m[91mlstat("/var/www/TFG/.git/objects/info", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/objects/info", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY[0m[91m) = 7
+[0m[91mfstat(7, [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+getdents(7[0m[91m, /* 2 entries */, 32768)     = 48
+[0m[91mgetdents(7[0m[91m, /* 0 entries */, 32768)     = 0
+[0m[91mclose(7[0m[91m)                                = 0
+[0m[91mrmdir("/var/www/TFG/.git/objects/info"[0m[91m) = 0
+getdents(6[0m[91m, /* 0 entries */, 32768)     = 0
+[0m[91mbrk(0x5624ecde1000[0m[91m)                     = 0x5624ecde1000
+close(6[0m[91m)                                = 0
+[0m[91mrmdir("/var/www/TFG/.git/objects"[0m[91m)      = 0
+[0m[91mlstat("/var/www/TFG/.git/info", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/info", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY[0m[91m) = 6
+[0m[91mfstat(6, [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+getdents(6[0m[91m, /* 3 entries */, 32768)     = 80
+[0m[91mlstat("/var/www/TFG/.git/info/exclude", [0m[91m{st_mode=S_IFREG|0644, st_size=240, ...}) = 0
+unlink("/var/www/TFG/.git/info/exclude"[0m[91m) = 0
+[0m[91mgetdents(6[0m[91m, /* 0 entries */, 32768)     = 0
+[0m[91mclose(6[0m[91m)                                = 0
+rmdir("/var/www/TFG/.git/info"[0m[91m)         = 0
+[0m[91mlstat("/var/www/TFG/.git/HEAD", [0m[91m{st_mode=S_IFREG|0644, st_size=23, ...}) = 0
+[0m[91munlink("/var/www/TFG/.git/HEAD"[0m[91m)        = 0
+[0m[91mlstat("/var/www/TFG/.git/refs", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/refs", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY[0m[91m) = 6
+fstat(6, [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+getdents(6[0m[91m, /* 4 entries */, 32768)     = 104
+[0m[91mlstat("/var/www/TFG/.git/refs/heads", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/refs/heads", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY[0m[91m) = 7
+fstat(7, [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+getdents(7[0m[91m, /* 2 entries */, 32768)     = 48
+[0m[91mgetdents(7[0m[91m, /* 0 entries */, 32768)     = 0
+close(7[0m[91m)                                = 0
+[0m[91mrmdir("/var/www/TFG/.git/refs/heads"[0m[91m)   = 0
+[0m[91mlstat("/var/www/TFG/.git/refs/tags", [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG/.git/refs/tags", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY[0m[91m) = 7
+fstat(7, [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+getdents(7[0m[91m, /* 2 entries */, 32768)     = 48
+[0m[91mgetdents(7, /* 0 entries */, 32768)     = 0
+[0m[91mclose(7)                                = 0
+[0m[91mrmdir("/var/www/TFG/.git/refs/tags"[0m[91m)    = 0
+getdents(6[0m[91m, /* 0 entries */, 32768)     = 0
+[0m[91mclose(6[0m[91m)                                = 0
+[0m[91mrmdir("/var/www/TFG/.git/refs"[0m[91m)         = 0
+[0m[91mgetdents(3, /* 0 entries */, 32768)     = 0
+[0m[91mclose(3)                                = 0
+[0m[91mrmdir("/var/www/TFG/.git"[0m[91m)              = 0
+[0m[91mopenat(AT_FDCWD, "/var/www/TFG", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY[0m[91m) = 3
+[0m[91mfstat(3, [0m[91m{st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+[0m[91mgetdents(3[0m[91m, /* 2 entries */, 32768)     = 48
+[0m[91mgetdents(3[0m[91m, /* 0 entries */, 32768)     = 0
+close(3[0m[91m)                                = 0
+[0m[91mrmdir("/var/www/TFG"[0m[91m)                   = 0
+[0m[91mexit_group(128)                         = ?
+[0m[91m+++ exited with 128 +++
+[0m
