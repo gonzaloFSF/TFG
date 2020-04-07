@@ -20,8 +20,8 @@ class BTB_PREDICTOR():
 		functions = None
 
 		self.pred_buffer = BTB_BUFFER(args)
-		is_lru = int(args["is_lru"])
-		self.get_configurable_functions(is_lru,ret_functions)
+		self.is_lru = int(args["is_lru"])
+		self.get_configurable_functions(self.is_lru,ret_functions)
 		functions = ret_functions["value"]
 		self.insert_jump = functions['insert_jump']
 		self.remove_entrie = functions['remove_entrie']
@@ -29,6 +29,18 @@ class BTB_PREDICTOR():
 		self.set_failure_jump = functions['set_failure_jump']
 		self.remplace_entrie = functions['remplace_entrie']
 
+	def to_json(self):
+
+		dict_lru_ale = {
+			0 : "Aleatorio",
+			1 : "Lru"
+		}
+		return {
+			"Tipo remplazo" : dict_lru_ale[self.is_lru],
+			"Numero entradas" : len(self.pred_buffer.branch_buffer.keys()),
+			"Bits prediccion": self.pred_buffer.num_pred_bits,
+			"Valor inicial": self.pred_buffer.init_bits_value
+		}
 
 	def get_jump_prediction(self,address_src,ret):
 
@@ -56,6 +68,13 @@ class BTB_PREDICTOR():
 		return retval
 		
 
+	def set_dts_address(self,address_dts,address_src):
+
+		retval = 0
+
+		retval |= self.pred_buffer.set_dts_address(address_src,address_dts)
+
+		return retval
 
 	def get_bits_predictor(self,address_src,ret):
 

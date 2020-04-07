@@ -18,12 +18,14 @@ class Simulador():
 	success_prediction = 0
 	remplace_jump = 0
 	jump_counter = 0
+	config = None
 		
 	def __init__(self,config):
 
 		
 		ret_predictor = {}
 
+		self.config = config
 		self.jump_counter = 0
 		self.get_predictor(config,ret_predictor)
 		self.predictor = ret_predictor['value']
@@ -39,11 +41,15 @@ class Simulador():
 
 	def json_fiels(self):
 
-		return {
-			'fallos' : self.fails_prediction,
-			'aciertos' : self.success_prediction,
-			'remplazos' : self.remplace_jump
+		dict_json_fields = {
+			'Fallos' : self.fails_prediction,
+			'Aciertos' : self.success_prediction,
+			'Remplazos' : self.remplace_jump
 		}
+
+		dict_json_fields.update(self.predictor.to_json())
+
+		return dict_json_fields
 
 
 	def next_step_jump(self,ret):
@@ -86,6 +92,9 @@ class Simulador():
 			else:
 			
 				self.fails_prediction += 1
+
+			if str(jump['address_dts']) != str(prediction_dict['address_dts']):
+				pass
 
 			if str(jump['was_jump']) == '1':
 			

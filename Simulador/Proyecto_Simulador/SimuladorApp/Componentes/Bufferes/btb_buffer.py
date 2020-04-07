@@ -187,6 +187,14 @@ class BTB_BUFFER():
 		return retval
 
 
+	def set_dts_address(self,address_src,address_dts):
+		
+		retval = 0
+
+		self.branch_buffer[address_src]["address_dts"] = address_dts
+
+		return retval 
+
 
 
 

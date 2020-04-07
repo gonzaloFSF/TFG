@@ -5,6 +5,26 @@ from SimuladorApp.flags import FLAGS
 
 import os
 
+def get_pred_form(pred_tipe):
+	
+	dict_forms = {
+		'pred_btb' : BTBForm
+	}
+	
+	return dict_forms[pred_tipe]
+
+def get_handler(form_case):
+
+	dict_handlers = {
+
+		'Trazas_delete' : None,
+		'Trazas_send' : handler_post_simulador_resultados,
+		'Resultados_delete' : None
+
+	}
+
+	return dict_handlers[form_case]
+
 
 def get_traza_files(home_dir):
 
@@ -109,20 +129,38 @@ def run_simulator(simulador):
 		if(FLAGS.IS_END_TRACE(retval)):
 			break
 
-		#(counter)
+		#print(counter)
 		counter += 1
 
 	return simulador
 
-def handler_post_simulador_resultados(request,size,file_path,ret):
+def handler_post_simulador_resultados(request,file_path):
 
 	retval = 0
-	a = BTBForm(request.POST)
+	
+	pred_tipe = request.POST['predictor']
+	name_res_tab = 'Resultados de {}'.format(pred_tipe)
+	lista_resultados_global = request.session.get('resultados',{})
+	lista_resultados = None
+	try:
 
-	form_copy = a.data.copy()
+		lista_resultados = lista_resultados_global[name_res_tab]
+
+	except KeyError:
+
+		lista_resultados = {}
+
+	
+	size = len(lista_resultados.keys())
+	form_copy = get_pred_form(pred_tipe)(request.POST).data.copy()
+	print(form_copy)
 	form_copy['filename'] = file_path
 	simulador = Simulador(form_copy)
-	ret['value'] = {"resultado_{}".format(str(size+1)):run_simulator(simulador).json_fiels()}
+	sim_res = {"Archivo" : os.path.split(file_path)[-1]}
+	sim_res.update(run_simulator(simulador).json_fiels())
+	lista_resultados.update({"resultado_{}".format(str(size+1)):sim_res})
+	lista_resultados_global[name_res_tab] = lista_resultados
+	request.session['resultados'] = lista_resultados_global
 
 	return retval
 
@@ -144,23 +182,25 @@ def display_simulador(request):
 		"pred_btb":BTBForm()
 	}
 	home_dir = request.session['home_dir']
-	ret_lista_resultados = {}
-	lista_resultados = request.session.get('resultados',{})
-	lista_trazas = []
 	listas = {}
 	file_path = None
-	#print(request.POST)
+	form_case = None
+	print(request.POST)
 	
-	if request.POST:
+	if request.POST :
 
 		file_path = "{}/{}".format(home_dir,request.POST['code_row'])
+		form_case = request.POST['sendform']
 		#print(file_path)
-		handler_post_simulador_resultados(request,len(lista_resultados.keys()),file_path,ret_lista_resultados)
-		lista_resultados.update(ret_lista_resultados['value'])
-	
-	request.session['resultados'] = lista_resultados
+		get_handler(form_case)(request,file_path)
+		
+
 	listas["Trazas"] = get_traza_files(home_dir)
-	listas["Resultados"] = lista_resultados
+
+	if 'resultados' in request.session.keys():
+		
+		listas.update(request.session['resultados'])
+
 	#print(listas)
 
 	return render(request, 'generic/simulador.html',{
