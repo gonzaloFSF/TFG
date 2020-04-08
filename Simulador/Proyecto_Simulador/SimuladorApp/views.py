@@ -19,12 +19,24 @@ def get_handler(form_case):
 
 		'Trazas_delete' : None,
 		'Trazas_send' : handler_post_simulador_resultados,
-		'Resultados_delete' : None
+		'Resultados de pred_btb_delete' : handler_eliminar_resultado
 
 	}
 
 	return dict_handlers[form_case]
 
+
+def handler_eliminar_resultado(request,*args):
+
+	lista_nombre = request.POST['sendform'].split("_delete")[0]
+	resultado_id = request.POST['code_row']
+	all_list_results = request.session.get("resultados")
+	list_results = all_list_results[lista_nombre]
+	del list_results[resultado_id]
+	print(list_results)
+	print(resultado_id)
+	all_list_results[lista_nombre] = list_results
+	request.session["resultados"] = all_list_results
 
 def get_traza_files(home_dir):
 
@@ -72,6 +84,7 @@ def init_session(session):
 	session_id = get_session(session)
 	
 	home_path = "/tmp/tfg_sim/{}".format(session_id)
+	print(home_path)
 	os.makedirs(home_path,exist_ok=True)
 	session['home_dir'] = home_path
 
@@ -187,7 +200,7 @@ def display_simulador(request):
 	form_case = None
 	print(request.POST)
 	
-	if request.POST :
+	if request.POST:
 
 		file_path = "{}/{}".format(home_dir,request.POST['code_row'])
 		form_case = request.POST['sendform']

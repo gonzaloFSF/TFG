@@ -11,7 +11,7 @@ function create {
 
 function run {
 
-	docker run -d -p 222:22 -p 8080:8080  --name prueba gonzalofsf/tfg-simulador:test
+	docker run -d -p 222:22 -p $1:8080  --name prueba gonzalofsf/tfg-simulador:test
 
 }
 
@@ -67,9 +67,8 @@ case $1 in
 
 	;;
 
-	"run")
-	
-		run;
+	"run")	
+		run $2;
 	
 	;;
 
