@@ -17,14 +17,22 @@ def get_handler(form_case):
 
 	dict_handlers = {
 
-		'Trazas_delete' : None,
+		'Trazas_delete' : handler_eliminar_traza,
 		'Trazas_send' : handler_post_simulador_resultados,
-		'Resultados de pred_btb_delete' : handler_eliminar_resultado
+		'Resultados de pred_btb_delete' : handler_eliminar_resultado,
+		'Upload':handle_uploaded_file
 
 	}
 
 	return dict_handlers[form_case]
 
+def handler_eliminar_traza(request,*args):
+	
+	home_dir = request.session.get('home_dir')
+	file_name = request.POST['code_row']
+	file_path = os.path.join(home_dir,file_name)
+
+	os.remove(file_path)
 
 def handler_eliminar_resultado(request,*args):
 
@@ -116,8 +124,10 @@ def handler_session_init(request):
 		init_session(request.session)
 
 
-def handle_uploaded_file(request,file_form,home_dir):
+def handle_uploaded_file(request):
 
+	file_form = UploadFileForm(request.POST)
+	home_dir = request.session.get('home_dir')
 	name_file = file_form.data['title']
 	file = request.FILES['file']
 	
@@ -127,7 +137,8 @@ def handle_uploaded_file(request,file_form,home_dir):
 		for chunk in file.chunks():
 			destination.write(chunk)
 
-	return path_file
+	create_traza(path_file,home_dir)
+
 
 def run_simulator(simulador):
 	
@@ -228,12 +239,12 @@ def display_traza(request):
 	handler_session_init(request)
 	home_dir = request.session['home_dir']
 	listas = {}
-	
+	print(request.POST)
+
 	if request.POST:
 
-		file_form = UploadFileForm(request.POST)
-		file_path = handle_uploaded_file(request,file_form,home_dir)
-		list_trazas = create_traza(file_path,home_dir)
+		form_case = request.POST['sendform']
+		get_handler(form_case)(request)
 
 	listas["Trazas"] = get_traza_files(home_dir)
 	form = UploadFileForm()
