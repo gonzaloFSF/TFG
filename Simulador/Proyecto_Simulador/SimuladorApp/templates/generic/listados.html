@@ -1,4 +1,4 @@
-<table class="table">
+<table id="Tabla_{{nombre}}" class="table">
 <thead>
   <tr>
   	<th scope="col"> </th>
@@ -18,7 +18,7 @@
 <tr class="listado_row">
 <td>
 <div class="form-check">
-	<input type="checkbox" name="code_row" value="{{codigo}}">
+	<input class="check_box" type="checkbox" name="{{name_value}}code_row" value="{{codigo}}">
 </div>
 </td>
 {% for key,element in elemento.items %}

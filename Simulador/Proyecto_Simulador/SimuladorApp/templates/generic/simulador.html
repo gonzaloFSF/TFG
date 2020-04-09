@@ -1,5 +1,5 @@
 {% extends 'base/baseTemplate.html' %} 
-
+{% load filters %}
 {% block title %} Simulador {% endblock %}
 
 {% block content %}
@@ -44,7 +44,26 @@
         </div>
              {% endfor %}
              
-             
+             {% for nombre,elementos in trazas.items %}
+	     	     {% with name_value="traza_" %}
+
+            <div class="card mt-3" style="">
+                <div class="card-header bg-primary text-white">
+                        {{nombre}}
+                      </div>
+                      <div class="card-body table-responsive">
+                    {% include "generic/listados.html" %}
+		    </div>
+		    <div class="card-footer">
+		          <div class="d-flex justify-content-around pb-2 mt-3">
+                        <button id="enviar_boton" type="submit" class="btn btn-danger" name="sendform" value="{{nombre}}_delete">Eliminar</button>
+                        <button id="enviar_boton" type="submit" class="btn btn-success" name="sendform" value="{{nombre}}_send">Enviar</button>
+                </div>
+		</div>
+                    </div>
+		    		{% endwith %}
+
+                {% endfor %}
 
              {% for nombre,elementos in listas.items %}
             <div class="card mt-3" style="">
@@ -57,7 +76,7 @@
 		    <div class="card-footer">
 		          <div class="d-flex justify-content-around pb-2 mt-3">
                         <button id="enviar_boton" type="submit" class="btn btn-danger" name="sendform" value="{{nombre}}_delete">Eliminar</button>
-                        <button id="enviar_boton" type="submit" class="btn btn-success" name="sendform" value="{{nombre}}_send">Enviar</button>
+                        <button  class="btn btn-success download_btn" value="Tabla_{{nombre}}" style="color:white">Descargar</button>
                 </div>
 		</div>
                     </div>
@@ -81,7 +100,7 @@
 	document.getElementById("pred_id").value = document.getElementsByClassName("nav-pred")[0].attributes.name.value;
 
 
-	[].forEach.call(document.getElementsByClassName("nav-pred"),(entrie)=>{
+[].forEach.call(document.getElementsByClassName("nav-pred"),(entrie)=>{
 		entrie.addEventListener("click",function(e){
 			var ele;
 			var name;
@@ -101,6 +120,43 @@
 
 
 		})
-	})
+	});
+
+
+
+	[].forEach.call(document.getElementsByClassName("download_btn"),(entrie)=>{
+			entrie.addEventListener("click",function(e){
+				var table;
+				var rows;
+				var codes;
+				var xhr;
+				var url_enc_data;
+				var url_cont_type;
+
+				e.preventDefault();
+
+				xhr = new XMLHttpRequest();
+				table = document.getElementById(this.value);
+				rows = [].filter.call(table.getElementsByClassName("check_box"),(entrie)=>entrie.checked);
+				codes = rows.map((entrie)=>entrie.value);
+				url_cont_type = "application/x-www-form-urlencoded";
+
+
+				url_enc_data = `csrfmiddlewaretoken=${document.getElementsByName("csrfmiddlewaretoken")[0].value}&resultados=${codes.join("&resultados=")}`;
+				xhr.open("POST","/Download_Traza");
+				xhr.onload = function () {
+							var blob=new Blob([this.response]);
+							var link=document.createElement('a');
+							link.href=window.URL.createObjectURL(blob);
+							console.log(link.href)
+							link.download="resultados.csv";
+							link.click();
+							};
+				xhr.setRequestHeader("Content-Type",url_cont_type)
+				xhr.send(url_enc_data);
+				console.log(codes);
+			})
+		});
+
 
     {% endblock %}

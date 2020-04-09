@@ -2,6 +2,8 @@ from django.shortcuts import render
 from SimuladorApp.forms import *
 from SimuladorApp.models import Simulador
 from SimuladorApp.flags import FLAGS
+from SimuladorApp.Aux_Code.download_files import *
+
 
 import os
 
@@ -29,7 +31,7 @@ def get_handler(form_case):
 def handler_eliminar_traza(request,*args):
 	
 	home_dir = request.session.get('home_dir')
-	file_name = request.POST['code_row']
+	file_name = request.POST['Traza_code_row']
 	file_path = os.path.join(home_dir,file_name)
 
 	os.remove(file_path)
@@ -158,10 +160,13 @@ def run_simulator(simulador):
 
 	return simulador
 
-def handler_post_simulador_resultados(request,file_path):
+
+def handler_post_simulador_resultados(request):
 
 	retval = 0
 	
+	home_dir = request.session.get('home_dir')
+	file_path = "{}/{}".format(home_dir,request.POST['traza_code_row'])
 	pred_tipe = request.POST['predictor']
 	name_res_tab = 'Resultados de {}'.format(pred_tipe)
 	lista_resultados_global = request.session.get('resultados',{})
@@ -182,7 +187,7 @@ def handler_post_simulador_resultados(request,file_path):
 	simulador = Simulador(form_copy)
 	sim_res = {"Archivo" : os.path.split(file_path)[-1]}
 	sim_res.update(run_simulator(simulador).json_fiels())
-	lista_resultados.update({"resultado_{}".format(str(size+1)):sim_res})
+	lista_resultados.update({"resultado_{}__{}".format(str(size+1),pred_tipe):sim_res})
 	lista_resultados_global[name_res_tab] = lista_resultados
 	request.session['resultados'] = lista_resultados_global
 
@@ -190,14 +195,15 @@ def handler_post_simulador_resultados(request,file_path):
 
 
 
-def handler_post_new_traza(file_form):
-	pass
-
 
 
 def index(request):
 
 	return render(request, 'generic/index.html')
+
+def display_download_file(request):
+
+	return download_file(request)
 
 def display_simulador(request):
 
@@ -207,30 +213,28 @@ def display_simulador(request):
 	}
 	home_dir = request.session['home_dir']
 	listas = {}
-	file_path = None
+	trazas = {}
 	form_case = None
 	print(request.POST)
 	
 	if request.POST:
 
-		file_path = "{}/{}".format(home_dir,request.POST['code_row'])
 		form_case = request.POST['sendform']
-		#print(file_path)
-		get_handler(form_case)(request,file_path)
+		get_handler(form_case)(request)
 		
 
-	listas["Trazas"] = get_traza_files(home_dir)
+	trazas["Trazas"] = get_traza_files(home_dir)
 
 	if 'resultados' in request.session.keys():
 		
 		listas.update(request.session['resultados'])
 
-	#print(listas)
 
 	return render(request, 'generic/simulador.html',{
 		'predictores':["Predictor BTB"],
 		'predictores_forms':predictores_forms,
-		'listas' : listas
+		'listas' : listas,
+		'trazas':trazas
 		})
 
 
