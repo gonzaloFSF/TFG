@@ -58,7 +58,7 @@ def get_traza_files(home_dir):
 		file_name = os.path.split(path_name)[-1]
 		res[file_name] = {
 		'Nombre' : file_name, 
-		'Tamaño' : os.stat(path_name).st_size
+		'Saltos' : os.stat(path_name).st_size
 		}
 
 	return res
