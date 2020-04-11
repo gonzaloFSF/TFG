@@ -3,6 +3,7 @@ from SimuladorApp.forms import *
 from SimuladorApp.models import Simulador
 from SimuladorApp.flags import FLAGS
 from SimuladorApp.Aux_Code.download_files import *
+from subprocess import check_output
 
 
 import os
@@ -58,11 +59,13 @@ def get_traza_files(home_dir):
 		file_name = os.path.split(path_name)[-1]
 		res[file_name] = {
 		'Nombre' : file_name, 
-		'Saltos' : os.stat(path_name).st_size
+		'Saltos' : wc(path_name)
 		}
 
 	return res
 
+def wc(filename):
+	return int(check_output(["wc", "-l", filename]).split()[0])
 
 def create_traza(file_path,home_dir):
 	
