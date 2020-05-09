@@ -4,9 +4,24 @@ from SimuladorApp.models import Simulador
 from SimuladorApp.flags import FLAGS
 from SimuladorApp.Aux_Code.download_files import *
 from subprocess import check_output
+import magic
 
 
 import os
+
+
+def costum_exceptions(code):
+
+	exceptions = {
+
+		'1' : "El titulo es necesario",
+		'2' : "Formato de archivo incorrecto",
+		'3' : "No ha sido seleccionada ninguna traza",
+	}
+
+	print("code {}".format(code))
+
+	return exceptions[code]
 
 def get_pred_form(pred_tipe):
 	
@@ -30,9 +45,12 @@ def get_handler(form_case):
 	return dict_handlers[form_case]
 
 def handler_eliminar_traza(request,*args):
+
+	if not ("traza_code_row" in request.POST.keys()) :
+		raise Exception('3')
 	
 	home_dir = request.session.get('home_dir')
-	file_name = request.POST['Traza_code_row']
+	file_name = request.POST['traza_code_row']
 	file_path = os.path.join(home_dir,file_name)
 
 	os.remove(file_path)
@@ -67,17 +85,15 @@ def get_traza_files(home_dir):
 def wc(filename):
 	return int(check_output(["wc", "-l", filename]).split()[0])
 
-def create_traza(file_path,home_dir):
+def create_traza(file_path,arguments):
 	
 
 	list_trazas = []
-	out_file = file_path.split('.')[0]+".o"
 	out_traza = file_path.split('.')[0]+".out"
 	
-	os.system("gcc {} -o {}".format(file_path,out_file))
-	os.system("FILE_PATH_TRAZA={} pin -t ../../Traza/pin/source/tools/dreamlandcoder/obj-intel64/global_trace.so -- {}".format(out_traza,out_file))
-	
-	os.system("rm {} {}".format(file_path,out_file))
+	os.system("chmod +x {}".format(file_path))
+	os.system("FILE_PATH_TRAZA={} pin -t ../../Traza/pin/source/tools/dreamlandcoder/obj-intel64/global_trace.so -- {} {}".format(out_traza,file_path,arguments))
+	os.system("rm {}".format(file_path))
 
 	return list_trazas
 
@@ -133,16 +149,36 @@ def handle_uploaded_file(request):
 
 	file_form = UploadFileForm(request.POST)
 	home_dir = request.session.get('home_dir')
-	name_file = file_form.data['title']
+	
+	if file_form.data['title'] == "" :
+
+		raise Exception("1")
+
+	parts = file_form.data['title'].split(" ")
+	name_file = parts[0]
+	arguments = " ".join(parts[1:]) if len(parts) > 1 else []
 	file = request.FILES['file']
 	
-	path_file = "{}/{}.c".format(home_dir,name_file)
+	path_file = "{}/{}.o".format(home_dir,name_file)
+
+
+	print("holaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+	
 
 	with open(path_file, 'wb+') as destination:
 		for chunk in file.chunks():
 			destination.write(chunk)
 
-	create_traza(path_file,home_dir)
+
+	print(str(magic.from_file(path_file)))
+
+	if not ("ELF" in str(magic.from_file(path_file))):
+	
+		os.remove(path_file)
+		raise Exception("2")
+
+
+	create_traza(path_file,arguments)
 
 
 def run_simulator(simulador):
@@ -168,6 +204,9 @@ def handler_post_simulador_resultados(request):
 
 	retval = 0
 	
+	if not ("traza_code_row" in request.POST.keys()) :
+		raise Exception('3')
+
 	home_dir = request.session.get('home_dir')
 	file_path = "{}/{}".format(home_dir,request.POST['traza_code_row'])
 	pred_tipe = request.POST['predictor']
@@ -218,12 +257,18 @@ def display_simulador(request):
 	listas = {}
 	trazas = {}
 	form_case = None
+	errors = None
 	print(request.POST)
-	
-	if request.POST:
 
-		form_case = request.POST['sendform']
-		get_handler(form_case)(request)
+	try:
+		if request.POST:
+
+			form_case = request.POST['sendform']
+			get_handler(form_case)(request)
+
+	except Exception as e:
+
+		errors = str(e)
 		
 
 	trazas["Trazas"] = get_traza_files(home_dir)
@@ -237,7 +282,8 @@ def display_simulador(request):
 		'predictores':["Predictor BTB"],
 		'predictores_forms':predictores_forms,
 		'listas' : listas,
-		'trazas':trazas
+		'trazas':trazas,
+		'errors':errors
 		})
 
 
@@ -246,19 +292,29 @@ def display_traza(request):
 	handler_session_init(request)
 	home_dir = request.session['home_dir']
 	listas = {}
+	errors = None
 	print(request.POST)
 
 	if request.POST:
 
-		form_case = request.POST['sendform']
-		get_handler(form_case)(request)
+		try:
 
+			form_case = request.POST['sendform']
+			get_handler(form_case)(request)
+
+		except Exception as e:
+			
+			errors = costum_exceptions(str(e))
+			print(errors)
+			print("pepeeeeeeeeeeeeeeeeeeeeeeeeee")
+			
 	listas["Trazas"] = get_traza_files(home_dir)
 	form = UploadFileForm()
 
 	return render(request, 'generic/traza.html',{
 		'form':form,
-		'listas' : listas
+		'listas' : listas,
+		'errors' : errors
 		})
 
 

@@ -15,6 +15,6 @@ class BTBForm(forms.Form):
 
 class UploadFileForm(forms.Form):
 
-	title = forms.CharField(label='Titulo',max_length=50)
+	title = forms.CharField(label='Nombre [arg1 arg2 ...]',max_length=50)
 	file = forms.FileField(label='Codigo a subir',widget=forms.FileInput(attrs={'class':'btn btn-success'}))
 		

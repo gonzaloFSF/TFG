@@ -7,7 +7,7 @@
 #include <sys/mman.h>
 
 
-int main(){
+int main(int argc, char ** argv){
 
 int i;
 int j;
@@ -15,6 +15,10 @@ int a;
 int p;
 int fd;
 char buf[2000];
+
+if(argc > 1){
+	printf("argv[1] = %s",argv[1]);
+}
 
 a = 0;
 p = 0;
