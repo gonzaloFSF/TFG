@@ -130,9 +130,10 @@ def test_session(session):
 	
 	retval = 0
 
+
 	try:
 	
-		session["home_dir"]
+		os.stat(session.get("home_dir"))
 	
 	except:
 		
