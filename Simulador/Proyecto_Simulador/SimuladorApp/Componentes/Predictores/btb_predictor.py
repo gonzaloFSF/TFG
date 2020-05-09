@@ -18,7 +18,8 @@ class BTB_PREDICTOR():
 
 		ret_functions = {}
 		functions = None
-
+		
+		self.comprobar_parametros(args)
 		self.pred_buffer = BTB_BUFFER(args)
 		self.is_lru = int(args["is_lru"])
 		self.get_configurable_functions(self.is_lru,ret_functions)
@@ -28,6 +29,12 @@ class BTB_PREDICTOR():
 		self.set_success_jump = functions['set_success_jump']
 		self.set_failure_jump = functions['set_failure_jump']
 		self.remplace_entrie = functions['remplace_entrie']
+
+	def comprobar_parametros(self,args):
+
+		if not ('is_lru' in args.keys()):
+
+			raise Exception('4')
 
 	def to_json(self):
 
@@ -41,6 +48,7 @@ class BTB_PREDICTOR():
 			"Bits prediccion": self.pred_buffer.num_pred_bits,
 			"Valor inicial": self.pred_buffer.init_bits_value
 		}
+
 
 	def get_jump_prediction(self,address_src,ret):
 

@@ -1,11 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from SimuladorApp.forms import *
 from SimuladorApp.models import Simulador
 from SimuladorApp.flags import FLAGS
 from SimuladorApp.Aux_Code.download_files import *
 from subprocess import check_output
 import magic
-
+import pickle
 
 import os
 
@@ -17,6 +17,11 @@ def costum_exceptions(code):
 		'1' : "El titulo es necesario",
 		'2' : "Formato de archivo incorrecto",
 		'3' : "No ha sido seleccionada ninguna traza",
+		'4' : "No se ha seleccionado si el tipo de remplazo es lru o aleatorio",
+		'5' : "Tamaño del buffer debe definirse y debe ser positivo",
+		'6' : "Numero de bits de predicion debe definirse y debe ser positivo",
+		'7' : "El valor inicial debe definirse y debe ser positivo",
+	
 	}
 
 	print("code {}".format(code))
@@ -38,7 +43,8 @@ def get_handler(form_case):
 		'Trazas_delete' : handler_eliminar_traza,
 		'Trazas_send' : handler_post_simulador_resultados,
 		'Resultados de pred_btb_delete' : handler_eliminar_resultado,
-		'Upload':handle_uploaded_file
+		'Upload':handle_uploaded_file,
+		'Trazas_step':handler_init_simulador_step_by_step
 
 	}
 
@@ -70,6 +76,7 @@ def handler_eliminar_resultado(request,*args):
 def get_traza_files(home_dir):
 
 	list_trazas = ["{}/{}".format(home_dir,file_traza) for file_traza in os.listdir(home_dir)]
+	list_trazas = filter(lambda x: not ("data_ser" in x), list_trazas)
 	res = {}
 
 	for path_name in list_trazas:
@@ -180,6 +187,50 @@ def handle_uploaded_file(request):
 
 	create_traza(path_file,arguments)
 
+def handler_simalador_step_by_step(simulador):
+	
+	retval = 0
+	ret_jump = {}
+
+
+
+	retval |= simulador.next_step_jump(ret_jump)
+				
+	if(FLAGS.IS_END_TRACE(retval)):
+		pass
+
+
+	return simulador
+
+def update_data_ser(file_path_ser,jump_counter,file_path,simulador):
+
+	data_ser = pickle.dumps(
+				{
+					'jump_counter':jump_counter,
+					'filename':file_path,
+					'predictor':simulador.predictor,
+					'fails_prediction' : simulador.fails_prediction,
+					'success_prediction' : simulador.success_prediction,
+					'remplace_jump' : simulador.remplace_jump
+				})
+
+	open(file_path_ser,"wb").write(data_ser)
+
+def handler_init_simulador_step_by_step(request):
+
+	if not ("traza_code_row" in request.POST.keys()) :
+		raise Exception('3')
+
+	home_dir = request.session.get('home_dir')
+	file_path = "{}/{}".format(home_dir,request.POST['traza_code_row'])
+	file_path_ser = "{}/{}".format(home_dir,"data_ser") 
+	pred_tipe = request.POST['predictor']
+	form_copy = get_pred_form(pred_tipe)(request.POST).data.copy()
+	form_copy['filename'] = file_path
+	simulador = Simulador(form_copy)
+	update_data_ser(file_path_ser,0,file_path,simulador)
+
+	
 
 def run_simulator(simulador):
 	
@@ -249,6 +300,8 @@ def display_download_file(request):
 
 def display_simulador(request):
 
+	
+
 	handler_session_init(request)
 	predictores_forms = {
 		"pred_btb":BTBForm()
@@ -268,23 +321,29 @@ def display_simulador(request):
 
 	except Exception as e:
 
-		errors = str(e)
-		
-
-	trazas["Trazas"] = get_traza_files(home_dir)
-
-	if 'resultados' in request.session.keys():
-		
-		listas.update(request.session['resultados'])
+		errors = costum_exceptions(str(e))
 
 
-	return render(request, 'generic/simulador.html',{
-		'predictores':["Predictor BTB"],
-		'predictores_forms':predictores_forms,
-		'listas' : listas,
-		'trazas':trazas,
-		'errors':errors
-		})
+	if form_case != "Trazas_step" :
+
+		trazas["Trazas"] = get_traza_files(home_dir)
+
+		if 'resultados' in request.session.keys():
+			
+			listas.update(request.session['resultados'])
+
+
+		return render(request, 'generic/simulador.html',{
+			'predictores':["Predictor BTB"],
+			'predictores_forms':predictores_forms,
+			'listas' : listas,
+			'trazas':trazas,
+			'errors':errors
+			})
+	
+	else:
+
+		return redirect("http://{}/{}".format(request.META['HTTP_HOST'],'Sim_Step_By_Step/'))
 
 
 def display_traza(request):
@@ -306,13 +365,52 @@ def display_traza(request):
 			
 			errors = costum_exceptions(str(e))
 			print(errors)
-			print("pepeeeeeeeeeeeeeeeeeeeeeeeeee")
 			
 	listas["Trazas"] = get_traza_files(home_dir)
 	form = UploadFileForm()
 
 	return render(request, 'generic/traza.html',{
 		'form':form,
+		'listas' : listas,
+		'errors' : errors
+		})
+
+
+
+def display_simulador_step_by_step(request):
+
+	handler_session_init(request)
+	home_dir = request.session['home_dir']
+	file_path_ser = "{}/{}".format(home_dir,"data_ser") 
+	listas = {}
+	errors = None
+	simulador = None
+	data_ser = None
+	data_desser = None
+	jump_counter = -1
+	file_path = None
+
+
+	data_ser = open(file_path_ser,"rb").read()
+	data_desser = pickle.loads(data_ser)
+	simulador = Simulador(
+				data_desser['jump_counter'],
+				data_desser['predictor'],
+				data_desser['filename'],
+				data_desser['fails_prediction'],
+				data_desser['success_prediction'],
+				data_desser['remplace_jump'],
+			     )
+
+	simulador = handler_simalador_step_by_step(simulador)
+	jump_counter = simulador.jump_counter
+	file_path = data_desser['filename']
+	
+	print(simulador.predictor.pred_buffer.to_json())
+	
+	update_data_ser(file_path_ser,jump_counter,file_path,simulador)
+	
+	return render(request, 'generic/traza.html',{	
 		'listas' : listas,
 		'errors' : errors
 		})

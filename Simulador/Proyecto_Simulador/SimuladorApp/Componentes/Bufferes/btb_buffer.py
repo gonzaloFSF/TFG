@@ -22,11 +22,41 @@ class BTB_BUFFER():
 
 		if(len(arguments)):
 			args = arguments[0]
+			self.comprobar_parametros(args)
 			self.size_buffer = int(args["size_buffer"])
 			self.num_pred_bits = int(args["num_pred_bits"])
 			self.init_bits_value = int(args["init_bits_value"])
 
+	def comprobar_parametros(self,args):
+
+
+		if not ('size_buffer' in args.keys() and len(args["size_buffer"]) > 0 and int(args["size_buffer"]) > 0):
+			
+			raise Exception('5')
+
+		if not ('num_pred_bits' in args.keys() and len(args["num_pred_bits"]) > 0 and int(args["num_pred_bits"]) > 0):
+			
+			raise Exception('6')
+
+		if not ('init_bits_value' in args.keys() and len(args["init_bits_value"]) > 0 and int(args["init_bits_value"]) > 0):
+			
+			raise Exception('7')
 	
+
+
+	def to_json(self):
+
+		return {
+			
+			'branch_buffer':self.branch_buffer,
+			'size_buffer':self.size_buffer,
+			'num_pred_bits':self.num_pred_bits,
+			'lru_branch_stack':self.lru_branch_stack,
+			'current_num_entries':self.current_num_entries,
+			'init_bits_value':self.init_bits_value,
+		}
+
+
 
 	def get_data_entrie(self,address,ret):
 

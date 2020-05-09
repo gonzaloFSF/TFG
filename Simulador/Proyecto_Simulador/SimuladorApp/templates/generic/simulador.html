@@ -6,6 +6,14 @@
 
 <form class="container margen-superior" action="/Simulador" method="POST" >
 
+<div id="box_error">
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong id="message_error"></strong>
+  <button id="button_close" type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+</div>
 
         
 
@@ -56,8 +64,9 @@
 		    </div>
 		    <div class="card-footer">
 		          <div class="d-flex justify-content-around pb-2 mt-3">
-                        <button id="enviar_boton" type="submit" class="btn btn-danger" name="sendform" value="{{nombre}}_delete">Eliminar</button>
-                        <button id="enviar_boton" type="submit" class="btn btn-success" name="sendform" value="{{nombre}}_send">Enviar</button>
+                        <button type="submit" class="btn btn-danger" name="sendform" value="{{nombre}}_delete">Eliminar</button>
+			<button type="submit" style="color:white;" class="btn btn-warning" name="sendform" disabled value="{{nombre}}_step">Simular Paso a Paso</button>
+                        <button type="submit" class="btn btn-success" name="sendform" value="{{nombre}}_send">Enviar</button>
                 </div>
 		</div>
                     </div>
@@ -143,7 +152,22 @@
 				rows = [].filter.call(table.getElementsByClassName("check_box"),(entrie)=>entrie.checked);
 				codes = rows.map((entrie)=>entrie.value);
 				url_cont_type = "application/x-www-form-urlencoded";
+				
+				console.log(rows,codes)
+				if(codes.length == 0){
 
+					document.getElementById("box_error").innerHTML = `
+					<div class="alert alert-danger alert-dismissible fade show" role="alert">
+					<strong id="message_error">Debe seleccionarse un resultado como mínimo</strong>
+					<button id="button_close" type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+					</div>
+					`;
+
+					window.scrollTo(500, 0);
+					return;
+				}
 
 				url_enc_data = `csrfmiddlewaretoken=${document.getElementsByName("csrfmiddlewaretoken")[0].value}&resultados=${codes.join("&resultados=")}`;
 				xhr.open("POST","/Download_Traza");

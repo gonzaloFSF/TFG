@@ -12,6 +12,7 @@ class A():
 	def __init__(self,b):
 		
 		self.b = b
+		print("pepeppepepepepepepe")
 
 	def ponme_name(self,name):
 
@@ -32,4 +33,8 @@ class B():
 		self.dict_atribute = dict_atribute
 		self.string = string
 		self.number = number
+
+
+# binary_object = pickle.dumps(object) return deserializable binary object
+# object = pickle.loads(binary_object) return object deserializado
 
