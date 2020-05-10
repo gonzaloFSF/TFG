@@ -2,7 +2,10 @@ Simulador/bin/*
 Simulador/include/*
 Simulador/lib/*
 Traza/traza.out
-
+Docker/
+Pruebas/
+Traza/jump_line_detect.c
+Traza/jump_line_detect.o
 
 # Django #
 *.log
