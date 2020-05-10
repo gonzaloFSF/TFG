@@ -1,11 +1,15 @@
+{% load filters %}
+
 <table id="Tabla_{{nombre}}" class="table">
 <thead>
   <tr>
+  {% if step != "step" %}
   	<th scope="col"> </th>
+{% endif %}
         {% for col,values in elementos.items %}
 		{% if forloop.counter == 1 %}
 			{% for col,val in values.items %}
-        			<th scope="col">{{col}}</th>
+        			<th style="text-align:center;" scope="col">{{col|translate}}</th>
 			{% endfor %}
 		{% endif %}
         {% endfor %}
@@ -16,13 +20,17 @@
  
 {% for codigo,elemento in elementos.items%}
 <tr class="listado_row">
+
+{% if step != "step" %}
 <td>
 <div class="form-check">
 	<input class="check_box" type="checkbox" name="{{name_value}}code_row" value="{{codigo}}">
 </div>
 </td>
+{% endif %}
+
 {% for key,element in elemento.items %}
-<td>{{element}}</td>
+<td style="text-align:center;" >{{element}}</td>
 {% endfor %}
 </tr>
 {% endfor %}

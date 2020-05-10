@@ -19,6 +19,7 @@ class Simulador():
 	remplace_jump = 0
 	jump_counter = 0
 	config = None
+	file_name_data = None
 		
 	def __init__(self,*arguments):
 
@@ -32,13 +33,15 @@ class Simulador():
 			self.jump_counter = 0
 			self.get_predictor(config,ret_predictor)
 			self.predictor = ret_predictor['value']
-			self.traza_list = list(pd.read_csv(config["filename"]).values)
+			self.file_name_data = config["filename"]
+			self.traza_list = list(pd.read_csv(self.file_name_data).values)
 		
 		else:
 			
 			
 			self.jump_counter = arguments[0]
 			self.predictor = arguments[1]
+			self.file_name_data = arguments[2]
 			self.traza_list = list(pd.read_csv(arguments[2]).values)
 			self.fails_prediction = arguments[3]
 			self.success_prediction = arguments[4]

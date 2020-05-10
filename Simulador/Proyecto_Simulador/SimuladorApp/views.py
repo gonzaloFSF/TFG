@@ -73,6 +73,7 @@ def handler_eliminar_resultado(request,*args):
 	all_list_results[lista_nombre] = list_results
 	request.session["resultados"] = all_list_results
 
+
 def get_traza_files(home_dir):
 
 	list_trazas = ["{}/{}".format(home_dir,file_traza) for file_traza in os.listdir(home_dir)]
@@ -167,11 +168,7 @@ def handle_uploaded_file(request):
 	arguments = " ".join(parts[1:]) if len(parts) > 1 else []
 	file = request.FILES['file']
 	
-	path_file = "{}/{}.o".format(home_dir,name_file)
-
-
-	print("holaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-	
+	path_file = "{}/{}.o".format(home_dir,name_file)	
 
 	with open(path_file, 'wb+') as destination:
 		for chunk in file.chunks():
@@ -203,12 +200,12 @@ def handler_simalador_step_by_step(simulador):
 
 	return simulador
 
-def update_data_ser(file_path_ser,jump_counter,file_path,simulador):
+def update_data_ser(file_path_ser,simulador):
 
 	data_ser = pickle.dumps(
 				{
-					'jump_counter':jump_counter,
-					'filename':file_path,
+					'jump_counter':simulador.jump_counter,
+					'filename':simulador.file_name_data,
 					'predictor':simulador.predictor,
 					'fails_prediction' : simulador.fails_prediction,
 					'success_prediction' : simulador.success_prediction,
@@ -229,24 +226,23 @@ def handler_init_simulador_step_by_step(request):
 	form_copy = get_pred_form(pred_tipe)(request.POST).data.copy()
 	form_copy['filename'] = file_path
 	simulador = Simulador(form_copy)
-	update_data_ser(file_path_ser,0,file_path,simulador)
+	update_data_ser(file_path_ser,simulador)
 
 	
 
-def run_simulator(simulador):
+def run_simulator(simulador,steps):
 	
 	retval = 0
 	ret_jump = {}
 	counter = 0
 
-	while(True):
+	while(counter < steps or steps < 0):
 
 		retval |= simulador.next_step_jump(ret_jump)
 				
 		if(FLAGS.IS_END_TRACE(retval)):
 			break
 
-		#print(counter)
 		counter += 1
 
 	return simulador
@@ -280,7 +276,7 @@ def handler_post_simulador_resultados(request):
 	form_copy['filename'] = file_path
 	simulador = Simulador(form_copy)
 	sim_res = {"Archivo" : os.path.split(file_path)[-1]}
-	sim_res.update(run_simulator(simulador).json_fiels())
+	sim_res.update(run_simulator(simulador,-1).json_fiels())
 	lista_resultados.update({"resultado_{}__{}".format(str(size+1),pred_tipe):sim_res})
 	lista_resultados_global[name_res_tab] = lista_resultados
 	request.session['resultados'] = lista_resultados_global
@@ -325,7 +321,7 @@ def display_simulador(request):
 		errors = costum_exceptions(str(e))
 
 
-	if form_case != "Trazas_step" :
+	if form_case != "Trazas_step" or errors != None:
 
 		trazas["Trazas"] = get_traza_files(home_dir)
 
@@ -376,22 +372,15 @@ def display_traza(request):
 		'errors' : errors
 		})
 
+#simulador = handler_simalador_step_by_step(simulador)
 
+def get_simulator_current_state(request):
 
-def display_simulador_step_by_step(request):
-
-	handler_session_init(request)
 	home_dir = request.session['home_dir']
 	file_path_ser = "{}/{}".format(home_dir,"data_ser") 
-	listas = {}
-	errors = None
 	simulador = None
 	data_ser = None
 	data_desser = None
-	jump_counter = -1
-	file_path = None
-
-
 	data_ser = open(file_path_ser,"rb").read()
 	data_desser = pickle.loads(data_ser)
 	simulador = Simulador(
@@ -403,17 +392,48 @@ def display_simulador_step_by_step(request):
 				data_desser['remplace_jump'],
 			     )
 
-	simulador = handler_simalador_step_by_step(simulador)
-	jump_counter = simulador.jump_counter
-	file_path = data_desser['filename']
+	return simulador
+
+
+def display_get_next_step(request):
+
+	home_dir = request.session['home_dir']
+	file_path_ser = "{}/{}".format(home_dir,"data_ser")
+	simulador = None
+	current_jump = {}
+
+	simulador = get_simulator_current_state(request)
+	simulador = run_simulator(simulador,1)
+	simulador.get_new_jump(current_jump)
+
+
+		
 	
-	print(simulador.predictor.pred_buffer.to_json())
+	update_data_ser(file_path_ser,simulador)
+
+	return display_simulador_step_by_step(request)
+
+def display_simulador_step_by_step(request):
+
+	handler_session_init(request)
+	current_jump = {}
+	tables = {}
+	simulador = None
+	errors = None
+
+	simulador = get_simulator_current_state(request)
+
+	simulador.get_new_jump(current_jump)
+	current_jump = {'current_jump':current_jump}
+	tables['Resultados'] = {'resultados':simulador.json_fiels()}
+	tables['Buffer'] = simulador.predictor.pred_buffer.branch_buffer
+
+
 	
-	update_data_ser(file_path_ser,jump_counter,file_path,simulador)
-	
-	return render(request, 'generic/traza.html',{	
-		'listas' : listas,
-		'errors' : errors
+	return render(request, 'generic/sim_step_by_step.html',{
+		'tables':tables,
+		'current_jump':current_jump,
+		'errors':errors
 		})
 
 

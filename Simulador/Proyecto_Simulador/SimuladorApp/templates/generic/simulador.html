@@ -65,7 +65,7 @@
 		    <div class="card-footer">
 		          <div class="d-flex justify-content-around pb-2 mt-3">
                         <button type="submit" class="btn btn-danger" name="sendform" value="{{nombre}}_delete">Eliminar</button>
-			<button type="submit" style="color:white;" class="btn btn-warning" name="sendform" disabled value="{{nombre}}_step">Simular Paso a Paso</button>
+			<button type="submit" style="color:white;" class="btn btn-warning" name="sendform" value="{{nombre}}_step">Simular Paso a Paso</button>
                         <button type="submit" class="btn btn-success" name="sendform" value="{{nombre}}_send">Enviar</button>
                 </div>
 		</div>
@@ -107,6 +107,7 @@
     
     {% block extrajs %}
 
+<script>
 	document.getElementsByTagName("h4")[0].textContent = document.getElementsByClassName("nav-pred")[0].attributes.name.value;
 	document.getElementsByClassName("nav-pred")[0].className += " show active";
 	document.getElementById("pred_id").value = document.getElementsByClassName("nav-pred")[0].attributes.name.value;
@@ -185,5 +186,5 @@
 			})
 		});
 
-
+	</script>
     {% endblock %}
