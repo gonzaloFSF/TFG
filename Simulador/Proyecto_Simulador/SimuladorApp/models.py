@@ -143,9 +143,10 @@ class Simulador():
 
 		try:
 
-			jump_dict['address_src'] = self.traza_list[self.jump_counter][0]
-			jump_dict['address_dts'] = self.traza_list[self.jump_counter][1]
-			jump_dict['was_jump'] = int(self.traza_list[self.jump_counter][2])
+			jump_dict['instruccion'] = self.traza_list[self.jump_counter][0]
+			jump_dict['address_src'] = self.traza_list[self.jump_counter][1]
+			jump_dict['address_dts'] = self.traza_list[self.jump_counter][2]
+			jump_dict['was_jump'] = int(self.traza_list[self.jump_counter][3])
 			ret['value'] = jump_dict
 
 		except IndexError:

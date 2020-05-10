@@ -100,6 +100,7 @@ class BTB_BUFFER():
 	def insert_jump(self,jump):
 
 		retval = 0
+		instruccion = jump["instruccion"] 
 		address_src = jump["address_src"] 
 		address_dts = jump["address_dts"] 
 		entrie_exist = (address_src in list(self.branch_buffer.keys()))
@@ -119,6 +120,7 @@ class BTB_BUFFER():
 				retval |= FLAGS.GET_ENTRIE_EXIST()
 			
 			data = {
+				'instruccion':instruccion,
 				'address_src':address_src,
 				'address_dts':address_dts,
 				'bits' : self.init_bits_value

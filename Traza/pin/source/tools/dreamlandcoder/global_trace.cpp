@@ -1,5 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <utility>      // std::pair, std::make_pair
+#include <string>       // std::string
 #include "pin.H"
 using std::cerr;
 using std::ofstream;
@@ -10,6 +12,8 @@ using std::hex;
 using std::flush;
 using std::dec;
 using std::endl;
+
+std::map<long unsigned int, string> intrucctions_dissasembler;
 
 //make obj-intel64/global_trace.so TARGET=intel64
 //../../../pin -t obj-intel64/global_trace.so -- ~/Escritorio/C/TFG/Traza/jump_line_detect.o
@@ -25,7 +29,9 @@ bool flag_jump;
 VOID Before(VOID *instr_addrs, VOID * jump_to_address, INT64 taken)
 {
     
-    outFile << hex 
+    outFile << intrucctions_dissasembler[(long unsigned int)instr_addrs]
+    << ","
+    << hex 
     << (unsigned long long)instr_addrs
     << ","
     << (unsigned long long) jump_to_address
@@ -39,6 +45,9 @@ VOID Instruction(INS ins, VOID *v)
 
     if (INS_IsBranch(ins))
     {
+	std::pair <long unsigned int, string> entrie ((LEVEL_PINCLIENT::INS_Address(ins)), INS_Disassemble(ins));
+
+	intrucctions_dissasembler.insert(entrie); 
         INS_InsertCall(ins,
                        IPOINT_BEFORE,
                        AFUNPTR(Before),
@@ -82,7 +91,9 @@ int main(int argc, char *argv[])
 
     
     
-    outFile << hex 
+    outFile << dec << "instruccion"
+    << ","
+    << hex 
     << "address_src"
     << ","
     << "address_dts"
