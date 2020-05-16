@@ -10,7 +10,7 @@ keyrings.alt==3.0
 numpy==1.18.1
 pandas==1.0.1
 pycrypto==2.6.1
-pygobject==3.26.1
+pygobject
 python-dateutil==2.8.1
 pytz==2019.3
 pyxdg==0.25

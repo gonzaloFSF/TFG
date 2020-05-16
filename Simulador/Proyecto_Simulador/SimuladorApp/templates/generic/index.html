@@ -21,6 +21,8 @@
 {% endblock %}
 
 {% block extrajs %}
-var col_prod; col_prod = document.getElementsByClassName("col-prod"); for(var col of col_prod) { col.addEventListener("click",function(e) { var prod_name; var img_prog; img_prod = this.getElementsByClassName("img-prod")[0];
+<script>
+    var col_prod; col_prod = document.getElementsByClassName("col-prod"); for(var col of col_prod) { col.addEventListener("click",function(e) { var prod_name; var img_prog; img_prod = this.getElementsByClassName("img-prod")[0];
 prod_name = img_prod.attributes.alt.value;window.location.href = `/${prod_name}` }); } 
+</script>
 {% endblock %}
