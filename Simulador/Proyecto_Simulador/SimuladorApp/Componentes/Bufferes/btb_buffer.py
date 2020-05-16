@@ -34,11 +34,11 @@ class BTB_BUFFER():
 			
 			raise Exception('5')
 
-		if not ('num_pred_bits' in args.keys() and len(args["num_pred_bits"]) > 0 and int(args["num_pred_bits"]) > 0):
+		if not ('num_pred_bits' in args.keys() and len(args["num_pred_bits"]) > 0 and int(args["num_pred_bits"]) >= 0):
 			
 			raise Exception('6')
 
-		if not ('init_bits_value' in args.keys() and len(args["init_bits_value"]) > 0 and int(args["init_bits_value"]) > 0):
+		if not ('init_bits_value' in args.keys() and len(args["init_bits_value"]) > 0 and int(args["init_bits_value"]) >= 0):
 			
 			raise Exception('7')
 	
