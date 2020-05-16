@@ -426,7 +426,7 @@ def display_simulador_step_by_step(request):
 	simulador.get_new_jump(current_jump)
 	current_jump = {'current_jump':current_jump}
 	tables['Resultados'] = {'resultados':simulador.json_fiels()}
-	tables['Buffer'] = simulador.predictor.pred_buffer.branch_buffer
+	tables['Buffer'] = simulador.predictor.pred_buffer.remove_dts_jump_to_display()
 
 
 	

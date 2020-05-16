@@ -17,7 +17,7 @@ def translate(value1):
 
 	res = None
 	dict_translate = {
-		'address_src':"Dirección de Salto",
+		'address_src':"Dirección del Salto",
 		'address_dts' : "Dirección destino",
 		'bits': "Contador",
 		'was_jump': "Hay salto"

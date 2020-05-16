@@ -43,12 +43,27 @@ class BTB_BUFFER():
 			raise Exception('7')
 	
 
+	def remove_dts_jump_to_display(self):
+
+		btb_buffer_cp_dict = {}
+		btb_buffer_cp_list = [value.copy() for key,value in self.branch_buffer.items()]
+		
+
+		for ele in btb_buffer_cp_list:
+
+			ele.pop('address_dts')
+			key = list(ele.values())[1]
+			btb_buffer_cp_dict[key] = ele
+
+		print(btb_buffer_cp_dict)
+
+		return btb_buffer_cp_dict
 
 	def to_json(self):
 
 		return {
 			
-			'branch_buffer':self.branch_buffer,
+			'branch_buffer':self.remove_dts_jump_to_display(),
 			'size_buffer':self.size_buffer,
 			'num_pred_bits':self.num_pred_bits,
 			'lru_branch_stack':self.lru_branch_stack,

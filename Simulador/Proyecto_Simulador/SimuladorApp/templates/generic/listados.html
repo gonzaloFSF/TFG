@@ -6,6 +6,9 @@
   {% if step != "step" %}
   	<th scope="col"> </th>
 {% endif %}
+{% if btb_index == "btb" %}
+<th scope="col">Entrada</th>
+{% endif %}
         {% for col,values in elementos.items %}
 		{% if forloop.counter == 1 %}
 			{% for col,val in values.items %}
@@ -25,6 +28,14 @@
 <td>
 <div class="form-check">
 	<input class="check_box" type="checkbox" name="{{name_value}}code_row" value="{{codigo}}">
+</div>
+</td>
+{% endif %}
+
+{% if btb_index == "btb" %}
+<td>
+<div class="form-check">
+	{{forloop.counter}}
 </div>
 </td>
 {% endif %}
