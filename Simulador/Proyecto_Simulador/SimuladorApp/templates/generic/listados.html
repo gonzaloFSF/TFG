@@ -6,7 +6,7 @@
   {% if step != "step" %}
   	<th scope="col"> </th>
 {% endif %}
-{% if btb_index == "btb" %}
+{% if nombre == "Buffer" and elementos|length|get_digit:"-1" != 0 %}
 <th scope="col">Entrada</th>
 {% endif %}
         {% for col,values in elementos.items %}
@@ -32,7 +32,7 @@
 </td>
 {% endif %}
 
-{% if btb_index == "btb" %}
+{% if nombre == "Buffer" %}
 <td>
 <div class="form-check">
 	{{forloop.counter}}
