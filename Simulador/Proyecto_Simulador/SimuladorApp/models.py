@@ -20,6 +20,7 @@ class Simulador():
 	jump_counter = 0
 	config = None
 	file_name_data = None
+	instrucciones_totales = 0
 		
 	def __init__(self,*arguments):
 
@@ -28,13 +29,20 @@ class Simulador():
 
 		if len(arguments) == 1:
 
-			config = arguments[0]
+			config_qd = arguments[0]
+			config = {k: (lambda x: x[0] if len(x) else x)(list(filter(lambda x: len(x),config_qd.getlist(k)))) if len(config_qd.getlist(k))>1 else v for k, v in config_qd.items()}
+			self.comprobar_parametros(config)
 			self.config = config
 			self.jump_counter = 0
 			self.get_predictor(config,ret_predictor)
 			self.predictor = ret_predictor['value']
 			self.file_name_data = config["filename"]
+			self.num_ciclo_fail = int(config['num_ciclo_fail'])
 			self.traza_list = list(pd.read_csv(self.file_name_data).values)
+			self.instrucciones_totales = 0
+			self.fails_prediction = 0
+			self.success_prediction = 0
+			self.remplace_jump = 0
 		
 		else:
 			
@@ -46,16 +54,20 @@ class Simulador():
 			self.fails_prediction = arguments[3]
 			self.success_prediction = arguments[4]
 			self.remplace_jump = arguments[5]
+			self.instrucciones_totales = arguments[6]
 
 
 
+	def comprobar_parametros(self,args):
+
+		pass
 
 	def __str__(self):
 
 		return str({
 			'fails_prediction' : self.fails_prediction,
 			'success_prediction' : self.success_prediction,
-			'remplace_jump' : self.remplace_jump
+			'remplace_jump' : self.remplace_jump,
 		})
 
 	def json_fiels(self):
@@ -63,7 +75,9 @@ class Simulador():
 		dict_json_fields = {
 			'Fallos' : self.fails_prediction,
 			'Aciertos' : self.success_prediction,
-			'Remplazos' : self.remplace_jump
+			'Remplazos' : self.remplace_jump,
+			'Intrucciones Ejecutadas' : self.instrucciones_totales,
+			'Total ciclos por fallo': self.predictor.num_ciclo_fail * (self.fails_prediction) 
 		}
 
 		dict_json_fields.update(self.predictor.to_json())
@@ -130,6 +144,8 @@ class Simulador():
 						prediction_dict['address_dts'] , 
 						jump['was_jump'],prediction_dict['prediction']
 			]
+			
+			self.instrucciones_totales += int(self.traza_list[self.jump_counter][0]) + 1
 			self.jump_counter += 1
 
 		return retval
@@ -143,10 +159,10 @@ class Simulador():
 
 		try:
 
-			jump_dict['instruccion'] = self.traza_list[self.jump_counter][0]
-			jump_dict['address_src'] = self.traza_list[self.jump_counter][1]
-			jump_dict['address_dts'] = self.traza_list[self.jump_counter][2]
-			jump_dict['was_jump'] = int(self.traza_list[self.jump_counter][3])
+			jump_dict['instruccion'] = self.traza_list[self.jump_counter][1]
+			jump_dict['address_src'] = self.traza_list[self.jump_counter][2]
+			jump_dict['address_dts'] = self.traza_list[self.jump_counter][3]
+			jump_dict['was_jump'] = int(self.traza_list[self.jump_counter][4])
 			ret['value'] = jump_dict
 
 		except IndexError:
@@ -161,10 +177,12 @@ class Simulador():
 
 		retval = 0
 		map_predicto = {
-			'Predictor BTB':BTB_PREDICTOR
+			'Predictor BTB':BTB_PREDICTOR,
+			'Predictor de 2 niveles de historia':BTB_PREDICTOR
 		}
 		preditor_id = config['pred_id']
 
+		config['is_simple_buffer'] = 1 if preditor_id == 'Predictor BTB' else 0
 		ret['value'] = map_predicto[preditor_id](config)
 
 		return retval

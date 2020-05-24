@@ -18,12 +18,12 @@
         
 
         <ul class="nav nav-tabs mb-4">
-                {% for predictor in predictores %}
-                <li class="nav-item nav-list-elements nav-pred show active" name="{{predictor}}">
-                        <a class="nav-link" href="#">
+				{% for predictor in predictores %}
+                <li class="nav-item nav-list-elements nav-pred" name="{{predictor}}">
+                        <a class="nav-link" href="">
                                 {{predictor}}
                         </a>
-                      </li>
+					  </li>
                 {% endfor %}
               </ul>
 
@@ -40,9 +40,8 @@
             </div>
 
            {% for name,files in  predictores_forms.items %}
-        <div id="{{name}}" class="border border-primary p-4">
+        <div id="{{name}}" class="border border-primary p-4" style="display:none">
             {% csrf_token %}
-            <input name="predictor" value="{{name}}" style="display:none">
             {% for element in  files %}
                     <div class="form-group">
                         {{element.label_tag}} 
@@ -50,7 +49,9 @@
                     </div>
                      {% endfor %}
         </div>
-             {% endfor %}
+			 {% endfor %}
+			 
+
              
              {% for nombre,elementos in trazas.items %}
 	     	     {% with name_value="traza_" %}
@@ -74,7 +75,8 @@
 
                 {% endfor %}
 
-             {% for nombre,elementos in listas.items %}
+			 {% for nombre,elementos in listas.items %}
+			 {% if elementos|length|get_digit:"-1" != 0 %}
             <div class="card mt-3" style="">
                 <div class="card-header bg-primary text-white">
                         {{nombre}}
@@ -84,11 +86,12 @@
 		    </div>
 		    <div class="card-footer">
 		          <div class="d-flex justify-content-around pb-2 mt-3">
-                        <button id="enviar_boton" type="submit" class="btn btn-danger" name="sendform" value="{{nombre}}_delete">Eliminar</button>
+                        <button  type="submit" target_pred="{{nombre}}" class="btn btn-danger remove_results" name="sendform" value="Resultados de pred_btb_delete">Eliminar</button>
                         <button  class="btn btn-success download_btn" value="Tabla_{{nombre}}" style="color:white">Descargar</button>
                 </div>
 		</div>
-                    </div>
+					</div>
+					{% endif %}
                 {% endfor %}
 
 
@@ -108,26 +111,46 @@
     {% block extrajs %}
 
 <script>
-	document.getElementsByTagName("h4")[0].textContent = document.getElementsByClassName("nav-pred")[0].attributes.name.value;
-	document.getElementsByClassName("nav-pred")[0].className += " show active";
-	document.getElementById("pred_id").value = document.getElementsByClassName("nav-pred")[0].attributes.name.value;
 
+	var update_target;
+
+	document.getElementsByTagName("h4")[0].textContent = document.getElementsByName("Predictor BTB")[0].attributes.name.value;
+	document.getElementsByName("Predictor BTB")[0].className += " show active";
+	document.getElementById("pred_id").value = document.getElementsByName("Predictor BTB")[0].attributes.name.value;
+	document.getElementById("Predictor BTB").style = "display:block";
+	update_target = 0;
 
 [].forEach.call(document.getElementsByClassName("nav-pred"),(entrie)=>{
 		entrie.addEventListener("click",function(e){
 			var ele;
 			var name;
+			var name_current;
 			var current_show_ele;
 			var pred_id_type;
+			var form_predict;
+			var form_predict_current;
 
+			e.preventDefault();
+
+			document.getElementsByTagName('form')[0].reset();
 			ele = this;
-			name = ele.attributes.name.value;
 			current_show_ele = document.getElementsByClassName("show")[0];
+			name = ele.attributes.name.value;
+			name_current = current_show_ele.attributes.name.value;
+
+			if(name == name_current){
+				return;
+			}
+
 			pred_id_type = document.getElementById("pred_id");
+			form_predict = document.getElementById(name);
+			form_predict_current = document.getElementById(name_current);
 
 			document.getElementsByTagName("h4")[0].textContent = name;
 			current_show_ele.className = current_show_ele.className.split("show")[0];
 			this.className += " show active";
+			form_predict.style = "display:block";
+			form_predict_current.style = "display:none";
 
 			pred_id_type.value = name;
 
@@ -185,6 +208,31 @@
 				console.log(codes);
 			})
 		});
+
+		[].forEach.call(document.getElementsByClassName("remove_results"),(entrie)=>{
+			entrie.addEventListener("click",function(e){
+
+				var target_pred;
+				var pred_id_type;
+
+
+				if(!update_target)
+					e.preventDefault();
+
+
+				target_pred = this.attributes.target_pred.value;
+				pred_id_type = document.getElementById("pred_id");
+				pred_id_type.value = target_pred;
+
+				document.getElementsByTagName('form')[0].submit();
+				update_target = 1;
+				this.click();
+
+
+			})
+			
+		})
+		
 
 	</script>
     {% endblock %}

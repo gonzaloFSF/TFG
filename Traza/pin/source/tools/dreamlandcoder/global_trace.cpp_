@@ -13,33 +13,23 @@ using std::flush;
 using std::dec;
 using std::endl;
 
-
-
-
-unsigned long counter;
 std::map<long unsigned int, string> intrucctions_dissasembler;
 
 //make obj-intel64/global_trace.so TARGET=intel64
-//../../../pin -t obj-intel64/global_trace.so -- ../../../../jump_line_detect.o
+//../../../pin -t obj-intel64/global_trace.so -- ~/Escritorio/C/TFG/Traza/jump_line_detect.o
 
 
 
 ofstream outFile;
 KNOB<string> KnobOutputFile(KNOB_MODE_WRITEONCE, "pintool",
     "o", "traza.out", "specify output file name");
+bool flag_jump;
 
-VOID All_Ins(){
-    counter++;
-}
 
 VOID Before(VOID *instr_addrs, VOID * jump_to_address, INT64 taken)
 {
-
-
-    outFile << dec 
-    << (unsigned long long)counter
-    << ","
-    << intrucctions_dissasembler[(long unsigned int)instr_addrs]
+    
+    outFile << intrucctions_dissasembler[(long unsigned int)instr_addrs]
     << ","
     << hex 
     << (unsigned long long)instr_addrs
@@ -48,38 +38,24 @@ VOID Before(VOID *instr_addrs, VOID * jump_to_address, INT64 taken)
     << ","
     << (unsigned long long)taken
     << endl;
-
-    counter = 0;
-
     return;
 }
-
 VOID Instruction(INS ins, VOID *v)
 {
 
     if (INS_IsBranch(ins))
     {
+	std::pair <long unsigned int, string> entrie ((LEVEL_PINCLIENT::INS_Address(ins)), INS_Disassemble(ins));
 
-        std::pair <long unsigned int, string> entrie ((LEVEL_PINCLIENT::INS_Address(ins)),INS_Disassemble(ins));
-
-        intrucctions_dissasembler.insert(entrie); 
+	intrucctions_dissasembler.insert(entrie); 
         INS_InsertCall(ins,
-                        IPOINT_BEFORE,
-                        AFUNPTR(Before),
-                        IARG_INST_PTR,
-                        IARG_BRANCH_TARGET_ADDR,
-                        IARG_BRANCH_TAKEN,
-                        IARG_END);
-
+                       IPOINT_BEFORE,
+                       AFUNPTR(Before),
+                       IARG_INST_PTR,
+                       IARG_BRANCH_TARGET_ADDR,
+                       IARG_BRANCH_TAKEN,
+                       IARG_END);
         
-    }
-    else{
-
-         INS_InsertCall(ins, 
-         IPOINT_BEFORE,
-         AFUNPTR(All_Ins),
-         IARG_END);
-
     }
 }
 
@@ -95,13 +71,9 @@ INT32 Usage()
          << KNOB_BASE::StringKnobSummary() << endl;
     return -1;
 }
-
-
-
-
-
 int main(int argc, char *argv[])
 {
+    flag_jump = 0;
     char * file_path;
     // Initialize pin
     if (PIN_Init(argc, argv))
@@ -119,9 +91,7 @@ int main(int argc, char *argv[])
 
     
     
-    outFile << dec << "Numero de Instrucciones"
-    << ","
-    << dec << "instruccion"
+    outFile << dec << "instruccion"
     << ","
     << hex 
     << "address_src"

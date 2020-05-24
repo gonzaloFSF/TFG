@@ -1,5 +1,6 @@
 
 from SimuladorApp.flags import FLAGS
+from SimuladorApp.Componentes.Bufferes.btb_2_nivel import BITS_BUFFER_HISTORY
 
 class BTB_BUFFER():
 
@@ -8,7 +9,9 @@ class BTB_BUFFER():
 	num_pred_bits = 0
 	lru_branch_stack = []
 	current_num_entries = 0
-	init_bits_value = 0
+	is_simple_buffer = 0
+	history_index_len = 0
+	buffer_history_index = {}
 
 
 	def __init__(self,*arguments):
@@ -18,14 +21,20 @@ class BTB_BUFFER():
 		self.num_pred_bits = 0
 		self.lru_branch_stack = []
 		self.current_num_entries = 0
-		self.init_bits_value = 0
+		self.buffer_history_index = {}
 
 		if(len(arguments)):
 			args = arguments[0]
 			self.comprobar_parametros(args)
 			self.size_buffer = int(args["size_buffer"])
 			self.num_pred_bits = int(args["num_pred_bits"])
-			self.init_bits_value = int(args["init_bits_value"])
+			self.is_simple_buffer = int(args["is_simple_buffer"])
+			
+			if not self.is_simple_buffer:
+
+				self.history_index_len = int(args["history_index_len"])
+
+
 
 	def comprobar_parametros(self,args):
 
@@ -34,16 +43,13 @@ class BTB_BUFFER():
 			
 			raise Exception('5')
 
-		if not ('num_pred_bits' in args.keys() and len(args["num_pred_bits"]) > 0 and int(args["num_pred_bits"]) >= 0):
+		if not ('num_pred_bits' in args.keys() and len(args["num_pred_bits"]) > 0 and int(args["num_pred_bits"]) > 0):
 			
 			raise Exception('6')
 
-		if not ('init_bits_value' in args.keys() and len(args["init_bits_value"]) > 0 and int(args["init_bits_value"]) >= 0):
-			
-			raise Exception('7')
 	
 
-	def remove_dts_jump_to_display(self):
+	def format_to_display(self):
 
 		btb_buffer_cp_dict = {}
 		btb_buffer_cp_list = [value.copy() for key,value in self.branch_buffer.items()]
@@ -52,6 +58,7 @@ class BTB_BUFFER():
 		for ele in btb_buffer_cp_list:
 
 			ele.pop('address_dts')
+			ele['bits'] = bin(ele['bits'])
 			key = list(ele.values())[1]
 			btb_buffer_cp_dict[key] = ele
 
@@ -63,12 +70,11 @@ class BTB_BUFFER():
 
 		return {
 			
-			'branch_buffer':self.remove_dts_jump_to_display(),
+			'branch_buffer':self.format_to_display(),
 			'size_buffer':self.size_buffer,
 			'num_pred_bits':self.num_pred_bits,
 			'lru_branch_stack':self.lru_branch_stack,
 			'current_num_entries':self.current_num_entries,
-			'init_bits_value':self.init_bits_value,
 		}
 
 
@@ -119,6 +125,8 @@ class BTB_BUFFER():
 		address_src = jump["address_src"] 
 		address_dts = jump["address_dts"] 
 		entrie_exist = (address_src in list(self.branch_buffer.keys()))
+		ret_bits = {}
+		bits = -1
 		
 		if(not entrie_exist and self.current_num_entries == self.size_buffer):
 
@@ -133,18 +141,44 @@ class BTB_BUFFER():
 			else:
 
 				retval |= FLAGS.GET_ENTRIE_EXIST()
+
+			retval |= self.get_init_bits(address_src,ret_bits)
+			bits = ret_bits['value']
 			
 			data = {
 				'instruccion':instruccion,
 				'address_src':address_src,
 				'address_dts':address_dts,
-				'bits' : self.init_bits_value
+				'bits' : bits
 				}
 
 			self.branch_buffer[address_src] = data
 
 		return retval
 
+	def get_init_bits(self,address,ret):
+
+		retval = 0
+		address_part = None
+		
+		address_part = address[8:]
+
+		if self.is_simple_buffer:
+
+			ret['value'] = 0
+
+		else:
+
+			try :
+
+				ret['value'] = self.buffer_history_index[address_part]
+
+			except KeyError:
+
+				self.buffer_history_index[address_part] = BITS_BUFFER_HISTORY(self.history_index_len)
+				ret['value'] = self.buffer_history_index[address_part]
+
+		return retval
 
 	def remove_entrie(self,address,ret):
 
@@ -169,14 +203,8 @@ class BTB_BUFFER():
 		retval = 0
 		ret_data = {}
 
-		retval = self.get_data_entrie(address,ret_data)
-		
-		if(retval):
-			return retval
-
+		retval = self.extract_bits(address,0,ret_data)
 		data = ret_data["value"]
-
-
 		ret["value"] = data["bits"]
 
 
@@ -191,7 +219,7 @@ class BTB_BUFFER():
 		ret_data = {}
 		bits = -1
 
-		retval = self.get_data_entrie(address,ret_data)
+		retval = self.extract_bits(address,1,ret_data)
 		
 		if(retval):
 			return retval
@@ -216,7 +244,7 @@ class BTB_BUFFER():
 		ret_data = {}
 		bits = -1
 
-		retval = self.get_data_entrie(address,ret_data)
+		retval = self.extract_bits(address,2,ret_data)
 		
 		if(retval):
 			return retval
@@ -309,6 +337,31 @@ class BTB_BUFFER():
 		ret["value"] = len(self.lru_branch_stack)
 
 		return retval
+
+
+	def extract_bits(self,address,case,ret):
+		
+		retval = 0
+		ret_bits = {}
+		ret_entrie = {}
+		entrie = None
+
+		retval |= self.get_data_entrie(address,ret_entrie)
+		entrie = ret_entrie['value']
+
+		if self.is_simple_buffer:
+
+			ret['value'] = entrie
+
+		else:
+
+			retval |= entrie['bits'].get_bits(case,ret_bits)
+			ret['value'] = ret_bits['value']
+
+
+		return retval
+		
+		
 
 		
 

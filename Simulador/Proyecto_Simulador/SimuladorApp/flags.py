@@ -58,6 +58,12 @@ class FLAGS(Enum):
         return (1 << 8)
 
 
+    @staticmethod
+    def GET_NEW_ENTRIE_HISTORY_BUFFER():
+	    
+        return (1 << 9)
+
+
     # Find flag
 
     @staticmethod
@@ -104,6 +110,12 @@ class FLAGS(Enum):
     def IS_SESSION_NOT_INIT(retval):
 
         return retval & (1 << 8)
+
+
+    @staticmethod
+    def IS_NEW_ENTRIE_HISTORY_BUFFER(retval):
+	    
+        return retval & (1 << 9)
 
 
 

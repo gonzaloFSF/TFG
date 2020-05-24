@@ -13,6 +13,7 @@ class BTB_PREDICTOR():
 	set_success_jump = None
 	set_failure_jump = None
 	remplace_entrie = None
+	num_ciclo_fail = 0
 
 	def __init__(self,args):
 
@@ -22,6 +23,7 @@ class BTB_PREDICTOR():
 		self.comprobar_parametros(args)
 		self.pred_buffer = BTB_BUFFER(args)
 		self.is_lru = int(args["is_lru"])
+		self.num_ciclo_fail = int(args["num_ciclo_fail"])
 		self.get_configurable_functions(self.is_lru,ret_functions)
 		functions = ret_functions["value"]
 		self.insert_jump = functions['insert_jump']
@@ -36,6 +38,10 @@ class BTB_PREDICTOR():
 
 			raise Exception('4')
 
+		if not ('num_ciclo_fail' in args.keys() and len(args["num_ciclo_fail"]) > 0 and int(args["num_ciclo_fail"]) > 0):
+
+			raise Exception('7')
+
 	def to_json(self):
 
 		dict_lru_ale = {
@@ -46,7 +52,7 @@ class BTB_PREDICTOR():
 			"Tipo remplazo" : dict_lru_ale[self.is_lru],
 			"Numero entradas" : len(self.pred_buffer.branch_buffer.keys()),
 			"Bits prediccion": self.pred_buffer.num_pred_bits,
-			"Valor inicial": self.pred_buffer.init_bits_value
+			"Ciclos por fallo": self.num_ciclo_fail
 		}
 
 
@@ -58,15 +64,17 @@ class BTB_PREDICTOR():
 		entrie = None
 		prediction = None
 		address_dts = None
+		ret_bist_pred = {}
 
 		retval = self.get_data_entrie(address_src,ret_entrie)
 
 		if(retval):
 			return retval
 		
+		retval |= self.pred_buffer.get_bits_predictor(address_src,ret_bist_pred)
 		entrie = ret_entrie['value']
 		address_dts = entrie['address_dts']
-		bits_pred = int(entrie['bits'])
+		bits_pred = int(ret_bist_pred['value'])
 		prediction = ( '1' if (bits_pred+1) > (2**(num_bits-1)) else '0')
 		ret['value'] = {
 			'address_dts' : address_dts,

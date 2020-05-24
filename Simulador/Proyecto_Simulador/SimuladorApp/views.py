@@ -20,7 +20,7 @@ def costum_exceptions(code):
 		'4' : "No se ha seleccionado si el tipo de remplazo es lru o aleatorio",
 		'5' : "Tamaño del buffer debe definirse y debe ser positivo",
 		'6' : "Numero de bits de predicion debe definirse y debe ser positivo",
-		'7' : "El valor inicial debe definirse y debe ser positivo",
+		'7' : "El número de ciclos por fallo debe definirse y debe ser positivo",
 	
 	}
 
@@ -31,7 +31,8 @@ def costum_exceptions(code):
 def get_pred_form(pred_tipe):
 	
 	dict_forms = {
-		'pred_btb' : BTBForm
+		'Predictor BTB': BTBForm,
+		'Predictor de 2 niveles de historia':BTB2LEVESForm
 	}
 	
 	return dict_forms[pred_tipe]
@@ -63,15 +64,21 @@ def handler_eliminar_traza(request,*args):
 
 def handler_eliminar_resultado(request,*args):
 
-	lista_nombre = request.POST['sendform'].split("_delete")[0]
-	resultado_id = request.POST['code_row']
-	all_list_results = request.session.get("resultados")
-	list_results = all_list_results[lista_nombre]
-	del list_results[resultado_id]
-	print(list_results)
-	print(resultado_id)
-	all_list_results[lista_nombre] = list_results
-	request.session["resultados"] = all_list_results
+	lista_nombre = request.POST['pred_id']
+	
+	for resultado_id in request.POST.getlist('code_row'):
+
+		if not (lista_nombre in resultado_id) :
+			continue
+
+		all_list_results = request.session.get("resultados")
+		print(all_list_results)
+		list_results = all_list_results[lista_nombre]
+		del list_results[resultado_id]
+		print(list_results)
+		print(resultado_id)
+		all_list_results[lista_nombre] = list_results
+		request.session["resultados"] = all_list_results
 
 
 def get_traza_files(home_dir):
@@ -209,7 +216,9 @@ def update_data_ser(file_path_ser,simulador):
 					'predictor':simulador.predictor,
 					'fails_prediction' : simulador.fails_prediction,
 					'success_prediction' : simulador.success_prediction,
-					'remplace_jump' : simulador.remplace_jump
+					'remplace_jump' : simulador.remplace_jump,
+					'instrucciones_totales':simulador.instrucciones_totales,
+
 				})
 
 	open(file_path_ser,"wb").write(data_ser)
@@ -222,7 +231,7 @@ def handler_init_simulador_step_by_step(request):
 	home_dir = request.session.get('home_dir')
 	file_path = "{}/{}".format(home_dir,request.POST['traza_code_row'])
 	file_path_ser = "{}/{}".format(home_dir,"data_ser") 
-	pred_tipe = request.POST['predictor']
+	pred_tipe = request.POST['pred_id']
 	form_copy = get_pred_form(pred_tipe)(request.POST).data.copy()
 	form_copy['filename'] = file_path
 	simulador = Simulador(form_copy)
@@ -247,6 +256,29 @@ def run_simulator(simulador,steps):
 
 	return simulador
 
+def get_unic_name(lista_resultados,size,pred_tipe):
+
+	name = 	"resultado_{}__{}".format(str(size+1),pred_tipe)
+	max_res = 100000
+	index = 1
+
+	try:
+
+		lista_resultados[name]
+
+		while(index < max_res):
+
+			name = 	"resultado_{}__{}".format(index,pred_tipe)
+			lista_resultados[name]
+			index += 1
+
+	except KeyError:
+		pass
+
+	return name
+
+
+
 
 def handler_post_simulador_resultados(request):
 
@@ -257,27 +289,28 @@ def handler_post_simulador_resultados(request):
 
 	home_dir = request.session.get('home_dir')
 	file_path = "{}/{}".format(home_dir,request.POST['traza_code_row'])
-	pred_tipe = request.POST['predictor']
-	name_res_tab = 'Resultados de {}'.format(pred_tipe)
+	pred_tipe = request.POST['pred_id']
+	name_res_tab = pred_tipe
 	lista_resultados_global = request.session.get('resultados',{})
 	lista_resultados = None
 	try:
 
 		lista_resultados = lista_resultados_global[name_res_tab]
+		print(lista_resultados)
 
 	except KeyError:
 
+		print("holaaaaaaaaaaaaaaaaaaaaaaaaaa")
 		lista_resultados = {}
 
 	
 	size = len(lista_resultados.keys())
 	form_copy = get_pred_form(pred_tipe)(request.POST).data.copy()
-	print(form_copy)
 	form_copy['filename'] = file_path
 	simulador = Simulador(form_copy)
 	sim_res = {"Archivo" : os.path.split(file_path)[-1]}
 	sim_res.update(run_simulator(simulador,-1).json_fiels())
-	lista_resultados.update({"resultado_{}__{}".format(str(size+1),pred_tipe):sim_res})
+	lista_resultados.update({get_unic_name(lista_resultados,size,pred_tipe):sim_res})
 	lista_resultados_global[name_res_tab] = lista_resultados
 	request.session['resultados'] = lista_resultados_global
 
@@ -301,7 +334,8 @@ def display_simulador(request):
 
 	handler_session_init(request)
 	predictores_forms = {
-		"pred_btb":BTBForm()
+		'Predictor BTB': BTBForm(),
+		'Predictor de 2 niveles de historia':BTB2LEVESForm()
 	}
 	home_dir = request.session['home_dir']
 	listas = {}
@@ -331,7 +365,7 @@ def display_simulador(request):
 
 
 		return render(request, 'generic/simulador.html',{
-			'predictores':["Predictor BTB"],
+			'predictores':["Predictor BTB","Predictor de 2 niveles de historia"],
 			'predictores_forms':predictores_forms,
 			'listas' : listas,
 			'trazas':trazas,
@@ -390,6 +424,7 @@ def get_simulator_current_state(request):
 				data_desser['fails_prediction'],
 				data_desser['success_prediction'],
 				data_desser['remplace_jump'],
+				data_desser['instrucciones_totales'],
 			     )
 
 	return simulador
@@ -426,7 +461,7 @@ def display_simulador_step_by_step(request):
 	simulador.get_new_jump(current_jump)
 	current_jump = {'current_jump':current_jump}
 	tables['Resultados'] = {'resultados':simulador.json_fiels()}
-	tables['Buffer'] = simulador.predictor.pred_buffer.remove_dts_jump_to_display()
+	tables['Buffer'] = simulador.predictor.pred_buffer.format_to_display()
 
 
 	

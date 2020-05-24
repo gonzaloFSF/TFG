@@ -20,10 +20,8 @@ def create_csv_response(df):
 
 def get_row_result(code_row,resultados):
 
-	dict_list = {
-		"pred_btb":"Resultados de pred_btb"
-	}
-	list_row = resultados[dict_list[code_row.split("__")[-1]]]
+
+	list_row = resultados[code_row.split("__")[-1]]
 	row_result = list_row[code_row] 
 	return row_result
 
