@@ -63,6 +63,16 @@ class FLAGS(Enum):
 	    
         return (1 << 9)
 
+    @staticmethod
+    def GET_FAIL_PREDICTION():
+	    
+        return (1 << 10)
+
+    @staticmethod
+    def GET_SUCCESS_PREDICTION():
+	    
+        return (1 << 11)
+
 
     # Find flag
 
@@ -116,6 +126,16 @@ class FLAGS(Enum):
     def IS_NEW_ENTRIE_HISTORY_BUFFER(retval):
 	    
         return retval & (1 << 9)
+
+    @staticmethod
+    def IS_FAIL_PREDICTION(retval):
+	    
+        return retval & (1 << 10)
+
+    @staticmethod
+    def IS_SUCCESS_PREDICTION(retval):
+	    
+        return retval & (1 << 11)
 
 
 

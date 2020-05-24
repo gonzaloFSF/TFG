@@ -119,11 +119,13 @@ class Simulador():
 			prediction_dict = ret_prediction_dict['value']
 
 			if(str(jump['address_dts']) == str(prediction_dict['address_dts']) and  str(jump['was_jump']) == str(prediction_dict['prediction'])):
-			
+
+				retval |= FLAGS.GET_SUCCESS_PREDICTION()
 				self.success_prediction += 1
 			
 			else:
-			
+
+				retval |= FLAGS.GET_FAIL_PREDICTION()
 				self.fails_prediction += 1
 
 			if str(jump['address_dts']) != str(prediction_dict['address_dts']):

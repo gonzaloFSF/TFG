@@ -21,6 +21,7 @@ def costum_exceptions(code):
 		'5' : "Tamaño del buffer debe definirse y debe ser positivo",
 		'6' : "Numero de bits de predicion debe definirse y debe ser positivo",
 		'7' : "El número de ciclos por fallo debe definirse y debe ser positivo",
+		'8' : "El tamaño del registro de desplazamiento debe definirse y debe ser positivo"
 	
 	}
 
@@ -237,19 +238,29 @@ def handler_init_simulador_step_by_step(request):
 	simulador = Simulador(form_copy)
 	update_data_ser(file_path_ser,simulador)
 
-	
 
-def run_simulator(simulador,steps):
+def step_by_step_option(option):
+	options = {
+		'0':lambda x:True,
+		'1':FLAGS.IS_FAIL_PREDICTION,
+		'2':FLAGS.IS_BUFFER_LIMIT,
+		'3':FLAGS.IS_SUCCESS_PREDICTION,
+		'4':lambda x:False
+	}
+
+	return options[str(option)]
+
+def run_simulator(simulador,option):
 	
 	retval = 0
 	ret_jump = {}
 	counter = 0
 
-	while(counter < steps or steps < 0):
+	while(True):
 
 		retval |= simulador.next_step_jump(ret_jump)
 				
-		if(FLAGS.IS_END_TRACE(retval)):
+		if(FLAGS.IS_END_TRACE(retval) or step_by_step_option(option)(retval)):
 			break
 
 		counter += 1
@@ -309,7 +320,7 @@ def handler_post_simulador_resultados(request):
 	form_copy['filename'] = file_path
 	simulador = Simulador(form_copy)
 	sim_res = {"Archivo" : os.path.split(file_path)[-1]}
-	sim_res.update(run_simulator(simulador,-1).json_fiels())
+	sim_res.update(run_simulator(simulador,4).json_fiels())
 	lista_resultados.update({get_unic_name(lista_resultados,size,pred_tipe):sim_res})
 	lista_resultados_global[name_res_tab] = lista_resultados
 	request.session['resultados'] = lista_resultados_global
@@ -430,7 +441,7 @@ def get_simulator_current_state(request):
 	return simulador
 
 
-def display_get_next_step(request):
+def display_get_next_step(request,option):
 
 	home_dir = request.session['home_dir']
 	file_path_ser = "{}/{}".format(home_dir,"data_ser")
@@ -438,7 +449,7 @@ def display_get_next_step(request):
 	current_jump = {}
 
 	simulador = get_simulator_current_state(request)
-	simulador = run_simulator(simulador,1)
+	simulador = run_simulator(simulador,option)
 	simulador.get_new_jump(current_jump)
 
 

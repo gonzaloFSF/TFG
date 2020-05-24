@@ -12,7 +12,7 @@ urlpatterns = [
     url(r'^Traza/?$', display_traza, name="Traza"),
     url(r'^Download_Traza/?$', display_download_file, name="Download_Traza"),
     url(r'^Sim_Step_By_Step/?$', display_simulador_step_by_step, name="Sim_Step_By_Step"),
-    url(r'^Get_next_step/?$', display_get_next_step, name="get_next_step"),
+    url(r'^Get_next_step/(?P<option>[0-4])/?$', display_get_next_step, name="get_next_step"),
     url('', index, name="home_page")
 ]
 

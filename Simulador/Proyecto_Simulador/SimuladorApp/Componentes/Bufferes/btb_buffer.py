@@ -47,7 +47,31 @@ class BTB_BUFFER():
 			
 			raise Exception('6')
 
-	
+		if not args["is_simple_buffer"] and not ('history_index_len' in args.keys() and len(args["history_index_len"]) > 0 and int(args["history_index_len"]) > 0):
+
+			raise Exception('8')
+
+	def format_values(self,ele):
+
+		num_zeros = 0
+		zeros_add = ""
+		bits = ""
+		ret_bits = {}
+
+		bits = ele['bits']
+
+		if not (self.is_simple_buffer):
+
+			self.get_bits_predictor(ele['address_src'],ret_bits)
+			bits = ret_bits['value']
+			ele['Historial de Saltos'] = ("".join(ele['bits'].history_index))[::-1]
+			ele['Contador Desplazamiento'] = ele['bits'].counter
+
+		bits = str(bin(bits))[2:]
+		num_zeros = self.num_pred_bits - (len(bits))
+		zeros_add = "0"*num_zeros
+
+		ele['bits'] = zeros_add+bits
 
 	def format_to_display(self):
 
@@ -58,7 +82,7 @@ class BTB_BUFFER():
 		for ele in btb_buffer_cp_list:
 
 			ele.pop('address_dts')
-			ele['bits'] = bin(ele['bits'])
+			self.format_values(ele)
 			key = list(ele.values())[1]
 			btb_buffer_cp_dict[key] = ele
 
@@ -161,7 +185,7 @@ class BTB_BUFFER():
 		retval = 0
 		address_part = None
 		
-		address_part = address[8:]
+		address_part = address[4:]
 
 		if self.is_simple_buffer:
 

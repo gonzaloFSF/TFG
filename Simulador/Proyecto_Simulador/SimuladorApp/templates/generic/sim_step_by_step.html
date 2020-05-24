@@ -68,7 +68,17 @@
 
 			<div class="card-footer">
 		          <div class="d-flex justify-content-around pb-2 mt-3">
-                        <button id="next_step_btn" name="sendform" value='Trazas_delete' type="submit" class="btn btn-success" >Siguiente Salto</button>
+						
+					<button id="next_step_btn" name="sendform" value='Next_jump' type="submit" class="btn btn-success" >Saltar asta:</button>
+					<div class="col-auto my-1">
+						<select class="custom-select mr-sm-2" id="opcion_parada">
+						  <option value="0">Siguiente instrucción</option>
+						  <option value="1">Siguiente fallo</option>
+						  <option value="2">Siguiente remplazo</option>
+						  <option value="3">Siguiente acierto</option>
+						  <option value="4">Finalizar</option>
+						</select>
+					  </div>
 			<button id="min_max_btn" name="sendform" value='Trazas_delete' type="submit" class="btn btn-primary" >Ocultar</button>
                 </div>
 		</div>
@@ -110,10 +120,14 @@ document.getElementById("min_max_btn").addEventListener("click",function(e){
 document.getElementById("next_step_btn").addEventListener("click",function(){
 
 	var xhr;
+	var select;
+	var option_value;
 
 	xhr = new XMLHttpRequest();
+	select = document.getElementById("opcion_parada");
+	option_value = select.getElementsByTagName("option")[select.selectedIndex].value;
 
-	xhr.open("GET","/Get_next_step/");
+	xhr.open("GET",`/Get_next_step/${option_value}/`);
 	xhr.onload = function(){
 		
 		var ids_to_reload;

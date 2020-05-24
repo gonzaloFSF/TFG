@@ -20,7 +20,8 @@ def translate(value1):
 		'address_src':"Dirección del Salto",
 		'address_dts' : "Dirección destino",
 		'bits': "Contador",
-		'was_jump': "Hay salto"
+		'was_jump': "Hay salto",
+		'instruccion': "Instrucciones_Salto"
 	}
 	try:
 		
