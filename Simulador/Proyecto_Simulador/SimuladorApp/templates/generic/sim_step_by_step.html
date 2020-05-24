@@ -152,6 +152,11 @@ document.getElementById("next_step_btn").addEventListener("click",function(){
 
 		});
 
+		[].map.call(document.getElementById('Tabla_Buffer').getElementsByTagName('tr'),(entrie)=>entrie.getElementsByTagName('td').length && [entrie , entrie.getElementsByTagName('td')[1].textContent,entrie.getElementsByTagName('td')[2].textContent]).filter(
+entrie=>entrie[1] == document.getElementById('current_jump').getElementsByTagName("td")[0].textContent &&
+entrie[2] == document.getElementById('current_jump').getElementsByTagName("td")[1].textContent
+).forEach(entrie=>entrie[0].style="background:red;color:white");
+
 	}
 	xhr.send();
 
