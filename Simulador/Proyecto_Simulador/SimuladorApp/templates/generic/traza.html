@@ -1,88 +1,75 @@
-{% extends 'base/baseTemplate.html' %} 
-
-{% block title %} Traza {% endblock %}
-
-{% block content %}
-
+{% extends 'base/baseTemplate.html' %} {% block title %} Traza {% endblock %} {% block content %} {% load filters %}
 
 
 <div class="margen-superior container">
 
-<div id="box_error" class="alert alert-danger alert-dismissible fade show" role="alert">
-  <strong id="message_error"></strong>
-  <button id="button_close" type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <div id="box_error" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong id="message_error"></strong>
+        <button id="button_close" type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
-</div>
-
-  <div class="row">
-    <div class="col-2">
-      
-    </div>
-    <div class="col-8 card" style="padding-left: 0px; padding-right: 0px;" >
-        <div class="card-header text-white bg-success mb-3">
-    Subir Traza
-  </div>
-  <form class="card-body" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button name="sendform" value='Upload' class="btn btn-primary" type="submit">Subir</button>
-  </form>
-    </div>
-    <div class="col-2">
-    </div>
-  </div>
-</div>
-
-<form action="/Traza" method="POST" >
-    {% csrf_token %}
-
-             {% for nombre,elementos in listas.items %}
-	     	     	     {% with name_value="traza_" %}
-<div class="container mt-3">
-
-  <div class="row">
-
-    <div class="col-2">
-      
     </div>
 
-    <div class="col-8 card" style="padding-left: 0px; padding-right: 0px;" >
+    {%for key,value in forms.items%}
+    <div class="row mb-3">
+        <div class="col-2">
 
-                <div class="card-header bg-primary text-white">
-                        {{nombre}}
-                      </div>
+        </div>
+        <div class="col-8 card" style="padding-left: 0px; padding-right: 0px;">
+            <div class="card-header text-white bg-success mb-3">
+                {{key}}
+            </div>
+            <form class="card-body" method="post" enctype="multipart/form-data">
+                {% csrf_token %} {{ value.0.as_p }}
+                <button name="sendform" value='{{value.1}}' class="btn btn-primary" type="submit">{{key|translate}}</button>
+            </form>
+        </div>
+        <div class="col-2">
+        </div>
+    </div>
+    {%endfor%}
 
-                      <div class="card-body">
-        	            {% include "generic/listados.html" %}
-    	            </div>
 
-					    <div class="card-footer">
-		          <div class="d-flex justify-content-center pb-2 mt-3">
-                        <button name="sendform" value='Trazas_delete' type="submit" class="btn btn-danger" >Eliminar</button>
+
+    <form action="/Traza" method="POST">
+        {% csrf_token %} {% for nombre,elementos in listas.items %} {% with name_value="traza_" %}
+        <div class="container mt-3">
+
+            <div class="row">
+
+                <div class="col-2">
+
                 </div>
-		</div>
 
-		</div>
-	    <div class="col-2">
-      
-    </div>
+                <div class="col-8 card" style="padding-left: 0px; padding-right: 0px;">
 
-    </div>
-    </div>
-    		    		{% endwith %}
+                    <div class="card-header bg-primary text-white">
+                        {{nombre}}
+                    </div>
 
-                {% endfor %}
-</form>
+                    <div class="card-body">
+                        {% include "generic/listados.html" %}
+                    </div>
 
-{% include "generic/errors.html" %}
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-around pb-2 mt-3">
+                            <button name="sendform" value='Trazas_delete' type="submit" class="btn btn-danger">Eliminar</button>
+                            <button name="sendform" value='Trazas_Download' type="submit" class="btn btn-success">Descargar</button>
+                        </div>
+                    </div>
 
+                </div>
+                <div class="col-2">
 
+                </div>
+
+            </div>
+        </div>
+        {% endwith %} {% endfor %}
+    </form>
+
+    {% include "generic/errors.html" %} {% endblock %} {% block extrajs %}
+    <script>
+        $(":file").filestyle();
+    </script>
     {% endblock %}
-
-    {% block extrajs %}
-<script>
-	$(":file").filestyle();
-</script>
-        {% endblock %}
-	

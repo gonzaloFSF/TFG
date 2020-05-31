@@ -7,7 +7,6 @@ from django.http import StreamingHttpResponse
 
 def create_csv_response(df):
 	
-	sio = BytesIO()
 	PandasDataFrame = df
 	csv_res = PandasDataFrame.to_csv(index = None, header=True,sep=';',encoding='utf-8-sig',decimal=',')
 	print(csv_res)

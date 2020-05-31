@@ -4,9 +4,10 @@ from SimuladorApp.models import Simulador
 from SimuladorApp.flags import FLAGS
 from SimuladorApp.Aux_Code.download_files import *
 from subprocess import check_output
+from wsgiref.util import FileWrapper
+
 import magic
 import pickle
-
 import os
 
 
@@ -45,12 +46,65 @@ def get_handler(form_case):
 		'Trazas_delete' : handler_eliminar_traza,
 		'Trazas_send' : handler_post_simulador_resultados,
 		'Resultados de pred_btb_delete' : handler_eliminar_resultado,
-		'Upload':handle_uploaded_file,
-		'Trazas_step':handler_init_simulador_step_by_step
+		'Gen_Tr':handle_generar_traza,
+		'Upl_Tr':handler_upload_traza,
+		'Trazas_step':handler_init_simulador_step_by_step,
+		'Trazas_Download':download_traza
 
 	}
 
 	return dict_handlers[form_case]
+
+def handler_upload_traza(request):
+
+	file_form = UploadCodeForm(request.POST)
+	home_dir = request.session.get('home_dir')
+	
+	if file_form.data['title'] == "" :
+
+		raise Exception("1")
+
+	parts = file_form.data['title'].split(" ")
+	name_file = parts[0]
+	file = request.FILES['file']
+	
+	path_file = "{}/{}.o".format(home_dir,name_file)	
+
+	with open(path_file, 'wb+') as destination:
+		for chunk in file.chunks():
+			destination.write(chunk)
+
+
+	print(str(magic.from_file(path_file)))
+
+	if not ("ELF" in str(magic.from_file(path_file))):
+	
+		os.remove(path_file)
+		raise Exception("2")
+
+
+def download_traza(request):
+
+	if not ("traza_code_row" in request.POST.keys()) :
+		raise Exception('3')
+	
+	home_dir = request.session.get('home_dir')
+	file_name = request.POST['traza_code_row']
+	file_path = os.path.join(home_dir,file_name)
+	file_size = os.path.getsize(file_path)
+	chunk_size = 8192
+
+	
+	response = StreamingHttpResponse(FileWrapper(
+							open(file_path,"rb"),
+							chunk_size
+						    )
+						    , content_type='text/csv')
+
+	response['Content-Disposition'] = 'attachment; filename=%s.csv' % file_name.split(".o")[0]
+	response['Content-Length'] = file_size
+
+	return response
 
 def handler_eliminar_traza(request,*args):
 
@@ -162,9 +216,10 @@ def handler_session_init(request):
 		init_session(request.session)
 
 
-def handle_uploaded_file(request):
+def handle_generar_traza(request):
 
-	file_form = UploadFileForm(request.POST)
+
+	file_form = UploadCodeForm(request.POST)
 	home_dir = request.session.get('home_dir')
 	
 	if file_form.data['title'] == "" :
@@ -394,6 +449,7 @@ def display_traza(request):
 	home_dir = request.session['home_dir']
 	listas = {}
 	errors = None
+	ret = None
 	print(request.POST)
 
 	if request.POST:
@@ -401,7 +457,7 @@ def display_traza(request):
 		try:
 
 			form_case = request.POST['sendform']
-			get_handler(form_case)(request)
+			ret = get_handler(form_case)(request)
 
 		except Exception as e:
 			
@@ -409,13 +465,19 @@ def display_traza(request):
 			print(errors)
 			
 	listas["Trazas"] = get_traza_files(home_dir)
-	form = UploadFileForm()
+	forms = {
+			'Generar Traza':[UploadCodeForm(),'Gen_Tr'],
+			'Subir Traza':[UploadTrazaForm(),'Upl_Tr'],
+		}
 
-	return render(request, 'generic/traza.html',{
-		'form':form,
-		'listas' : listas,
-		'errors' : errors
-		})
+	if ret == None:
+		return render(request, 'generic/traza.html',{
+			'forms':forms,
+			'listas' : listas,
+			'errors' : errors
+			})
+	else:
+		return ret
 
 #simulador = handler_simalador_step_by_step(simulador)
 

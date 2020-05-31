@@ -21,7 +21,9 @@ def translate(value1):
 		'address_dts' : "Dirección destino",
 		'bits': "Contador",
 		'was_jump': "Hay salto",
-		'instruccion': "Instrucciones_Salto"
+		'instruccion': "Instrucciones_Salto",
+		'Generar Traza': 'Generar',
+		'Subir Traza':'Subir',
 	}
 	try:
 		
