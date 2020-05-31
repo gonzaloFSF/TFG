@@ -14,6 +14,7 @@ class BTB_PREDICTOR():
 	set_failure_jump = None
 	remplace_entrie = None
 	num_ciclo_fail = 0
+	pred_id = None
 
 	def __init__(self,args):
 
@@ -21,6 +22,7 @@ class BTB_PREDICTOR():
 		functions = None
 		
 		self.comprobar_parametros(args)
+		self.pred_id = args['pred_id']
 		self.pred_buffer = BTB_BUFFER(args)
 		self.is_lru = int(args["is_lru"])
 		self.num_ciclo_fail = int(args["num_ciclo_fail"])

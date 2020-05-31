@@ -1,6 +1,9 @@
 {% extends 'base/baseTemplate.html' %} {% block title %} Traza {% endblock %} {% block content %} {% load filters %}
 
 
+{% include "generic/spinner.html" %}
+
+
 <div class="margen-superior container">
 
     <div id="box_error" class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -19,7 +22,7 @@
             <div class="card-header text-white bg-success mb-3">
                 {{key}}
             </div>
-            <form class="card-body" method="post" enctype="multipart/form-data">
+            <form class="card-body spinner" method="post" enctype="multipart/form-data">
                 {% csrf_token %} {{ value.0.as_p }}
                 <button name="sendform" value='{{value.1}}' class="btn btn-primary" type="submit">{{key|translate}}</button>
             </form>
@@ -68,8 +71,14 @@
         {% endwith %} {% endfor %}
     </form>
 
+  
+    </div>
+
     {% include "generic/errors.html" %} {% endblock %} {% block extrajs %}
     <script>
         $(":file").filestyle();
+
+
+		
     </script>
     {% endblock %}

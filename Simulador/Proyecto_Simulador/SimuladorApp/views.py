@@ -44,7 +44,6 @@ def get_handler(form_case):
 	dict_handlers = {
 
 		'Trazas_delete' : handler_eliminar_traza,
-		'Trazas_send' : handler_post_simulador_resultados,
 		'Resultados de pred_btb_delete' : handler_eliminar_resultado,
 		'Gen_Tr':handle_generar_traza,
 		'Upl_Tr':handler_upload_traza,
@@ -68,7 +67,7 @@ def handler_upload_traza(request):
 	name_file = parts[0]
 	file = request.FILES['file']
 	
-	path_file = "{}/{}.o".format(home_dir,name_file)	
+	path_file = "{}/{}.out".format(home_dir,name_file)	
 
 	with open(path_file, 'wb+') as destination:
 		for chunk in file.chunks():
@@ -77,7 +76,7 @@ def handler_upload_traza(request):
 
 	print(str(magic.from_file(path_file)))
 
-	if not ("ELF" in str(magic.from_file(path_file))):
+	if not ("ASCII text" in str(magic.from_file(path_file))):
 	
 		os.remove(path_file)
 		raise Exception("2")
@@ -112,10 +111,11 @@ def handler_eliminar_traza(request,*args):
 		raise Exception('3')
 	
 	home_dir = request.session.get('home_dir')
-	file_name = request.POST['traza_code_row']
-	file_path = os.path.join(home_dir,file_name)
+	for file_name in request.POST.getlist('traza_code_row'):
 
-	os.remove(file_path)
+		file_path = os.path.join(home_dir,file_name)
+
+		os.remove(file_path)
 
 def handler_eliminar_resultado(request,*args):
 
@@ -305,7 +305,7 @@ def step_by_step_option(option):
 
 	return options[str(option)]
 
-def run_simulator(simulador,option):
+def run_simulator(request,simulador,option):
 	
 	retval = 0
 	ret_jump = {}
@@ -316,6 +316,10 @@ def run_simulator(simulador,option):
 		retval |= simulador.next_step_jump(ret_jump)
 				
 		if(FLAGS.IS_END_TRACE(retval) or step_by_step_option(option)(retval)):
+
+			if FLAGS.IS_END_TRACE(retval) :
+				simulador_resultados(request,simulador)
+
 			break
 
 		counter += 1
@@ -346,16 +350,12 @@ def get_unic_name(lista_resultados,size,pred_tipe):
 
 
 
-def handler_post_simulador_resultados(request):
+def simulador_resultados(request,simulador):
 
 	retval = 0
 	
-	if not ("traza_code_row" in request.POST.keys()) :
-		raise Exception('3')
 
-	home_dir = request.session.get('home_dir')
-	file_path = "{}/{}".format(home_dir,request.POST['traza_code_row'])
-	pred_tipe = request.POST['pred_id']
+	pred_tipe = simulador.predictor.pred_id
 	name_res_tab = pred_tipe
 	lista_resultados_global = request.session.get('resultados',{})
 	lista_resultados = None
@@ -371,11 +371,8 @@ def handler_post_simulador_resultados(request):
 
 	
 	size = len(lista_resultados.keys())
-	form_copy = get_pred_form(pred_tipe)(request.POST).data.copy()
-	form_copy['filename'] = file_path
-	simulador = Simulador(form_copy)
-	sim_res = {"Archivo" : os.path.split(file_path)[-1]}
-	sim_res.update(run_simulator(simulador,4).json_fiels())
+	sim_res = {"Archivo" : os.path.split(simulador.file_name_data)[-1]}
+	sim_res.update(simulador.json_fiels())
 	lista_resultados.update({get_unic_name(lista_resultados,size,pred_tipe):sim_res})
 	lista_resultados_global[name_res_tab] = lista_resultados
 	request.session['resultados'] = lista_resultados_global
@@ -511,7 +508,7 @@ def display_get_next_step(request,option):
 	current_jump = {}
 
 	simulador = get_simulator_current_state(request)
-	simulador = run_simulator(simulador,option)
+	simulador = run_simulator(request,simulador,option)
 	simulador.get_new_jump(current_jump)
 
 
@@ -520,6 +517,65 @@ def display_get_next_step(request,option):
 	update_data_ser(file_path_ser,simulador)
 
 	return display_simulador_step_by_step(request)
+
+def format_buffer_df(buffer_sim):
+
+	values = []
+	columns = []
+
+	if len(buffer_sim.values()):
+
+		print(buffer_sim.values())
+		columns = list(buffer_sim.values())[0].keys()
+
+		for key,value in buffer_sim.items():
+			values.append(list(value.values()))
+
+	return [columns,values]
+
+def download_buffer(request):
+
+	simulador = None
+	buffer_sim = None
+	buffer_sim_for = None
+	df = None
+
+	simulador = get_simulator_current_state(request)
+	buffer_sim = simulador.predictor.pred_buffer.to_json()['branch_buffer']
+	buffer_sim_for = format_buffer_df(buffer_sim)
+	df = pd.DataFrame(buffer_sim_for[1],columns=buffer_sim_for[0])
+	PandasDataFrame = df
+	csv_res = PandasDataFrame.to_csv(index = None, header=True,sep=';',encoding='utf-8-sig',decimal=',')
+	print(csv_res)
+
+
+	response = StreamingHttpResponse(csv_res, content_type='text/csv')
+	response['Content-Disposition'] = 'attachment; filename=%s.csv' % "buffer" 
+
+	return response
+
+
+def download_resultados(request):
+
+	simulador = None
+	res_sim = None
+	df = None
+
+	simulador = get_simulator_current_state(request)
+	res_sim = simulador.json_fiels()
+	print(res_sim)
+	print(list(res_sim.values()),list(res_sim.keys()))
+	df = pd.DataFrame([list(res_sim.values())],columns=list(res_sim.keys()))
+	PandasDataFrame = df
+	csv_res = PandasDataFrame.to_csv(index = None, header=True,sep=';',encoding='utf-8-sig',decimal=',')
+	print(csv_res)
+
+
+	response = StreamingHttpResponse(csv_res, content_type='text/csv')
+	response['Content-Disposition'] = 'attachment; filename=%s.csv' % "resultados" 
+
+	return response
+
 
 def display_simulador_step_by_step(request):
 
@@ -533,8 +589,8 @@ def display_simulador_step_by_step(request):
 
 	simulador.get_new_jump(current_jump)
 	current_jump = {'current_jump':current_jump}
-	tables['Resultados'] = {'resultados':simulador.json_fiels()}
-	tables['Buffer'] = simulador.predictor.pred_buffer.format_to_display()
+	tables['Resultados'] = [{'resultados':simulador.json_fiels()},'resultados']
+	tables['Buffer'] = [simulador.predictor.pred_buffer.format_to_display(),'buffer']
 
 
 	

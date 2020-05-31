@@ -27,7 +27,7 @@ h6 {
     font-weight: bold !important;
 }
 
-.modal-header{
+.modal-header {
     background: #218838;
     border-top-left-radius: .1rem;
     border-top-right-radius: .1rem;
@@ -74,13 +74,23 @@ h6 {
     color: rgb(255, 255, 255);
 }
 
-.listado_row{
+.listado_row {
     cursor: pointer;
 }
 
-.listado_row:hover{
+.listado_row:hover {
     background: rgba(75, 67, 67, 0.644);
     color: white;
 }
 
-
+.loading {
+    position: fixed;
+    z-index: 999;
+    overflow: show;
+    margin: auto;
+    top: 50%;
+    left: 40%;
+    bottom: 50%;
+    right: 50%;
+    display: block ruby;
+}
