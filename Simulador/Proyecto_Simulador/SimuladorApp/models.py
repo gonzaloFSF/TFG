@@ -2,6 +2,8 @@ from django.db import models
 from SimuladorApp.Componentes.Predictores.btb_predictor import BTB_PREDICTOR
 from SimuladorApp.Componentes.Bufferes.btb_buffer import BTB_BUFFER
 from SimuladorApp.flags import FLAGS
+
+import os
 import pandas as pd
 
 
@@ -73,6 +75,7 @@ class Simulador():
 	def json_fiels(self):
 
 		dict_json_fields = {
+			"Archivo" : os.path.split(self.file_name_data)[-1],
 			'Fallos' : self.fails_prediction,
 			'Aciertos' : self.success_prediction,
 			'Remplazos' : self.remplace_jump,
