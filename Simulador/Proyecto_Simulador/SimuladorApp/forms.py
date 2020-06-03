@@ -26,9 +26,9 @@ class BTB2LEVESForm(forms.Form):
 class UploadCodeForm(forms.Form):
 
 	title = forms.CharField(label='Nombre [arg1 arg2 ...]',max_length=50)
-	file = forms.FileField(label='Código ha subir',widget=forms.FileInput(attrs={'class':'btn btn-success'}))
+	file = forms.FileField(label='Código para subir',widget=forms.FileInput(attrs={'class':'btn btn-success'}))
 
 class UploadTrazaForm(forms.Form):
 	
 	title = forms.CharField(label='Nombre',max_length=50)
-	file = forms.FileField(label='Traza ha subir',widget=forms.FileInput(attrs={'class':'btn btn-success'}))
+	file = forms.FileField(label='Traza para subir',widget=forms.FileInput(attrs={'class':'btn btn-success'}))
