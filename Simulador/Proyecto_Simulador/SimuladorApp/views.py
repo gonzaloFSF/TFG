@@ -366,7 +366,6 @@ def simulador_resultados(request,simulador):
 
 	except KeyError:
 
-		print("holaaaaaaaaaaaaaaaaaaaaaaaaaa")
 		lista_resultados = {}
 
 	
