@@ -11,7 +11,7 @@ import pickle
 import os
 
 
-def costum_exceptions(code):
+def custom_exceptions(code):
 
 	exceptions = {
 
@@ -414,7 +414,7 @@ def display_simulador(request):
 
 	except Exception as e:
 
-		errors = costum_exceptions(str(e))
+		errors = custom_exceptions(str(e))
 
 
 	if form_case != "Trazas_step" or errors != None:
@@ -457,7 +457,7 @@ def display_traza(request):
 
 		except Exception as e:
 			
-			errors = costum_exceptions(str(e))
+			errors = custom_exceptions(str(e))
 			print(errors)
 			
 	listas["Trazas"] = get_traza_files(home_dir)
